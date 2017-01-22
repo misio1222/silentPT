@@ -1,0 +1,157 @@
+﻿@model MVCIdentityConfirm.Models.comModel
+
+
+<div class="lightBlue" style="min-height:78vh;">
+    <div id="menuSpace"></div>
+    <div style="margin-left: 30px; ">
+
+        <div style="font-family:Arial; float:left; width:96%; margin-left: 2%;">
+            <br /><br />
+            <h4>Dodaj dział / halę / inną komórkę organizacyjną do firmy <span class="textColor" id="companyName"> @Model.companyMod.CompanyName</span>.</h4>
+            <hr />
+            <div class="important" id="@Model.companyMod.Id"  style="margin-left: 110px; font-weight: bold; color:maroon;">@ViewBag.Exist</div>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true)
+                    <div class="form-group">
+                        @Html.Label("Nazwa działu / hali / komórki ", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBox("wydzialId",null, new { @maxlength = "30", @class = "form-control", @placeholder = "np. Hala-37 lub Kontrola Jakości", @style="margin-top:15px;", @id="wydzialId" })
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Imię przełożonego", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBox("imieId",null, new { @class = "form-control", @placeholder = "np. Jan", @id="imieId" })
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Nazwisko przełożonego", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBox("nazwiskoId",null, new { @class = "form-control", @placeholder = "np. Kowalski", @id="nazwiskoId" })
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Stanowisko przełożonego", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBox("stanowiskoId",null, new { @class = "form-control", @placeholder = "np. Kierownik", @id="stanowiskoId" })
+                            
+                        </div>
+                    </div>
+                    
+                    <div>
+                        
+                    </div>
+                </div>
+            }
+            <div class="form-group" style="margin-left: 17%;">
+                
+                    <input name="btn" id="subbBtn" type="submit" value="DODAJ" class="btn btn-default button button1 button2 " />
+               
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    
+</div>
+
+<script>
+
+
+    $(function () {
+        $("#subbBtn").click(function () {
+            //var currentUrl = window.location.href;
+            var tWydzial = $("#wydzialId").val();
+            var tImie = $("#imieId").val();
+            var tNazwisko = $("#nazwiskoId").val();
+            var tStanowisko = $("#stanowiskoId").val();
+            var compId = $(".important").attr("id");
+
+
+            if ($.trim(tWydzial) && $.trim(tImie) && $.trim(tNazwisko) && $.trim(tStanowisko)) {
+                var data = new Array(3);
+                data[0] = tWydzial;
+                data[1] = tImie;
+                data[2] = tNazwisko;
+                data[3] = tStanowisko;
+                
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("AddWydzial", "Home")',
+                    dataType: "json",
+                    data: { "compId": compId, "data": data },
+                    cache: false,
+                    traditional: true,
+                    success: function (yes) {
+                        if (yes) {
+                            window.location = "@Url.Action("Index", "Home")";
+
+                        } else {
+                            $(".important").text("Coś poszło nie tak!")
+                        }
+                    }
+
+                });
+            } else {
+                $(".important").text("Proszę wypełnić wszystkie pola!")
+            }
+
+        });
+    });
+
+
+    var changedList = false;
+
+    $(function () {
+        $("#copanyList").change(function () {
+            var companyId = $("#copanyList").val();
+            var postedId = $(".important").attr("id");
+            if (companyId != postedId) {
+                changedList = true;
+                $.ajax({
+                    dataType: "json",
+                    url: '@Url.Action("AWCompanyName","Home")',
+                    data: { "company": companyId },
+                    cache: false,
+                    type: "POST",
+                    success: function (companyInfo) {
+                        $(".important").attr("id", companyId);
+                        $("#companyName").text(companyInfo);
+
+                    }
+                    
+                })
+
+            }
+
+        });
+    });
+
+
+
+
+    function hideWydzial() {
+        $(function () {
+
+            $(".wydzialHide").hide();
+
+        });
+        $(function () {
+            $("#copanyList").css({ height: "50vh" } );
+        });
+
+    };
+
+
+    hideWydzial();
+</script>

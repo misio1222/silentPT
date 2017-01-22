@@ -1,0 +1,91 @@
+﻿@model MVCIdentityConfirm.Models.RegisterViewModel
+
+<head>
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+</head>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+
+
+{
+    <div class="lightBlue">
+
+            <div style="float:left; width:45%; margin-right: 1%; padding-top: 50px; margin-left: 2%;">
+                <section id="loginForm">
+                    @Html.AntiForgeryToken()
+                    <h4>Zarejestruj się</h4>
+                    <hr />
+                    @Html.ValidationSummary()
+                    <div>
+                        <div class="form-group">
+                            @Html.Label("Login", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Imię", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Imie, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Nazwisko", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Nazwisko, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Adres", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Adres, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Potwierdź hasło", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="g-recaptcha" data-sitekey="6Leh4yQTAAAAAGQjZ1JrIdt-zbQYiNkIjCo3CZrH"></div>
+                                <input type="submit" class="btn btn-default button button1 button2" value="Rejestruj" />
+                            </div>
+                            <br/>
+                            <div>
+                                @Html.ActionLink("Zaloguj", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @style="color:firebrick; margin-left:100px;" })
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div style="float: left; width:39%; padding-top: 50px; margin-right: 2%; padding-bottom:50px;">
+                <section style="text-align:justify;">
+                    <h4>Regulamin</h4>
+                    <hr />
+                    <p> <span style="color:orangered">UWAGA!!! OSOBY PODSZYWAJĄCE SIĘ POD INNE OSOBY BĘDĄ BEZWZGLĘDNIE ŚCIGANE PRZEZ ORGANY ŚCIGANIA <span style="text-decoration:underline">NA PISEMNY WNIOSEK OSOBY POKRZYWDZONEJ</span>! W TYM CELU WSZYSTKIE DANE UZYSKANE PRZEZ SERWIS (W TYM ADRESY IP ORAZ WSZEKIE INNE DANE ZEBRANE PRZEZ SERWIS) ZOSTANĄ PRZEKAZANE ORGANOM ŚCIGANIA (PROKURATURA, SĄD ITP.) CZYWIŚCIE WIĄŻE SIĘ TO RÓWNIEŻ Z AUTOMATYCZNYM ZABLOKOWANIEM KONTA!</span><span style="color:red"> Artykuł 190a kk odnosi się do kradzieży tożsamości oraz stalkingu, którego częścią jest kradzież tożsamości. Ustawa precyzuje, iż osoba która podszywa się pod inną osobę, wykorzystuje jej wizerunek lub inne jej dane osobowe celem wyrządzenia jej szkody majątkowej lub osobistej, podlega karze pozbawienia wolności do lat 3. Jeszcze większa kara - bo do lat 10 - grozi w przypadku, gdy ofiara wskutek wyrządzonych krzywd targnie się na swoje życie.</span><br /><br /><span style="color:firebrick"> NA FORUM BĘDZIESZ PODPISYWAĆ SIE IMIENIEM I NAZWISKIEM LUB LOGINEM TAKŻE LOGIN WYBIERZ ROZTROPNIE! <br /><br />SERWIS PRZEZNACZONY WYŁĄCZNIE DLA OSÓB DOROSŁYCH!!! </span><br /> Serwis może zawierać słowa <span style="color:firebrick">NIEOCENZUROWANE</span> !<br /><SPAN style="color:firebrick">JEŻELI TEGO NIE AKCPETUJESZ, BĄDŹ MASZ MNIEJ NIŻ 18 LAT POPROSTU SIĘ NIE REJESTRUJ!!!</SPAN><br /> <br /><span style="color:#ce4401"> WŁAŚCICIEL SERWISU LUB ŻADNA INNA OSOBA UCZESTNICZĄCA W TWORZENIU SERWISU NIE PONOSI ŻADNEJ ODPOWIEDZIALNOŚCI ( CYWILNEJ, KARNEJ LUB JAKIEJKOLWIEK INNEJ) ZA OCENY FIRM, OCENY OSÓB ORAZ WYPOWIEDZI UŻYTKOWANIKÓW NA FORUM!!!</span><br /> <br /> <span style="color:firebrick"><SPAN style="font-weight:bold; color:white">UWAGA!!!</SPAN> <span style="text-decoration:underline">DROGI UŻYTKOWNIKU, PAMIĘTAJ ŻE ODPOWIADASZ ( KARNIE I/LUB CYWILNIE ) ZA WSZYSTKIE UMIESZCZONE PRZEZ SIEBIE WYPOWIEDZI W SERWISIE.</span> </span><br /><br /> Zapoznaj się z regulaminem strony dostępnym po linkiem <span style="color:firebrick"> @Html.ActionLink("Regulamin", "Register")</span>. Rejestracja w serwisie jest równoznaczna z akceptacją regulaminu ( również powyższych informacji ) oraz oznacza że masz ukończone 18 lat.</p>
+                </section>
+            </div>
+            <div style="clear:both"></div>
+
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

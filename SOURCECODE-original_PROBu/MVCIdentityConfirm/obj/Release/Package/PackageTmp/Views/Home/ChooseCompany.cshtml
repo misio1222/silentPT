@@ -1,0 +1,195 @@
+﻿@model MVCIdentityConfirm.Models.CompanyViewModel
+
+
+
+@{
+    ViewBag.Title = "Wybierz firmę";
+}
+<head>
+
+    <script src="~/Content/jquery.js"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+
+
+
+
+</head>
+
+
+
+
+
+<script type="text/javascript">
+
+        $(function () {
+            $("#searchSS").autocomplete({
+                source: '@Url.Action("GetCompany","Home")'
+            });
+
+        });
+
+
+    $(function () {
+        $('input:file').change(
+            function (e) {
+                var files = e.originalEvent.target.files;
+                var size = (this.files[0].size / 1000000);
+                if (size > 2.0) {
+                    $(".checkFile").css("color", "firebrick");
+                    $("#errorSize").text("Rozmiar pliku jest zbyt duży! (tylko 2MB )");
+                    $("#submitForm").attr("disabled", true);
+                } else {
+                    $(".checkFile").css("color", "white");
+                    $("#errorSize").text("");
+                    $("#submitForm").attr("disabled", false);
+                }
+                
+            })
+    });
+
+    $(function () { 
+    $('input:file').change(function () {
+        var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+            $(".checkFile").css("color", "firebrick");
+            $("#errorSize").text("Obsługiwane formaty: jpeg, jpg, png, gif, bmp");
+            $("#submitForm").attr("disabled", true);
+        }else {
+            $(".checkFile").css("color", "white");
+            $("#errorSize").text("");
+            $("#submitForm").attr("disabled", false);
+        }
+    });
+    });
+
+    function hideWydzial() {
+        $(function () {
+
+            $(".wydzialHide").hide();
+
+        });
+        $(function () {
+            $("#copanyList").css({ height: "50vh" });
+        });
+
+    };
+
+
+    hideWydzial();
+</script>
+<div class="lightBlue">
+    <div style="padding-top: 50px;">
+        <div style="font-family:Arial; float:left; width:42%; margin-left: 2%;">
+
+            <h4>Wybierz firmę w której pracujesz lub pracowałeś.</h4>
+            <hr />
+            <div></div>
+            <div style="font-family:Arial;">
+                @using (@Html.BeginForm())
+            {
+                    @Html.TextBox("serch", null, new { id = "searchSS", @class = "textbox1 mar" })
+                    <input type="submit" name="btn" value="SZUKAJ" class="btn btn-default button button1 button2 mar" style="width: 300px; " />
+                }
+            </div>
+            <div>@Html.ValidationSummary(true)</div>
+            <div style="font-family:Arial">
+                <div style="margin-left: 98px; font-weight: bold; color:maroon"> @ViewBag.Marcin </div>
+                @using (Html.BeginForm())
+            {
+                    @Html.DropDownListFor(x => x.SelectedCompany, Model.Company, new { id = "listBo", @class = "listbox form-control mar userList list-group-item-text", @style = "margin-bottom:20px;", size = 19 })
+
+                    <input type="submit" name="btn" value="WYBIERZ" class="btn btn-default button button1 button2 mar" id="tept" />
+                }
+            </div>
+        </div>
+        <div style="font-family:Arial; float:left; width:46%; margin-left: 2%;">
+
+            <h4>Nie znalazłeś firmy która Cię interesuje? Dodaj ją sam.</h4>
+            <hr />
+            <div style="margin-left: 110px; font-weight: bold; color:maroon;">@ViewBag.Exist</div>
+            @using (Html.BeginForm("ChooseCompany", "home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true)
+                    <div class="form-group">
+                        @Html.Label("Nazwa firmy", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.createModel.CompanyName, new { @class = "form-control formMargines", @maxlength = "23" })
+                            @Html.ValidationMessageFor(model => model.createModel.CompanyName)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Miejscowość", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.createModel.Miejscowosc, new { @class = "form-control formMargines", @maxlength = "25" })
+                            @Html.ValidationMessageFor(model => model.createModel.Miejscowosc)
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.createModel.Ulica, htmlAttributes: new { @class = "control-label col-md-2", @maxlength = "25" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.createModel.Ulica, new { @class = "form-control formMargines" })
+                            @Html.ValidationMessageFor(model => model.createModel.Ulica)
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Województwo", htmlAttributes: new { @class = "control-label col-md-2", @maxlength = "25" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.createModel.Wojewodztwo, new { @class = "form-control formMargines" })
+                            @Html.ValidationMessageFor(model => model.createModel.Wojewodztwo)
+                        </div>
+
+                    </div>
+                    <div>
+                        <h6 id="errorSize"></h6>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Logo", htmlAttributes: new { @class = "control-label col-md-2 checkFile" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.createModel.Logo, new { type = "file", @class = "form -control formMargines", style = "color:#fff" })
+                            @Html.ValidationMessageFor(model => model.createModel.Logo)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.createModel.NIP, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.createModel.NIP, new { @maxlength = "9", @class = "form-control formMargines", @placeholder = "Opcjonalnie" })
+                            @Html.ValidationMessageFor(model => model.createModel.NIP)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.createModel.Regon, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.createModel.Regon, new { @maxlength = "9", @class = "form-control formMargines", @placeholder = "Opcjonalnie" })
+                            @Html.ValidationMessageFor(model => model.createModel.Regon)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input name="btn" type="submit" value="DODAJ" id="submitForm" class="btn btn-default button button1 button2 formMargines" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <br /><br />
+                        <h5 style="margin-left:80px;">Jeszcze nie pracujesz? Kliknij w link by przejść <span class="wyroznioneCzerwone"> @Html.ActionLink("DALEJ", "Index")</span>.</h5>
+
+                    </div>
+                </div>
+
+            }
+
+        </div>
+        <div style="clear:both"></div>
+    </div>
+</div>

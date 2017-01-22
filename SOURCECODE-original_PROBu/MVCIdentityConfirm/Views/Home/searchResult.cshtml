@@ -1,0 +1,82 @@
+﻿@model MVCIdentityConfirm.Models.CompanyViewModel
+
+@{
+    ViewBag.Title = "Wyniki wyszukiwania";
+}
+
+<div class="lightBlue">
+    <div id="menuSpace">
+
+    </div>
+    <div style="margin-left: 50px; margin-right: 50px; float:left; min-width:260px; width:310px; min-height:78vh;">
+        <h4>Wyniki wyszukiwania.</h4>
+        <hr />
+
+        <div >
+            <div >
+                @using (Html.BeginForm())
+                {
+                    @Html.DropDownListFor(x => x.SelectedCompany,Model.Company, new { id = "listOfCompany", @class = " searchResult ", @style = "margin-bottom:20px;", size = 19 })
+
+                   
+                }
+                <input name="btn" type="submit" value="WYBIERZ" class="btn btn-default button button1 button2" id="CompInfo" />
+
+
+                @*@foreach (var x in Model.Company)
+    {
+            <a href="@Url.Action("CompanyInfo", "Home", new { id = x.Value })">
+                <h4 class="searchResult">@x.Text</h4>
+            </a>
+        }*@
+            </div>
+        </div>
+    </div>
+    <div style="float: left; width:53%; margin-right:50px;">
+        <h4>Zawiedziony??? Nie znalazłeś firmy której szukałeś?</h4>
+        <hr />
+        <p>Jeśli nie znalazłeś firmy której szukałeś, pamiętaj że zawsze możesz dodać ją sam pod tym <span style="color:brown">@Html.ActionLink("linkiem", "ChooseCompany")</span>.</p>
+
+    </div>
+
+    <div style="clear:both;"></div>
+</div>
+
+
+<script>
+    function hideWydzial() {
+        $(function () {
+
+            $(".wydzialHide").hide();
+
+        });
+        $(function () {
+            $("#copanyList").css({ height: "50vh" });
+        });
+
+    };
+
+
+    hideWydzial();
+
+
+
+    $(function () {    
+        $("#CompInfo").click(function () {
+            var comId = $("#listOfCompany").val();
+            if(comId != 0 && comId != null)
+            {
+
+                var addr = "@Url.Action("CompanyInfo", "Home", new { id = "-0eq543fsdf" })";
+                addr = addr.replace("-0eq543fsdf", comId);
+                window.location = addr;
+            } else {
+
+                $("#errorNoSelectedSearch").modal("show")
+                setTimeout(function () {
+                    $("#errorNoSelectedSearch").modal("hide");
+                }, 1800);
+            }
+        });
+    });
+</script>

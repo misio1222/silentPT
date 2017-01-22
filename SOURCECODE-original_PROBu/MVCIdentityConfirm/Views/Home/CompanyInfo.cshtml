@@ -1,0 +1,219 @@
+﻿@model MVCIdentityConfirm.Models.CompInformation
+
+<script src="~/Scripts/jquery.circlechart.js"></script>
+
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<div class="lightBlue">
+    <div id="menuSpace"></div>
+
+    <div style=" padding-top:50px;">
+
+
+
+        <div style="width: 100%;">
+            <div style="width:100%; min-height:3px; background-color:#e2ded5; margin-top:10px;"></div>
+                <div id="companyInfoMain" style="width:100%; height: 160px;">
+                    <div style="width: 30%; float: left; padding-top:70px; margin-left:20px;">
+                        <h5>Nazwa firmy: <span class="textColor" style="font-size:1.1em;font-weight:bold"> @Model.comp.CompanyName </span></h5>
+                        <h5>Adres: <span class="textColor" style="font-size:1.1em;font-weight:bold"> @Model.comp.Miejscowosc, @Model.comp.Ulica </span></h5>
+                        <h5>Zarejestrowanych pracowników:<span class="textColor" style="font-size:1.1em; font-weight:bold"> @Model.liczPracownikow</span></h5>
+                    </div>
+                    <div style="width:60%; float: left; ">
+                        <div style="width: 36%;  margin-left:80%; margin-top:0px;  height: 155px;">
+                            <img style="margin-top:5px; position:center; padding-left:25%; " src="@ViewBag.ImageData" />
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div style="width:100%; min-height:3px; background-color:#e2ded5; "></div>
+                    <div style="margin-top:20px;  ">
+
+                        @if (User.Identity.IsAuthenticated)
+            {
+                if (Model.isAdded == false)
+                {
+                    using (Html.BeginForm())
+                    {
+
+                                    @*<input type="submit" name="btn" value="SZUKAJ" class="btn btn-default button button1 button2 " style="width: 120px" @Url.Action("test", "Home", new {  franek = "hello"})/>*@
+                                    <a href="@Url.Action("Index", "Home", new { DodajId = Model.comp.Id })">
+                                        <input type="button" value="DODAJ DO MOJEGO KONTA" class="btn btn-default button button1 button2 " style="width: 240px; " />
+                                    </a>
+                                }
+                            }
+                        }
+
+                    </div>
+                </div>
+
+
+
+        <div style="width:97.5%; margin-left:20px;  padding-top: 10px;">
+            <h4 class="spanPogrubienie" style="color:whitesmoke">Poniższe dane pochodzą od pracowników firmy <span class="textColor">@Model.comp.CompanyName</span></h4>
+            <hr style="width: auto; margin-top: -5px;" />
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div>
+                    <div style="float:left; width:17%;margin-left:1%;">
+                        <h5 id="labelComp" class="textColor" style="margin-left:15px; font-size:1.1em; ">ATMOSFERA</h5>
+
+                        <div class="demo-4" data-percent="@Model.atmosfera" style="text-decoration: none; margin-left:27px; font-style:italic; font-size:12px;"></div>
+
+                        <h5 class="spanPogrubienie" style="text-align:justify; color:whitesmoke; font-style:italic; font-size:14px;">ja nie chce żadnych bobasow to juz jest wszystkojasne i co by tu teraz zrobic ja nie ninadsf asdf sdf asdf asd fasdf asdfadsf asdf ads fads f</h5>
+                    </div>
+                    <div style="margin-left:3%; float:left; width:17%">
+                        <h5 class="labelComp textColor " style="margin-left: 25px; font-size:1.1em; ">ZAROBKI</h5>
+
+                        <div class="demo-3" id="zarobki" style="margin-left: 27px; text-decoration: none; font-style:italic; font-size:12px;" data-percent="@(Convert.ToInt32((Model.zarobkiProcent / 20000) * 100))" data-value="@Model.zarobki"></div>
+
+                        <h5 class="spanPogrubienie" style="text-align:justify; color:whitesmoke; font-style:italic; font-size:14px;">ja nie chce żadnych bobasow to juz jest wszystkojasne i co by tu teraz zrobic ja nie ninadsf asdf sdf asdf asd fasdf asdfadsf asdf ads fads f</h5>
+
+                    </div>
+                    <div style="margin-left:3%; float:left; width:17%">
+                        <h5 class="labelComp textColor " style="margin-left: 7px; font-size:1.1em; ">KSZTAŁCENIE</h5>
+
+                        <div class="demo-4" style="margin-left: 27px; text-decoration: none; font-style:italic; font-size:12px;" data-percent="@Model.ksztalcenie"></div>
+
+                        <h5 class="spanPogrubienie" style="text-align:justify; color:whitesmoke; font-style:italic; font-size:14px;">ja nie chce żadnych bobasow to juz jest wszystkojasne i co by tu teraz zrobic ja nie ninadsf asdf sdf asdf asd fasdf asdfadsf asdf ads fads f</h5>
+                    </div>
+                    <div style="margin-left:3%; float:left; width:17%">
+                        <h5 class="labelCompInfo textColor " style="margin-left: 24px; font-size:1.1em; ">UZNANIE</h5>
+
+                        <div class="demo-4" style="margin-left: 27px; text-decoration: none;font-style:italic; font-size:12px;" data-percent="@Model.uznanie"></div>
+
+                        <h5 class="spanPogrubienie" style="text-align:justify; color:whitesmoke; font-style:italic; font-size:14px;">ja nie chce żadnych bobasow to juz jest wszystkojasne i co by tu teraz zrobic ja nie ninadsf asdf sdf asdf asd fasdf asdfadsf asdf ads fads f</h5>
+                    </div>
+                    <div style="margin-left:3%; float:left;  width:17%">
+                        <h5 class="textColor" style="margin-left: 33px; font-size:1.1em; ">AWANS</h5>
+
+                        <div class="demo-4" style="margin-left: 27px; text-decoration: none;font-style:italic; font-size:12px;" data-percent="@Model.awans"></div>
+
+                        <h5 class="spanPogrubienie" style="text-align:justify; color:whitesmoke; font-style:italic; font-size:14px;">ja nie chce żadnych bobasow to juz jest wszystkojasne i co by tu teraz zrobic ja nie ninadsf asdf sdf asdf asd fasdf asdfadsf asdf ads fads f</h5>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="float:left; width:17%; margin-left:1%;">
+                        <h5 class="labelCompInfo textColor " style="margin-left: 26px; font-size:1.1em; ">UKŁADY</h5>
+
+                        <div class="demo-4" style="margin-left: 27px; text-decoration: none; font-style:italic; font-size:12px;" data-percent="@Model.uklady"></div>
+
+                        <h5 class="spanPogrubienie" style="text-align:justify; color:whitesmoke; font-style:italic; font-size:14px;">ja nie chce żadnych bobasow to juz jest wszystkojasne i co by tu teraz zrobic ja nie ninadsf asdf sdf asdf asd fasdf asdfadsf asdf ads fads f</h5>
+                    </div>
+                    <div style="margin-left:3%; float:left;  width:17%">
+                        <h5 class="labelCompInfo textColor " style="margin-left: 26px; font-size:1.1em; ">DODATKI</h5>
+
+                        <div class="demo-4" style="margin-left: 27px; text-decoration: none; font-style:italic; font-size:12px;" data-percent="@Model.dodatki"></div>
+
+                        <h5 class="spanPogrubienie" style="text-align:justify; color:whitesmoke; font-style:italic; font-size:14px;">ja nie chce żadnych bobasow to juz jest wszystkojasne i co by tu teraz zrobic ja nie ninadsf asdf sdf asdf asd fasdf asdfadsf asdf ads fads f</h5>
+                    </div>
+                    <div style="margin-left:3%; float:left;  width:17%">
+                        <h5 class="labelCompInfo textColor " style="margin-left: 21px; font-size:1.1em; ">MOBBING</h5>
+
+                        <div class="demo-4" style="margin-left: 27px; text-decoration: none; font-style:italic; font-size:12px;" data-percent="@Model.mobbing"></div>
+
+                        <h5 class="spanPogrubienie" style="text-align:justify; color:whitesmoke; font-style:italic; font-size:14px;">ja nie chce żadnych bobasow to juz jest wszystkojasne i co by tu teraz zrobic ja nie ninadsf asdf sdf asdf asd fasdf asdfadsf asdf ads fads f</h5>
+                    </div>
+                    <div style="margin-left:3%; float:left;  width:17%">
+                        <h5 class="labelCompInfo textColor " style="margin-left: 33px;  font-size:1.1em; ">SOCJAL</h5>
+
+                        <div class="demo-4" style="margin-left: 27px; text-decoration: none; font-style:italic; font-size:12px;" data-percent="@Model.socjal"></div>
+
+                        <h5 class="spanPogrubienie" style="text-align:justify; color:whitesmoke; font-style:italic; font-size:14px;">ja nie chce żadnych bobasow to juz jest wszystkojasne i co by tu teraz zrobic ja nie ninadsf asdf sdf asdf asd fasdf asdfadsf asdf ads fads f</h5>
+                    </div>
+                    <div style="margin-left:3%; float:left;  width:17%">
+                        <h5 class="textColor " style="margin-left: 33px; font-size:1.1em;"> STRES </h5>
+
+                        <div class="demo-4" style="margin-left: 27px; text-decoration: none; font-style:italic; font-size:12px;" data-percent="@Model.stres"></div>
+
+                        <h5 class="spanPogrubienie" style="text-align:justify; color:whitesmoke; font-style:italic; font-size:14px;">ja nie chce żadnych bobasow to juz jest wszystkojasne i co by tu teraz zrobic ja nie ninadsf asdf sdf asdf asd fasdf asdfadsf asdf ads fads f</h5>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="margin-right:5%; float:right;">
+                    <h5 class="labelComp" style="margin-left:-10px; ">ATMOSFERA</h5>
+                    <a href="@Url.Action("Login","Account")" data-toggle="popover" data-trigger="hover" data-content="Żeby przejść do tego forum firmy musisz być zalogowany.">
+                        <div class="demo-4" data-percent="@Model.atmosfera"></div>
+                    </a>
+                    <h5 class="spanPogrubienie" style="margin-left:-10px; ">ATMOSFERA</h5>
+                </div>
+                <div style="margin-right:68px; float:right;">
+                    <h5 class="labelComp" style="margin-left: 22px; ">ZAROBKI</h5>
+                    <a href="@Url.Action("Login","Account")" data-toggle="popover" data-trigger="hover" data-content="Żeby przejść do tego forum firmy musisz być zalogowany.">
+                        <div class="demo-6" id="zarobki1" style="margin-left: 22px;" data-percent="@(Convert.ToInt32((Model.zarobkiProcent / 20000) * 100))" data-value="@Model.zarobki"></div>
+                    </a>
+                    <h5 class="spanPogrubienie" style="margin-left: 22px; ">ZAROBKI</h5>
+
+                </div>
+                <div style="margin-right:40px; float:right;">
+                    <h5 class="spanPogrubienie" style="margin-left: 12px; ">KSZTAŁCENIE</h5>
+                    <a href="@Url.Action("Login","Account")" data-toggle="popover" data-trigger="hover" data-content="Żeby przejść do tego forum firmy musisz być zalogowany.">
+                        <div class="demo-4" style="margin-left: 27px;" data-percent="@Model.ksztalcenie"></div>
+                    </a>
+                    <h5 class="spanPogrubienie" style="margin-left: 12px; ">KSZTAŁCENIE</h5>
+                </div>
+                <div style="margin-right:55px; float:right;">
+                    <h5 class="spanPogrubienie" style="margin-left: -10px; ">UZNANIE</h5>
+                    <a href="@Url.Action("Login","Account")" data-toggle="popover" data-trigger="hover" data-content="Żeby przejść do tego forum firmy musisz być zalogowany.">
+                        <div class="demo-4" style="margin-left: -10px;" data-percent="@Model.uznanie"></div>
+                    </a>
+                    <h5 class="spanPogrubienie" style="margin-left: -10px; ">UZNANIE</h5>
+                </div>
+                <div style="margin-right:86px; float:right; ">
+                    <h5 class="spanPogrubienie" style="margin-left: -1px; ">AWANS</h5>
+
+                    <a href="@Url.Action("Login","Account")" data-toggle="popover" data-trigger="hover" data-content="Żeby przejść do tego forum firmy musisz być zalogowany.">
+
+                        <div class="demo-4" style="margin-left: -10px;" data-percent="83"></div>
+                    </a>
+                    <h5 class="spanPogrubienie" style="margin-left: -1px; ">AWANS</h5>
+                </div>
+            }
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    <br /><br /><br /><br /><br />
+</div>   
+
+
+    <script>
+
+        $('.demo-4').percentcircle();
+
+        $(function () {
+            var percent = $("#zarobki").attr("data-value");
+            $('.demo-3').percentcircle({
+                value: percent
+            });
+        });
+
+        $(function () {
+            var percent = $("#zarobki1").attr("data-value");
+            $('.demo-6').percentcircle({
+                value: percent
+            });
+        });
+
+
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover();
+        });
+
+
+        function hideWydzial() {
+            $(function () {
+
+                $(".wydzialHide").hide();
+
+            });
+            $(function () {
+                $("#copanyList").css({ height: "50vh" });
+            });
+
+        };
+
+
+        hideWydzial();
+    </script>

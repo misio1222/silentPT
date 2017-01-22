@@ -1,0 +1,77 @@
+﻿@using PagedList
+@using PagedList.Mvc
+
+@model IPagedList<MVCIdentityConfirm.wypowiedzUser>
+
+
+
+<div>
+    <table class="table">
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.userId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wydzialId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.companyId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.userImie)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.userNazwisko)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameOrLogin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.userLogin)
+                </td>*@
+                
+
+                @if (item.NameOrLogin == true)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.userLogin)
+                        <br/>
+                        <span style="font-weight:bold"> @Html.DisplayFor(modelItem => item.content)</span>
+                    </td>
+
+                    <td style="">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+
+                }
+                @if (item.NameOrLogin == false)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.userNazwisko) 
+                        <br />
+                        <span style="font-weight:bold"> @Html.DisplayFor(modelItem => item.content)</span>
+                    </td>
+
+                    <td style="">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+
+                }
+
+            </tr>
+        }
+
+    </table>
+    @Html.PagedListPager(Model, page => Url.Action("test_2", new { page}), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded})
+</div>

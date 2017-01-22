@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "test";
+}
+
+<link href="~/Content/simple-slider.css" rel="stylesheet" />
+<link href="~/Content/simple-slider-volume.css" rel="stylesheet" />
+
+<script src="~/Scripts/simple-slider.js"></script>
+<h2>test</h2>
+<h2>@ViewBag.koteczek</h2>
+
+
+<div style="font-family:Arial">
+    @using (@Html.BeginForm())
+    {
+        @Html.TextBox("serch", null, new { id = "searchSS", @class = "textbox1 mar" })
+
+
+        <input type="submit" name="btn" value="SZUKAJ" class="btn btn-default button button1 button2 " />
+            
+    }
+    Tu powinno być zdjecie !!! >
+    <img src="@ViewBag.ImageData" />
+    !>>>>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn " data-toggle="modal" data-target="#myModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <h2>Predefined List of Values</h2>
+    <input type="text" data-slider="false"  data-slider-range="500,80000" data-slider-step="0.001">
+
+</div>
+
+
+
+<div>
+    <input type="range" min="10" max="300" step="10" value="50">
+    <output class="output"></output>
+</div>
+<br>
+<br>
+<div>
+    <input type="range" min="10" max="300" step="10" value="100">
+    <output class="output"></output>
+</div>
+
+
+<script>
+  $("[data-slider]")
+    .each(function () {
+      var input = $(this);
+      $("<span>")
+        .addClass("output")
+        .insertAfter($(this));
+    })
+    .bind("slider:ready slider:changed", function (event, data) {
+      $(this)
+        .nextAll(".output:first")
+          .html(data.value.toFixed(3));
+    });
+
+
+    $(function() {
+    var $document   = $(document),
+        $inputRange = $('input[type="range"]');
+    
+    // Example functionality to demonstrate a value feedback
+    function valueOutput(element) {
+        var value = element.value,
+            output = element.parentNode.getElementsByTagName('output')[0];
+        output.innerHTML = value;
+    }
+    for (var i = $inputRange.length - 1; i >= 0; i--) {
+        valueOutput($inputRange[i]);
+    };
+    $document.on('input', 'input[type="range"]', function(e) {
+        valueOutput(e.target);
+    });
+    // end
+  
+    $inputRange.rangeslider({
+      polyfill: false 
+    });
+});
+</script>

@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="masterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="C__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+    <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CompanyName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Wojewodztwo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Logo" Type="varbinary(max)" />
+    <Property Name="IsSelected" Type="bit" />
+    <Property Name="Miejscowosc" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Ulica" Type="nvarchar(max)" />
+    <Property Name="NIP" Type="int" />
+    <Property Name="Regon" Type="int" />
+  </EntityType>
+  <EntityType Name="companyEmailSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CompanyId" Type="int" Nullable="false" />
+    <Property Name="email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="stanowisko" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="addedById" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MSreplication_options">
+    <Key>
+      <PropertyRef Name="optname" />
+      <PropertyRef Name="value" />
+      <PropertyRef Name="major_version" />
+      <PropertyRef Name="minor_version" />
+      <PropertyRef Name="revision" />
+      <PropertyRef Name="install_failures" />
+    </Key>
+    <Property Name="optname" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="value" Type="bit" Nullable="false" />
+    <Property Name="major_version" Type="int" Nullable="false" />
+    <Property Name="minor_version" Type="int" Nullable="false" />
+    <Property Name="revision" Type="int" Nullable="false" />
+    <Property Name="install_failures" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ocenaCompany">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="companyId" Type="int" Nullable="false" />
+    <Property Name="awans" Type="int" Nullable="false" />
+    <Property Name="uznanie" Type="int" Nullable="false" />
+    <Property Name="ksztalcenie" Type="int" Nullable="false" />
+    <Property Name="zarobki" Type="int" Nullable="false" />
+    <Property Name="atmosfera" Type="int" Nullable="false" />
+    <Property Name="uklady_" Type="int" Nullable="false" />
+    <Property Name="mobbing" Type="int" Nullable="false" />
+    <Property Name="dodatki" Type="int" Nullable="false" />
+    <Property Name="socjal" Type="int" Nullable="false" />
+    <Property Name="stres" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ocenaPrzelozony">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="przelozonyId" Type="int" Nullable="false" />
+    <Property Name="kulturaOs" Type="int" Nullable="false" />
+    <Property Name="inteligencja" Type="int" Nullable="false" />
+    <Property Name="umiSluchania" Type="int" Nullable="false" />
+    <Property Name="przyznanieBlad" Type="int" Nullable="false" />
+    <Property Name="cwaniastwo" Type="int" Nullable="false" />
+    <Property Name="udzielaniePochwal" Type="int" Nullable="false" />
+    <Property Name="umieKomunikowania" Type="int" Nullable="false" />
+    <Property Name="radzenieKrytyka" Type="int" Nullable="false" />
+    <Property Name="rzetenaWiedza" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Przelozony">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Imie" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Nazwisko" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Stanowisko" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Dodalid" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ratingCompany">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="companyId" Type="int" Nullable="false" />
+    <Property Name="liczbaVoice" Type="int" Nullable="false" />
+    <Property Name="awans" Type="int" Nullable="false" />
+    <Property Name="uznanie" Type="int" Nullable="false" />
+    <Property Name="ksztalcenie" Type="int" Nullable="false" />
+    <Property Name="zarobki" Type="int" Nullable="false" />
+    <Property Name="atmosfera" Type="int" Nullable="false" />
+    <Property Name="uklady" Type="int" Nullable="false" />
+    <Property Name="mobbing" Type="int" Nullable="false" />
+    <Property Name="dodatki" Type="int" Nullable="false" />
+    <Property Name="socjal" Type="int" Nullable="false" />
+    <Property Name="stres" Type="int" Nullable="false" />
+    <Property Name="ogolnyWynik" Type="int" />
+  </EntityType>
+  <EntityType Name="spt_fallback_db">
+    <Key>
+      <PropertyRef Name="xserver_name" />
+      <PropertyRef Name="xdttm_ins" />
+      <PropertyRef Name="xdttm_last_ins_upd" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="dbid" />
+      <PropertyRef Name="status" />
+      <PropertyRef Name="version" />
+    </Key>
+    <Property Name="xserver_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="xdttm_ins" Type="datetime" Nullable="false" />
+    <Property Name="xdttm_last_ins_upd" Type="datetime" Nullable="false" />
+    <Property Name="xfallback_dbid" Type="smallint" />
+    <Property Name="name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="dbid" Type="smallint" Nullable="false" />
+    <Property Name="status" Type="smallint" Nullable="false" />
+    <Property Name="version" Type="smallint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="spt_fallback_dev">
+    <Key>
+      <PropertyRef Name="xserver_name" />
+      <PropertyRef Name="xdttm_ins" />
+      <PropertyRef Name="xdttm_last_ins_upd" />
+      <PropertyRef Name="low" />
+      <PropertyRef Name="high" />
+      <PropertyRef Name="status" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="phyname" />
+    </Key>
+    <Property Name="xserver_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="xdttm_ins" Type="datetime" Nullable="false" />
+    <Property Name="xdttm_last_ins_upd" Type="datetime" Nullable="false" />
+    <Property Name="xfallback_low" Type="int" />
+    <Property Name="xfallback_drive" Type="char" MaxLength="2" />
+    <Property Name="low" Type="int" Nullable="false" />
+    <Property Name="high" Type="int" Nullable="false" />
+    <Property Name="status" Type="smallint" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="phyname" Type="varchar" MaxLength="127" Nullable="false" />
+  </EntityType>
+  <EntityType Name="spt_fallback_usg">
+    <Key>
+      <PropertyRef Name="xserver_name" />
+      <PropertyRef Name="xdttm_ins" />
+      <PropertyRef Name="xdttm_last_ins_upd" />
+      <PropertyRef Name="dbid" />
+      <PropertyRef Name="segmap" />
+      <PropertyRef Name="lstart" />
+      <PropertyRef Name="sizepg" />
+      <PropertyRef Name="vstart" />
+    </Key>
+    <Property Name="xserver_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="xdttm_ins" Type="datetime" Nullable="false" />
+    <Property Name="xdttm_last_ins_upd" Type="datetime" Nullable="false" />
+    <Property Name="xfallback_vstart" Type="int" />
+    <Property Name="dbid" Type="smallint" Nullable="false" />
+    <Property Name="segmap" Type="int" Nullable="false" />
+    <Property Name="lstart" Type="int" Nullable="false" />
+    <Property Name="sizepg" Type="int" Nullable="false" />
+    <Property Name="vstart" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="spt_monitor">
+    <Key>
+      <PropertyRef Name="lastrun" />
+      <PropertyRef Name="cpu_busy" />
+      <PropertyRef Name="io_busy" />
+      <PropertyRef Name="idle" />
+      <PropertyRef Name="pack_received" />
+      <PropertyRef Name="pack_sent" />
+      <PropertyRef Name="connections" />
+      <PropertyRef Name="pack_errors" />
+      <PropertyRef Name="total_read" />
+      <PropertyRef Name="total_write" />
+      <PropertyRef Name="total_errors" />
+    </Key>
+    <Property Name="lastrun" Type="datetime" Nullable="false" />
+    <Property Name="cpu_busy" Type="int" Nullable="false" />
+    <Property Name="io_busy" Type="int" Nullable="false" />
+    <Property Name="idle" Type="int" Nullable="false" />
+    <Property Name="pack_received" Type="int" Nullable="false" />
+    <Property Name="pack_sent" Type="int" Nullable="false" />
+    <Property Name="connections" Type="int" Nullable="false" />
+    <Property Name="pack_errors" Type="int" Nullable="false" />
+    <Property Name="total_read" Type="int" Nullable="false" />
+    <Property Name="total_write" Type="int" Nullable="false" />
+    <Property Name="total_errors" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersCompany">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CompanyID" Type="int" Nullable="false" />
+    <Property Name="WydzialID" Type="int" />
+  </EntityType>
+  <EntityType Name="Wydzial">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CompanyID" Type="int" Nullable="false" />
+    <Property Name="Wydzial1" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PrzelozonyId" Type="int" Nullable="false" />
+    <Property Name="DodalId" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="wypowiedzUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="wydzialId" Type="int" Nullable="false" />
+    <Property Name="content" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="companyId" Type="int" Nullable="false" />
+    <Property Name="userImie" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="userNazwisko" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="NameOrLogin" Type="bit" Nullable="false" />
+    <Property Name="userLogin" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="dateTime" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zgloszenieNar">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idAnswear" Type="int" Nullable="false" />
+    <Property Name="userId" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_CompanycompanyEmail">
+    <End Role="Company" Type="Self.Company" Multiplicity="1" />
+    <End Role="companyEmailSet" Type="Self.companyEmailSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="companyEmailSet">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="masterModelStoreContainer">
+    <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="companyEmailSet" EntityType="Self.companyEmailSet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MSreplication_options" EntityType="Self.MSreplication_options" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ocenaCompany" EntityType="Self.ocenaCompany" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ocenaPrzelozony" EntityType="Self.ocenaPrzelozony" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Przelozony" EntityType="Self.Przelozony" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ratingCompany" EntityType="Self.ratingCompany" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="spt_fallback_db" EntityType="Self.spt_fallback_db" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="spt_fallback_dev" EntityType="Self.spt_fallback_dev" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="spt_fallback_usg" EntityType="Self.spt_fallback_usg" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="spt_monitor" EntityType="Self.spt_monitor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UsersCompany" EntityType="Self.UsersCompany" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Wydzial" EntityType="Self.Wydzial" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="wypowiedzUser" EntityType="Self.wypowiedzUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="zgloszenieNar" EntityType="Self.zgloszenieNar" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_CompanycompanyEmail" Association="Self.FK_CompanycompanyEmail">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="companyEmailSet" EntitySet="companyEmailSet" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

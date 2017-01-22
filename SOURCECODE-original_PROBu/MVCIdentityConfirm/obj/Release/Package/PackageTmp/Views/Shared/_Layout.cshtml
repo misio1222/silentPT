@@ -1,0 +1,378 @@
+﻿<!DOCTYPE html>
+@using Microsoft.AspNet.Identity
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>@ViewBag.Title - Przemilczane tematy</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/animate.css" rel="stylesheet" />
+    <script src="~/Content/jquery.js"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+
+
+    <link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:200,300' rel='stylesheet' type='text/css'>
+</head>
+
+
+
+
+<body>
+
+    <script type="text/javascript">
+
+        //$(function () {                                                             close menuSidebar
+        //    var span = $(".span1");
+
+        //    $("#menu_Main").click(function () {
+
+        //        if (span.hasClass("active")) {
+        //            span.removeClass("active");
+        //            span.addClass("cross");
+
+
+                    
+        //            $(".site").animate({ width: "67%" }, 700);
+        //            //$(".lightBlue").animate({ width: "95%" }, 700);
+        //            $("#sidebar-new").show();
+
+        //        } else {
+
+        //            span.removeClass("cross");
+        //            span.addClass("active");
+        //            $("#sidebar-new").hide();
+        //            $(".site").animate({ width: "97%" }, 700);
+        //            //$(".lightBlue").animate({ width: "90%" }, 700);
+                    
+
+
+        //        }
+        //    });
+        //});
+
+        $(document).ready(function () {
+
+            comList();
+
+        });
+
+
+
+        function comList() {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("companyList", "Home")',
+                dataType: "json",
+                success: function (data_Comapny) {
+                    $("#copanyList").empty();
+                    $(function () {
+                        for (var i = 0; i < data_Comapny.firma.length; i++) {
+                            $("#copanyList").append($('<option></option>').val(data_Comapny.firma[i].Value).text(data_Comapny.firma[i].Text));
+                        }
+                    });
+                    $(document).trigger('function_a_complete');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+
+                }
+            });
+        };
+
+
+
+        $(function () {
+            $("#lookCompany").autocomplete({
+                appendTo: "#result",
+                source: '@Url.Action("GetCompany","Home")',
+                open: function () {
+                    setTimeout(function () {
+                        $('.ui-autocomplete').css('z-index', 99999999999999);
+                    }, 0);
+                }
+            })
+        });
+
+
+
+ 
+
+
+
+        /////////////                 Facebook                   \\\\\\\\\\\\\\\\\\\\\
+
+        var permalink = 'http://dziekan.site/web';
+        var getFacebookCount = function () {
+            $.getJSON('http://graph.facebook.com/?id=http://dziekan.site/web', function (data) {
+                var facebookShares = data.share.share_count;
+                console.log(data);
+                if (facebookShares) {
+                    $('#counterFacebook').append(" " + facebookShares);
+                }
+            });
+        };
+
+        getFacebookCount();
+    ////////////////////////// AddEmail \\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+        $(function () { 
+            $("#btnAddCompanyEmail").click(function () {
+                var address = "@Url.Action("addEmail", "Home", new { companyId = "-0989879789798788" })"
+                address = address.replace("-0989879789798788", $("#copanyList").val());
+                if ($("#copanyList").val() != null && $("#copanyList").val() != 0) {
+                    window.location = address;
+                } else {
+                    $("#errorNoSelected").modal("show")
+                    setTimeout(function () {
+                        $("#errorNoSelected").modal("hide");
+                    }, 1800);
+                }
+        
+            });
+        });
+
+        ///////////////////////// AddCompany \\\\\\\\\\\\\\\\\\\\\
+
+        $(function () {
+            $("#btnAddCompany").click(function () {
+                btnAddCompany
+                var address = "@Url.Action("ChooseCompany", "Home")"
+                window.location = address;
+            });
+
+        });
+
+        //////////////////   AddWydzial   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+        
+        $(function () {                                                                             //Dodak dział przycisk
+            $("#btnAddWydzial").click(function () {
+                var selCompany = $("#copanyList").val();
+
+                if(selCompany != null && selCompany != 0)
+                {
+                    var address = "@Url.Action("AddWydzial", "Home", new { comp = "-0asdasdarew2343" })"
+                    address = address.replace("-0asdasdarew2343", selCompany);
+                    window.location = address;
+                } else
+                {
+                    $("#errorNoSelected").modal("show")
+                    setTimeout(function () {
+                        $("#errorNoSelected").modal("hide");
+                    }, 1800);
+                }
+            });
+        });
+
+
+
+        /////////////////////////////////////////////////////////////////////////////
+
+        var menuShort = '<div style="height:20px; width:100%; float:left; height:100%"> @if (Request.IsAuthenticated)  {  <nav class="menu"><a href="#" id="submitLogout" class="menu-item" style="padding-left:15px;" title="Wyloguj"> <i class="fa fa-sign-out"></i> </a><a data-url="@Request.Url.AbsoluteUri" href="http://www.facebook.com/share.php?u=http://dziekan.site/web" style="padding-left:15px;" title="Udostępnij" class="menu-item" target="popupModal2"><i class="fa fa-facebook-square" style="outline:hidden"></i><i style="outline:hidden" id="counterFacebook"></i> </a><a href="#" class="menu-item" style="padding-left:15px;" title="Ustawienia"> <i class="fa fa-cog"></i> </a><a href="@Url.Action("Manage","Account")" class="menu-item" style="padding-left:15px;" title="Moje konto"> <i class="fa fa-user"></i> </a></nav>}</div>'
+
+
+        $(function () {
+            $("#menuSpace").append(menuShort);
+        });
+
+        ///////////////////////////
+         
+        $(function () {
+            $("#btnIndex").click(function () {
+                window.location = '@Url.Action("Index", "Home")';
+            });
+        });
+
+        $(function () {
+        $('#errorNoSelected').on('show.bs.modal', function () {
+            $('body').css("margin-right", "0px");
+            $('html').css("margin-right", "0px");
+        });
+        });
+
+
+        $(function () {
+            $('#errorNoSelectedSearch').on('show.bs.modal', function () {
+                $('body').css("margin-right", "0px");
+                $('html').css("margin-right", "0px");
+            });
+        });
+    </script>
+
+
+
+    <div class="navbar  navbar-fixed-top navbar-custom navColor">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" style="margin-top:-10px; margin-left:20px;"><img src="~/images/logo.png" title="Logo" /></a>
+            @Html.ActionLink("Przemilczane tematy", "Index", "Home", null, new { @class = "navbar-brand nav-pad", @style = "margin-top: -15px; margin-left:-10px;" })
+        </div>
+
+        <div>
+
+            <div class="navbar-fixed-top navbar " id="forSer" style="margin-top:10px; margin-left:300px;">
+                @using (@Html.BeginForm("searchResult", "Home"))
+                {
+                    @Html.TextBox("serch", null, new { id = "lookCompany", @class = "form-control sizeSearch navbar-left", @style = "height:30px; width:auto; text-align:center;", @placeholder = "Szukaj firmy" })
+
+
+                    <input type="submit" name="btn" value="SZUKAJ" class="btn btn-default button button1 button2 navbar-left" style="width: 100px; height:30px; line-height: 10px; margin-left: 20px; " />
+                    //<p class="toggle-nav navbar-right" style="margin-right:35px;"><span class="m">M</span><span class="e"><span class="bar"></span><span class="bar"></span><span class="bar"></span></span><span class="n">N</span><span class="u">U</span></p>
+                    //<img src="~/images/menu_Icon.png" style="float:left;  cursor:pointer;" id="mainMenu" />
+
+
+
+
+                    @*if (Request.IsAuthenticated)
+                    {
+                        <div id="menu_Main" style="margin-top:8px; float:right; margin-right:50px; cursor:pointer">
+                            <span class="cross span1"></span>
+                            <span class="cross span1"></span>
+                        </div>
+                    }*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    /////////////////////////////////////////////////
+
+
+
+                }
+                
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    @if (Request.IsAuthenticated)
+    {
+        <div id="wrapper">
+            <div class="site" style="float:left;">
+               
+
+                @RenderBody()
+
+
+                <h8 style="bottom:0; margin-left: 2%; margin-top:20px;">&copy; @DateTime.Now.Year - Marcin Dziekan (Przemilczane tematy. (P-T)). Wszystkie prawa zastrzeżone! All right reserved!</h8>
+
+            </div>
+
+            <div style="float:left;">
+
+                <div id="sidebar-new" style="margin-right:30px; padding-left: 10px; ">
+
+                    <h5 class="listTitle">Z FIRMY</h5>
+                    <hr style="margin-top: 0px; margin-bottom:5px;" />
+                    <input id="btnIndex" name="btn" type="submit" class="animated infinite rubberBand  hRed" value="STRONA GŁÓWNA" style="margin-left:17px; margin-top:-30px;  font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                    <br/>
+                    <input id="btnMessage" name="btn" type="submit" class="animated infinite rubberBand  hRed textColor" value="Aktualności" style="margin-left:17px; margin-top:-30px;  font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                    <br />
+                    <input id="btnEditData" name="btn" type="submit" class="animated infinite rubberBand  hRed" value="Wiadomości"  style="margin-left:17px; margin-top:-20px; padding-top:-10px; font-size: 13px;  font-weight:bold; text-decoration:none;" input> <span  class="badge" style="margin-top:-10px;">23</span>
+                    <br />
+                    <input id="btnEditData" name="btn" type="submit" class="animated infinite rubberBand  hRed" value="Promocje dla pracownika" style="margin-left:17px; margin-top:-20px; padding-top:-10px; font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                    <br />
+                    <input id="btnEditData" name="btn" type="submit" class="animated infinite rubberBand  hRed" value="Słowo od PREZESA" style="margin-left:17px; margin-top:-20px; padding-top:-10px; font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                    <hr style="margin-top: 5px; margin-bottom: 5px" />
+                    <input id="btnAddCompany" name="btn" type="submit" class="animated infinite rubberBand hRed textColor" value="Dodaj firmę" style="margin-left:17px; margin-top:-25px; padding-top:-10px; font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                    <br />
+                    <input id="btnAddWydzial" name="btn" type="submit" class="animated infinite rubberBand hRed" value="Dodaj dział" style="margin-left:17px; margin-top:-20px; padding-top:-10px; font-size:13px;  font-weight:bold; text-decoration:none;" input>
+                    <br />
+                    <input id="btnAddCompanyEmail" name="btn" type="submit" class="animated infinite rubberBand hRed" value="Dodaj firmowy adres e-mail" style="margin-left:17px; margin-top:0px; padding-top:-5px;font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                    <br />
+                    <input id="btnManageCompany" name="btn" type="submit" class="animated infinite rubberBand hRed" value="Zarządzaj firmami" style="margin-left:17px; margin-top:-20px; padding-top:-10px; font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                    <br />
+
+                    <h5 class="listTitle">TWOJE FIRMY</h5>
+                    @using (@Html.BeginForm())
+                {
+                    {
+                            @Html.DropDownList("copanyList", Enumerable.Empty<SelectListItem>(), new { id = "copanyList", @class = " userList list-group-item-text uListMargins searchResult ", size = 14, style = "height: 140px; width:262px;" })
+                        }
+
+                    }
+                    <h5 class="listTitle wydzialHide">DZIAŁ W FIRMIE</h5>
+                    @Html.DropDownList("wydzialList", Enumerable.Empty<SelectListItem>(), new { id = "wydzialList", @class = "list-group-item-text uListMarginsWydzial wydzialHide", size = 29, @style = " margin-left: 5px; border-radius: 5px; height: 150px; width:262px;" })
+                    
+           
+
+                </div>
+
+            </div>
+
+
+            <div style="clear:both"></div>
+            
+
+        </div>
+    }
+    else
+    {
+        <div class="site" style="width:89%;">
+            @RenderBody()
+
+            <h8 style="position:relative;  bottom:0; margin-left: 2%; margin-top:20px; ">&copy; @DateTime.Now.Year - Marcin Dziekan (Przemilczane tematy. (P-T)). Wszystkie prawa zastrzeżone! All right reserved!</h8>
+        </div>
+    }
+
+    
+
+
+    <div class="modal fade" id="errorNoSelectedSearch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="text-align: center; ">
+        <div class="modal-dialog" style="width:20%; text-align: center; margin-top: 250px;">
+            <div class="modal-content" style="width:300px; text-align: center;">
+                <div class="modal-body" style="background-color: #182026; width:300px; text-align: center;">
+                    <h4 style="color: firebrick; text-align: center;">Nie wybrałeś żadnej firmy!!!.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="errorNoSelected" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="text-align: center; ">
+        <div class="modal-dialog" style="width:300px; text-align: center; margin-top: 250px;">
+            <div class="modal-content" style="width:300px; text-align: center;">
+                <div class="modal-body" style="background-color: #182026; width:300px; text-align: center;">
+                    <h4 style="color: firebrick; text-align: center;">Najpierw wybierz firmę z listy Twoich firm.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

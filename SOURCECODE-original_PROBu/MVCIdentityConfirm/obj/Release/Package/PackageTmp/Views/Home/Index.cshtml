@@ -1,0 +1,1427 @@
+﻿@model MVCIdentityConfirm.Models.CompanyViewModel
+
+
+<script src="~/Content/jquery.js"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+
+@*<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />*@
+@*<link rel="stylesheet" type="text/css" href="~/Content/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/demo.css" />*@
+@*<link rel="stylesheet" type="text/css" href="~/Content/component.css" />*@
+<script src="~/Scripts/jquery.easyPaginate.js"></script>
+@*<link href='http://fonts.googleapis.com/css?family=Raleway:500,200,900' rel='stylesheet' type='text/css'>*@
+<script src="~/Scripts/modernizr.custom.js"></script>
+<script src="~/Scripts/jquery.snippet.min.js"></script>
+@*<script src="~/Scripts/bootstrap.min.js"></script>*@
+@*<link href="~/Scripts/jquery.snippet.min.css" rel="stylesheet" />*@
+<script src="~/Content/images/paging.js"></script>
+<script src="~/Content/progressBar/gradient-progress-bar.js"></script>
+
+<script src="~/Content/txtBox/build-config.js"></script>
+<script src="~/Content/txtBox/ckeditor.js"></script>
+<script src="~/Content/txtBox/config.js"></script>
+<script src="~/Content/txtBox/en.js"></script>
+<script src="~/Content/txtBox/pl.js"></script>
+<script src="~/Content/txtBox/styles.js"></script>
+@*<link href="~/Content/txtBox/contents.css" rel="stylesheet" />*@
+
+<script>
+
+    $(function () {
+        $("#wydzialList").empty();
+        $("#odpowiedzBtn").hide();
+        $("#stanowiskoName").hide();
+        $("#przelDane").hide();
+        $("#nazwaDzial").hide();
+        $("#kreska").hide();
+        $(".casaOcen").hide();
+        $(".ocenaFirmy").hide();
+        $("#CompLogo").hide();
+        $("#nazwa").hide();
+        $("#miejsce").hide();
+        $("#ulica").hide();
+        $("#nip").hide();
+        $("#regon").hide();
+        $("#danePrzelozonego").hide();
+        // $("#btnAddwydzial").hide();
+
+    });
+
+
+    function rate(company) {
+        var percent;
+        $("#ocenaWord").text("");
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("getCompRating" , "Rating")',
+            dataType: "json",
+            cache: false,
+            data: { 'getData': company },
+            success: function (dta) {
+                $("#liczbaOsob").text(dta[1]);
+                percent = dta[0] / 700;
+                
+                ocenaProcent = (percent * 100).toFixed(3);
+                $("#procentOceny").text(ocenaProcent + " %");
+                if (percent == 0) {
+                    $("#ocenaWord").text("BRAK OCENY");
+                }
+                if (percent < 0) {
+                    $("#ocenaWord").text("UWAGA! OBCHODZIĆ Z DALEKA!!! ");
+                }
+                if (percent > 0) {
+                    $("#ocenaWord").text("FATALNE");
+                }
+                if (percent >= 0.2 && percent <= 0.4) {
+                    $("#ocenaWord").text("KIEPSKIE");
+                }
+                if (percent > 0.4 && percent <= 0.6) {
+                    $("#ocenaWord").text("PRZYZWOITE");
+                }
+                if (percent > 0.6 && percent <= 0.8) {
+                    $("#ocenaWord").text("BARDZO DOBRE");
+                }
+                if (percent > 0.8) {
+                    $("#ocenaWord").text("DOSKONAŁE !!!");
+                }
+                $('#progressbar').gradientProgressBar({
+                    value: percent,                                                 //poprawić zarobki
+                    size: 300,
+                    fill: {
+                        gradient: ["red", "yellow", "green"]
+                    }
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+            }
+        });
+    };
+
+
+    function rateManager() {
+        var idManag = $(".casaOcen").attr("id");
+        $("#managerOcena").text("");
+        $.ajax({
+            type: "GET",
+            cache: false,
+            url: '@Url.Action("getMenRat" , "Rating")',
+            dataType: "json",
+            data: { 'getD': idManag },
+            success: function (data1) {
+
+                var wyn = 0;
+                wyn = (data1[0] / 800);
+
+                $("#liczbaOsobMan").text(data1[1]);
+                if (wyn == 0 && data1[1] != 0) {
+                    $("#managerOcena").text("BEZ KOMENTARZA");
+                }
+                if (wyn == 0 && data1[1] == 0) {
+                    $("#managerOcena").text("BRAK OCENY");
+                }
+                if (wyn < 0 ) {
+                    $("#managerOcena").text("ZWOLNIĆ NATYCHMIAST!");
+                }
+                if (wyn > 0 && wyn  <= 0.2 && wyn != 0) {
+                    $("#managerOcena").text("TOTALNA ŻENADA!");
+                }
+                if (wyn > 0.2 && wyn <= 0.4) {
+                    $("#managerOcena").text("KIEPSKO - POPRAW SIĘ!");
+                }
+                if (wyn > 0.4 && wyn <= 0.6) {
+                    $("#managerOcena").text("NIEŹLE - MOŻE BYĆ LEPIEJ!");
+                }
+                if (wyn > 0.6 && wyn <= 0.8) {
+                    $("#managerOcena").text("JEST DOBRZE ;)");
+                }
+                if (wyn > 0.8) {
+                    $("#managerOcena").text("SUPER - TAK TRZYMAJ!");
+                }
+
+                $("#percentManagerRating").text((wyn * 100).toFixed(3) + " %");
+                $('#prog').gradientProgressBar({
+                    value: wyn,
+                    size: 235,
+                    fill: {
+                        gradient: ["red", "yellow", "green"]
+                    }
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+            }
+        });
+    };
+
+    boolCompanyChanged = false;
+    boolManagerChanged = false;
+
+
+    $(function () {
+        $("#copanyList").change(function () {
+            
+            var idSel = $("#copanyList").val();
+            var vale = $("#copanyList").val();
+            var noChange = $('#copanyList option:first-child').val();
+            if (idSel != noChange) {
+                boolCompanyChanged = true;
+            }
+            if( $(".pobraneC").attr("id") != 0){
+                if ($(".pobraneC").attr("id") != idSel) {
+                    boolCompanyChanged = true;
+                }
+            }
+            if (boolCompanyChanged == true) {
+
+                rate(idSel);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getCompanyInfo", "Home")',
+                    dataType: "json",
+                    data: { 'idSelect': idSel },
+                    success: function (data) {
+                        $("#stanowiskoName").hide();
+                        $(".casaOcen").hide();
+                        $("#przelDane").hide();
+                        $("#nazwaDzial").hide();
+                        $("#kreska").hide();
+                        $("#odpowiedzBtn").hide();
+                        $("#danePrzelozonego").hide();
+                        $("#newCont").empty();
+                        $("#tbl").empty();
+                        $("#CompLogo").show();
+                        $("#nazwa").show();
+                        $("#miejsce").show();
+                        $("#ulica").show();
+                        $("#nip").show();
+
+                        $("#regon").show();
+                        $("#btnAddwydzial").show();
+                        $(".ocenaFirmy").show();
+                        $(".ocenaFirmy").attr("id", data.cmpIn.Id);
+                        $(".casaOcen").attr("id", 0);
+                        $("#CompLogo").attr("src", data.img)
+                        $("#nazwaC").text(data.cmpIn.CompanyName)
+                        $("#miejC").text(data.cmpIn.Miejscowosc)
+                        $("#ulicaC").text(data.cmpIn.Ulica)
+                        if (data.cmpIn.NIP != null) {
+                            $("#nipC").text(data.cmpIn.NIP)
+                        } else {
+                            $("#nipC").text("BRAK")
+                        }
+                        if (data.cmpIn.Regon != null) {
+                            $("#regonC").text(data.cmpIn.Regon)
+                        } else {
+                            $("#regonC").text("BRAK")
+                        }
+                        $("#errorMessage").text("");
+                        //$("#wydzialList").hide('slide', { direction: 'right' }, 100).animate({ opacity: 0 });
+                        $("#wydzialList").empty();
+
+
+                        $(function () {
+                            for (var i = 0; i < data.wydzial.length; i++) {
+                                $("#wydzialList").append($('<option></option>').val(data.wydzial[i].Value).text(data.wydzial[i].Text));
+                            }
+                        });
+                        var idWydzial = $('#wydzialList option:first-child').val();
+
+                        if (idWydzial != null && idWydzial != 0) {                            
+
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("getWydzialInfo", "Home")',
+                                dataType: "json",
+                                data: { 'idWydzial': idWydzial },
+                                success: function (data) {
+                                    $("#odpowiedzBtn").show();
+                                    $("#stanowiskoName").show();
+                                    $("#danePrzelozonego").show();
+                                    $("#nazwaDzial").show();
+                                    $("#kreska").show();
+                                    $("#przelDane").show();
+                                    $(".casaOcen").show();
+                                    $(".casaOcen").attr("value", "OCENA")
+                                    $("#stanowiskoName").text(data.stanowisko)
+                                    $("#nazwaDzial").text(data.wydzialName);
+                                    $(".casaOcen").attr("id", data.przelozonyID);
+                                    $("#przelDane").text(data.przelozony);
+                                    rateManager();
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    alert(xhr.responseText);
+                                }
+                            });
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("getAnswers", "Home")',
+                                dataType: "json",
+                                data: { 'idWydzial': idWydzial },
+                                success: function (dta) {
+                                    $("#newCont").empty();
+                                    $("#tbl").empty();
+                                    $('#newCont').append('<table id="tbl" class="table table-striped"></table>');
+                                    for (a = 0; a < dta.length; a++) {
+                                        if (dta[a].mojeId == dta[a].userId) {
+                                            var link = '    ' + ' <input  type="button" id="-123" class="editWyp formBtn" value="Edytuj"> </input>' + '    ';
+                                            link = link.replace('-123', dta[a].id);
+                                            var link_2 = ' <input  type="button" id="-998" class="deleteWyp formBtn" value="Usuń"> </input>' + '    ';
+                                            link_2 = link_2.replace('-998', dta[a].id);
+                                            var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                            link_3 = link_3.replace('-666', dta[a].id);
+                                        } else {
+                                            var link = "";
+                                            var link_2 = "";
+                                            var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                            link_3 = link_3.replace('-666', dta[a].id);
+                                        }
+                                        $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dta[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dta[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  >' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dta[a].content + "</span> </td></tr>");
+                                    }
+                                    $('#tbl').easyPaginate({
+                                        paginateElement: 'tr',
+                                        elementsPerPage: 22,
+                                        effect: 'default'
+                                    });
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    alert(xhr.responseText);
+                                }
+                            });
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+
+    boolChange = false;
+
+    $(function () {
+        $("#wydzialList").change(function () {
+            var idSelected = $("#wydzialList").val();
+            var notChange = $('#wydzialList option:first-child').val();
+            if (idSelected != notChange) {
+                boolChange = true;
+            }
+            if ($(".pobraneW").attr("id") != 0) {
+                if ($(".pobraneW").attr("id") != idSelected) {
+                    boolChange = true;
+                }
+            }
+            if (boolChange == true) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getWydzialInfo", "Home")',
+                    dataType: "json",
+                    data: { 'idWydzial': idSelected },
+                    success: function (data) {
+                        notchange = idSelected;
+                        $("#odpowiedzBtn").show();
+                        $("#stanowiskoName").show();
+                        $("#nazwaDzial").show();
+                        $("#danePrzelozonego").show();
+                        $("#kreska").show();
+                        $("#przelDane").show();
+                        $(".casaOcen").show();
+                        $(".casaOcen").attr("value", "OCENA")
+                        $("#stanowiskoName").text(data.stanowisko)
+                        $("#nazwaDzial").text(data.wydzialName);
+                        $(".casaOcen").attr("id", data.przelozonyID);
+                        $("#przelDane").text(data.przelozony);
+                        rateManager();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.responseText);
+                    }
+
+                });
+
+            }
+        });
+    });
+
+
+
+    $(function () {
+        $("#wydzialList").change(function () {
+            var idSelected = $("#wydzialList").val();
+            var notChange = $('#wydzialList option:first-child').val();
+            if (idSelected != notChange) {
+                boolChange = true;
+            }
+            if ($(".pobraneW").attr("id") != 0) {
+                if ($(".pobraneW").attr("id") != idSelected) {
+                    boolChange = true;
+                }
+            }
+            if (boolChange == true) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getAnswers", "Home")',
+                    cache: false,
+                    dataType: "json",
+                    data: { 'idWydzial': idSelected },
+                    success: function (dta) {
+                        notchange = idSelected;
+                        $("#newCont").empty();
+                        $("#tbl").empty();
+                        $('#newCont').append('<table id="tbl" class="table table-striped"></table>');
+                        for (a = 0; a < dta.length; a++) {
+                            if (dta[a].mojeId == dta[a].userId) {
+                                var link = '    ' + ' <input  type="button" id="-123" class="editWyp formBtn" value="Edytuj"> </input>' + '    ';
+                                link = link.replace('-123', dta[a].id);
+                                var link_2 = ' <input  type="button" id="-998" class="deleteWyp formBtn" value="Usuń"> </input>' + '    ';
+                                link_2 = link_2.replace('-998', dta[a].id);
+                                var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                link_3 = link_3.replace('-666', dta[a].id);
+                            } else {
+                                var link = "";
+                                var link_2 = "";
+                                var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                link_3 = link_3.replace('-666', dta[a].id);
+                            }
+                            $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dta[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dta[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  >' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dta[a].content + "</span> </td></tr>");
+                        }
+                        $('#tbl').easyPaginate({
+                            paginateElement: 'tr',
+                            elementsPerPage: 22,
+                            effect: 'default'
+                        });
+
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+
+
+
+    $(function () {
+        $("#subButton").click(function () {
+            var value = CKEDITOR.instances['aboutme'].getData();
+
+            if (value != "") {
+                $("#subButton").attr("disabled", true);
+                CKEDITOR.instances['aboutme'].setData('');
+                value = value.replace('<p>', '<p style=" text-align:justify;"> ');
+                var idWydzia = $("#wydzialList").val();
+                if ($(".pobraneW").attr("id") != 0) {
+                    idWydzia == $(".pobraneW").attr("id");
+                }
+                if (idWydzia == null && $(".pobraneW").attr("id") == 0) {
+                    idWydzia = $('#wydzialList option:first-child').val();
+                }
+
+                var idCompany = $("#copanyList").val();
+                if (idCompany == null) {
+                    idCompany = $('#copanyList option:first-child').val();
+                }
+                var va = $('#checkId').is(':checked');
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("saveAnsware", "Home")',
+                    dataType: "json",
+                    data: { "userAns": value, "idWydz": idWydzia, "idCom": idCompany, "checkedLog": va },
+                    success: function (dta) {
+                        $("#declineModal .close").click();
+                        var idSelected = $("#wydzialList").val();
+                        $("#newCont").empty();
+                        $("#tbl").empty();
+                        $('#newCont').append('<table id="tbl" class="table table-striped"></table>');
+                        for (a = 0; a < dta.length; a++) {
+                            if (dta[a].mojeId == dta[a].userId) {
+                                var link = '    ' + ' <input  type="button" id="-123" class="editWyp formBtn" value="Edytuj"> </input>' + '    ';
+                                link = link.replace('-123', dta[a].id);
+                                var link_2 = ' <input  type="button" id="-998" class="deleteWyp formBtn" value="Usuń"> </input>' + '    ';
+                                link_2 = link_2.replace('-998', dta[a].id);
+                                var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                link_3 = link_3.replace('-666', dta[a].id);
+                            } else {
+                                var link = "";
+                                var link_2 = "";
+                                var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                link_3 = link_3.replace('-666', dta[a].id);
+                            }
+
+                            $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dta[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dta[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  >' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dta[a].content + "</span> </td></tr>");
+
+                        }
+                        $('#tbl').easyPaginate({
+                            paginateElement: 'tr',
+                            elementsPerPage: 22,
+                            effect: 'default'
+                        });
+                        $("#subButton").attr("disabled", false);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.responseText);
+                        $("#subButton").attr("disabled", false);
+                    }
+                });
+            } else {
+                alert("Kolego / Koleżanko NAPISZ COŚ ;)")
+            }
+        });
+    });
+
+
+    $(document).bind('function_a_complete', loadPage);
+   
+
+
+    // $(document).ready(
+
+
+            function loadPage() {
+            
+            var exist = $('#copanyList option:first-child').val();
+            var backW = $(".pobraneW").attr("id");
+            var backC = $(".pobraneC").attr("id");
+            if (exist != 0) {
+
+                if (backC != 0) {
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("getCompanyInfo", "Home")',
+                        dataType: "json",
+                        data: { 'idSelect': backC },
+                        success: function (data) {
+                            rate(backC);
+                            $("#CompLogo").attr("src", data.img)
+                            $("#nazwaC").text(data.cmpIn.CompanyName)
+                            $("#miejC").text(data.cmpIn.Miejscowosc)
+                            $("#ulicaC").text(data.cmpIn.Ulica)
+                            $(".ocenaFirmy").show();
+                            $(".ocenaFirmy").attr("id", data.cmpIn.Id);
+                            $("#CompLogo").show();
+                            $("#nazwa").show();
+                            $("#miejsce").show();
+                            $("#ulica").show();
+                            $("#nip").show();
+                            $("#regon").show();
+                            $("#btnAddwydzial").show();
+                            if (data.cmpIn.NIP != null) {
+                                $("#nipC").text(data.cmpIn.NIP)
+                            } else {
+                                $("#nipC").text("BRAK")
+                            }
+                            if (data.cmpIn.Regon != null) {
+                                $("#regonC").text(data.cmpIn.Regon)
+                            } else {
+                                $("#regonC").text("BRAK")
+                            }
+                            //$("#errorMessage").text("");
+                            //$("#wydzialList").hide('slide', { direction: 'right' }, 100).animate({ opacity: 0 });
+
+
+                            $("#wydzialList").empty();
+                            $(function () {
+                                for (var i = 0; i < data.wydzial.length; i++) {
+                                    $("#wydzialList").append($('<option></option>').val(data.wydzial[i].Value).text(data.wydzial[i].Text));
+                                }
+                            });
+                            if (data.wydzial.length) {
+                                //$("#wydzialList").show('slide', { direction: 'left' }, 150).animate({ opacity: 1 }, 80);
+                                var existWydzial = $('#wydzialList option:first-child').val();
+                                if (backW != 0 && backW != null) {
+                                    existWydzial = backW;
+                                }
+
+                                if (existWydzial != 0) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '@Url.Action("getAnswers", "Home")',
+                                        dataType: "json",
+                                        data: { 'idWydzial': existWydzial },
+                                        success: function (dta) {
+
+                                            $("#newCont").empty();
+                                            $("#tbl").empty();
+                                            $('#newCont').append('<table id="tbl" class="table table-striped"></table>');
+                                            for (a = 0; a < dta.length; a++) {
+                                                if (dta[a].mojeId == dta[a].userId) {
+                                                    var link = '    ' + ' <input  type="button" id="-123" class="editWyp formBtn" value="Edytuj"> </input>' + '    ';
+                                                    link = link.replace('-123', dta[a].id);
+                                                    var link_2 = ' <input  type="button" id="-998" class="deleteWyp formBtn" value="Usuń"> </input>' + '    ';
+                                                    link_2 = link_2.replace('-998', dta[a].id);
+                                                    var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                                    link_3 = link_3.replace('-666', dta[a].id);
+                                                } else {
+                                                    var link = "";
+                                                    var link_2 = "";
+                                                    var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                                    link_3 = link_3.replace('-666', dta[a].id);
+                                                }
+                                                $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dta[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dta[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  >' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dta[a].content + "</span> </td></tr>");
+                                            }
+                                            $('#tbl').easyPaginate({
+                                                paginateElement: 'tr',
+                                                elementsPerPage: 22,
+                                                effect: 'default'
+                                            });
+                                            $.ajax({
+                                                type: "POST",
+                                                url: '@Url.Action("getWydzialInfo", "Home")',
+                                                dataType: "json",
+                                                data: { 'idWydzial': existWydzial },
+                                                success: function (data) {
+                                                    $("#danePrzelozonego").show();
+                                                    $("#odpowiedzBtn").show();
+                                                    $("#stanowiskoName").show();
+                                                    $("#nazwaDzial").show();
+                                                    $("#przelDane").show();
+                                                    $(".casaOcen").show();
+                                                    $(".casaOcen").attr("value",  "OCENA")
+                                                    $("#kreska").show();
+                                                    $("#stanowiskoName").text(data.stanowisko)
+                                                    $("#nazwaDzial").text(data.wydzialName);
+                                                    $(".casaOcen").attr("id", data.przelozonyID);
+                                                    $("#przelDane").text(data.przelozony);
+
+                                                    rateManager();
+                                                },
+                                                error: function (xhr, ajaxOptions, thrownError) {
+                                                    alert(xhr.responseText);
+
+                                                }
+
+                                            });
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            alert(xhr.responseText);
+
+                                        }
+                                    });
+
+                                }
+
+                            }
+
+                        }
+
+                    });
+
+                } else {
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("getCompanyInfo", "Home")',
+                        dataType: "json",
+                        data: { 'idSelect': exist },
+                        success: function (data) {
+                            rate(exist);
+                            $("#CompLogo").attr("src", data.img);
+                            $("#nazwaC").text(data.cmpIn.CompanyName);
+                            $("#miejC").text(data.cmpIn.Miejscowosc);
+                            $("#ulicaC").text(data.cmpIn.Ulica);
+                            $("#CompLogo").show();
+                            $("#nazwa").show();
+                            $("#miejsce").show();
+                            $("#ulica").show();
+                            $("#nip").show();
+                            $("#regon").show();
+                            $(".ocenaFirmy").show();
+                            $(".ocenaFirmy").attr("id", data.cmpIn.Id);
+                            if (data.cmpIn.NIP != null) {
+                                $("#nipC").text(data.cmpIn.NIP)
+                            } else {
+                                $("#nipC").text("BRAK")
+                            }
+                            if (data.cmpIn.Regon != null) {
+                                $("#regonC").text(data.cmpIn.Regon)
+                            } else {
+                                $("#regonC").text("BRAK")
+                            }
+                            //$("#errorMessage").text("");
+                            //$("#wydzialList").hide('slide', { direction: 'right' }, 100).animate({ opacity: 0 });
+                            $("#wydzialList").empty();
+                            $(function () {
+                                for (var i = 0; i < data.wydzial.length; i++) {
+                                    $("#wydzialList").append($('<option></option>').val(data.wydzial[i].Value).text(data.wydzial[i].Text));
+                                }
+                            });
+                            if (data.wydzial.length) {
+                                //$("#wydzialList").show('slide', { direction: 'left' }, 150).animate({ opacity: 1 }, 80);
+                                var existWydzial = $('#wydzialList option:first-child').val();
+                                if (existWydzial != 0) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '@Url.Action("getAnswers", "Home")',
+                                        dataType: "json",
+                                        data: { 'idWydzial': existWydzial },
+                                        success: function (dta) {
+
+                                            $("#newCont").empty();
+                                            $("#tbl").empty();
+                                            $('#newCont').append('<table id="tbl" class="table table-striped"></table>');
+                                            for (a = 0; a < dta.length; a++) {
+                                                if (dta[a].mojeId == dta[a].userId) {
+                                                    var link = '    ' + ' <input  type="button" id="-123" class="editWyp formBtn" value="Edytuj"> </input>' + '    ';
+                                                    link = link.replace('-123', dta[a].id);
+                                                    var link_2 = ' <input   type="button" id="-998" class="deleteWyp formBtn" value="Usuń"> </input>' + '    ';
+                                                    link_2 = link_2.replace('-998', dta[a].id);
+                                                    var link_3 = ' <input   type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                                    link_3 = link_3.replace('-666', dta[a].id);
+                                                } else {
+                                                    var link = "";
+                                                    var link_2 = "";
+                                                    var link_3 = ' <input   type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                                    link_3 = link_3.replace('-666', dta[a].id);
+                                                }
+                                                $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dta[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dta[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  >' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dta[a].content + "</span> </td></tr>");
+                                            }
+                                            $('#tbl').easyPaginate({
+                                                paginateElement: 'tr',
+                                                elementsPerPage: 22,
+                                                effect: 'default'
+                                            });
+                                            $.ajax({
+                                                type: "POST",
+                                                url: '@Url.Action("getWydzialInfo", "Home")',
+                                                dataType: "json",
+                                                data: { 'idWydzial': existWydzial },
+                                                success: function (data) {
+                                                    $("#danePrzelozonego").show();
+                                                    $("#odpowiedzBtn").show();
+                                                    $("#stanowiskoName").show();
+                                                    $("#nazwaDzial").show();
+                                                    $("#przelDane").show();
+                                                    $(".casaOcen").show();
+                                                    $(".casaOcen").attr("value", "OCENA")
+                                                    $("#kreska").show();
+                                                    $("#stanowiskoName").text(data.stanowisko)
+                                                    $("#nazwaDzial").text(data.wydzialName);
+                                                    $(".casaOcen").attr("id", data.przelozonyID);
+                                                    $("#przelDane").text(data.przelozony);
+                                                    rateManager();
+                                                },
+                                                error: function (xhr, ajaxOptions, thrownError) {
+                                                    alert(xhr.responseText);
+                                                }
+                                            });
+                                        },
+                                        error: function (xhr, ajaxOptions, thrownError) {
+                                            alert(xhr.responseText);
+
+                                        }
+                                    });
+
+                                }
+
+                            }
+
+                        }
+
+                    });
+
+                }
+            }
+        };
+
+
+    var del, edt, zgl;
+    $(function () {
+        $("#newCont").on("click", ".deleteWyp", function () {
+            del = $(this).attr("id");
+            $("#editModal").on('hidden.bs.modal', function () {
+                $(this).data('bs.modal', null);
+            });
+
+            var idAnswerEdt = event.target.id;
+            var idWydz = $("#wydzialList").val();
+            if (idWydz == null) {
+                idWydz = $('#wydzialList option:first-child').val();
+            }
+            $("#delModal").modal('show');
+
+        });
+    });
+
+
+    $(function () {
+        $("#subBu").click(function () {
+            $("#subBu").attr("disabled", true);
+            var idWydz = $("#wydzialList").val();
+            if (idWydz == null) {
+                idWydz = $('#wydzialList option:first-child').val();
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("delAnsware", "Home")',
+                dataType: "json",
+                data: { "idAnswer": del, "idWydz": idWydz },
+                success: function (dta) {
+
+                    $("#subBu").attr("disabled", true);
+                    var idSelected = $("#wydzialList").val();
+                    $("#newCont").empty();
+                    $("#tbl").empty();
+
+                    $('#newCont').append('<table id="tbl" class="table table-striped"></table>');
+                    for (a = 0; a < dta.length; a++) {
+                        if (dta[a].mojeId == dta[a].userId) {
+                            var link = '    ' + ' <input  type="button" id="-123" class="editWyp formBtn" value="Edytuj"> </input>' + '    ';
+                            link = link.replace('-123', dta[a].id);
+                            var link_2 = ' <input  type="button" id="-998" class="deleteWyp formBtn" value="Usuń"> </input>' + '    ';
+                            link_2 = link_2.replace('-998', dta[a].id);
+                            var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                            link_3 = link_3.replace('-666', dta[a].id);
+                        } else {
+                            var link = "";
+                            var link_2 = "";
+                            var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                            link_3 = link_3.replace('-666', dta[a].id);
+                        }
+
+                        $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dta[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dta[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  >' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dta[a].content + "</span> </td></tr>");
+                    }
+                    $('#tbl').easyPaginate({
+                        paginateElement: 'tr',
+                        elementsPerPage: 22,
+                        effect: 'default'
+                    });
+                    $("#delModal").modal('hide');
+                    $("#subBu").attr("disabled", false);
+                    del = null;
+                    
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                    $("#subBu").attr("disabled", false);
+                }
+            });
+            
+        });
+    });
+
+    $(function () {
+        $("#subu").click(function () {
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '@Url.Action("zgloszenie","Home")',
+                data: { "idAns": zgl },
+                success: function (sa) {
+
+                    $("#zgloszenieModal").modal("hide");
+                    $("#zgloszeniePotw").modal("show")
+                    setTimeout(function () {
+                        $("#zgloszeniePotw").modal("hide");
+                    }, 1500);
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                    
+                }
+
+            });
+        });
+
+    });
+
+    $(function () {
+        $("#newCont").on("click", ".zglosWyp", function () {
+            zgl = event.target.id;
+            $("#zgloszenieModal").modal("show");
+        });
+    });
+
+    $(function () {
+        $("#newCont").on("click", ".editWyp", function () {
+
+            edt = $(this).attr("id");
+            $("#editModal").on('hidden.bs.modal', function () {
+                $(this).data('bs.modal', null);
+            });
+            var idA = $(this).attr("id");
+            var content = null;
+            var dt = null;
+            var idWydz = $("#wydzialList").val();
+            if (idWydz == null) {
+                idWydz = $('#wydzialList option:first-child').val();
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("edtAns", "Home")',
+                dataType: "json",
+                data: { "idAnswer": idA },
+                success: function (dta) {
+                    $("#editModal").modal("show");
+                    CKEDITOR.instances['editTxt'].setData(dta);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+
+                }
+            });
+
+        });
+
+    });
+
+
+    $(function () {
+        $(".zatwierdz").click(function () {
+            var idWydz = 0;
+            var wydzial = null;
+
+            idWydz = $("#wydzialList").val();
+
+            if (idWydz != null && idWydz != 0) {
+                wydzial = idWydz;
+            }
+            else {
+                wydzial = $('#wydzialList option:first-child').val();
+            }
+            $(".zatwierdz").attr("disabled", true);
+            //idWydz = $('#wydzialList option:first-child').val();
+            var newVal = CKEDITOR.instances['editTxt'].getData();
+            var checkedVal = $('#checkd').is(':checked');
+            var valueNew = newVal.replace('<p>', '<p style=" text-align:justify;"> ');
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("updAns", "Home")',
+                dataType: "json",
+                data: { "idWydz": wydzial, "newVal": valueNew, "idAn": edt, "checkd": checkedVal },
+                success: function (dt) {
+                    $("#newCont").empty();
+                    $("#tbl").empty();
+                    $('#newCont').append('<table id="tbl" class="table table-striped"></table>');
+                    for (a = 0; a < dt.length; a++) {
+                        if (dt[a].mojeId == dt[a].userId) {
+                            var link = '    ' + ' <input  type="button" id="-123" class="editWyp formBtn" value="Edytuj"> </input>' + '    ';
+                            link = link.replace('-123', dt[a].id);
+                            var link_2 = ' <input  type="button" id="-998" class="deleteWyp formBtn" value="Usuń"> </input>' + '    ';
+                            link_2 = link_2.replace('-998', dt[a].id);
+                            var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                            link_3 = link_3.replace('-666', dt[a].id);
+                        } else {
+                            var link = "";
+                            var link_2 = "";
+                            var link_3 = ' <input  type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                            link_3 = link_3.replace('-666', dt[a].id);
+                        }
+
+                        $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dt[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dt[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  >' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dt[a].content + "</span> </td></tr>");
+
+                    }
+                    $('#tbl').easyPaginate({
+                        paginateElement: 'tr',
+                        elementsPerPage: 22,
+                        effect: 'default'
+                    });
+                    edt = null;
+                    $("#editModal").modal("hide");
+                    $(".zatwierdz").attr("disabled", false);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                    $(".zatwierdz").attr("disabled", false);
+                }
+            });
+
+
+        });
+
+    });
+
+    $(function () {
+
+        $(".ocenaFirmy").click(function () {
+            var backC = $(".pobraneC").attr("id");
+            if (backC != 0) {
+
+            }
+            var company = $(".ocenaFirmy").attr("id");
+            var przelozony = $(".casaOcen").attr("id");
+            var address = "@Url.Action("rateCompany", "Rating", new { id = "-098897", przelozony = "-3452" })"
+            address = address.replace("-098897", company);
+            if (przelozony != null || przelozony != 0) {
+                address = address.replace("-3452", przelozony);
+            } else {
+                address = address.replace("-3452", 0);
+            }
+            window.location = address;
+
+        });
+    });
+
+
+    $(function () {
+
+        $(".casaOcen").click(function () {
+            var przelozony = $(".casaOcen").attr("id");
+            var address = "@Url.Action("RatPrzelozony", "Rating", new { id = "-0987" })"
+            address = address.replace("-0987", przelozony);
+            window.location = address;
+
+        });
+    });
+
+
+
+
+    $(function () {
+        $("#szczegolyComapny").click(function () {
+            var rightIndex;
+            var exist = $('#copanyList option:first-child').val();
+            var cheked = $("#copanyList").val();
+            if (cheked != null && cheked != 0) {
+                rightIndex = cheked;
+            }
+            else {
+                rightIndex = exist;
+            }
+
+            var address = "@Url.Action("CompanyInfo", "Home", new { id = "-029021" })"
+            address = address.replace("-029021", rightIndex);
+            window.location = address;
+
+        });
+    });
+
+
+  
+
+    //$(function () {
+    //    $("#btnAddCompanyEmail").click(function () {
+    //        var selectedComapny = $("#copanyList").val();
+    //        if(selectedComapny != null && selectedComapny != 0)
+    //        {
+    //            $("#addEmailModal").modal("show");
+    //        } else
+    //        {
+    //            $("#errorNoSelected").modal("show")
+    //            setTimeout(function () {
+    //                $("#errorNoSelected").modal("hide");
+    //            }, 1800);
+    //        }
+    //    });
+    //});
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    $(function() {
+        $(document.body).on("click", ".first", function () {
+            $('html, body').animate({
+                scrollTop: $("#forumId").offset().top
+            }, 500);
+            
+        });
+    });
+
+    $(function () {
+        $(document.body).on("click", ".prev", function () {
+            $('html, body').animate({
+                scrollTop: $("#forumId").offset().top
+            }, 500);
+
+        });
+    });
+
+    $(function () {
+        $(document.body).on("click", ".next", function () {
+            $('html, body').animate({
+                scrollTop: $("#forumId").offset().top
+            }, 500);
+
+        });
+    });
+    $(function () {
+        $(document.body).on("click", ".last", function () {
+            $('html, body').animate({
+                scrollTop: $("#forumId").offset().top
+            }, 500);
+
+        });
+    });
+    $(function () {
+        $(document.body).on("click", ".page", function () {
+            $('html, body').animate({
+                scrollTop: $("#forumId").offset().top
+            }, 500);
+
+        });
+    });
+
+
+    function getComLst() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("companyList", "Home")',
+            dataType: "json",
+            success: function (data_Comapny) {
+                $("#copanyList").empty();
+                $(function () {
+                    for (var i = 0; i < data_Comapny.firma.length; i++) {
+                        $("#copanyList").append($('<option></option>').val(data_Comapny.firma[i].Value).text(data_Comapny.firma[i].Text));
+                    }
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+
+            }
+        });
+    }
+
+
+
+    $(function () {
+        $('#editModal').on('show.bs.modal', function () {
+            $('body').css("margin-right", "0px");
+            $('html').css("margin-right", "0px");
+        });
+    });
+    $(function () {
+        $('#declineModal').on('show.bs.modal', function () {
+            $('body').css("margin-right", "0px");
+            $('html').css("margin-right", "0px");
+        });
+    });
+    $(function () {
+        $('#delModal').on('show.bs.modal', function () {
+            $('body').css("margin-right", "0px");
+            $('html').css("margin-right", "0px");
+        });
+    });
+    $(function () {
+        $('#zgloszenieModal').on('show.bs.modal', function () {
+            $('body').css("margin-right", "0px");
+            $('html').css("margin-right", "0px");
+        });
+    });
+    $(function () {
+        $('#zgloszeniePotw').on('show.bs.modal', function () {
+            $('body').css("margin-right", "0px");
+            $('html').css("margin-right", "0px");
+        });
+    });
+    
+
+</script>
+
+
+    <div style="margin-top: 0px">
+        <div class="lightBlue">
+            <div id="menuSpace">
+
+            </div>
+            @*<div style="height:20px; width:100%; float:left; height:100%">
+                @if (Request.IsAuthenticated)
+                {
+                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <nav class="menu">
+                            <a href="javascript:document.getElementById('logoutForm').submit()" class="menu-item" style="padding-left:15px;" title="Wyloguj"> <i class="fa fa-sign-out"></i> </a>
+                            <a data-url="@Request.Url.AbsoluteUri" href="http://www.facebook.com/share.php?u=http://dziekan.site/web" style="padding-left:15px;" title="Udostępnij" class="menu-item "><i class="fa fa-facebook-square" style="outline:hidden"></i><i style="outline:hidden" id="counterFacebook"></i> </a>
+                            <a href="#" class="menu-item" style="padding-left:15px;" title="Ustawienia"> <i class="fa fa-cog"></i> </a>
+                            <a href="@Url.Action("Manage","Account")" class="menu-item" style="padding-left:15px;" title="Moje konto"> <i class="fa fa-user"></i> </a>
+                        </nav>
+                    }
+                }
+            </div>*@
+
+            <div>
+                <div style="float:left; width:100%; ">
+                    <div style="width:100%; min-height:3px; background-color:#e2ded5; margin-top:10px;">
+
+                    </div>
+                    <div class="companyMain" >
+
+                        <div style="float:left; margin-left: 15px; margin-top: 13px; width:40%; ">
+                            <h5 id="nazwa">
+                                Nazwa firmy:
+                                <span id="nazwaC" class="spanPogrubienie"></span>
+                            </h5>
+                            <h5 id="miejsce">
+                                Miejscowość:
+                                <span id="miejC" class="spanPogrubienie"></span>
+                            </h5>
+                            <h5 id="ulica">
+                                Ulica:
+                                <span id="ulicaC" class="spanPogrubienie"></span>
+                            </h5>
+                            <h5 id="nip">
+                                NIP:
+                                <span id="nipC" class="spanPogrubienie"></span>
+                            </h5>
+                            <h5 id="regon">
+                                Regon:
+                                <span id="regonC" span class="spanPogrubienie"></span>
+                            </h5>
+                           
+                        </div>
+
+                        <div style="float:left; margin-top:-8px; margin-left:8px;">
+                            <img id="CompLogo" src="@ViewBag.ImageData" style="margin-top: 20px;  background-color: rgba(0,0,0,0)" />
+                            <h6 style="margin-top:1px; font-size: 8.5px; margin-left:9px;">
+                                * logo nie jest własnością serwisu.
+
+                            </h6>
+                            
+                        </div>
+
+                        <div style="float:right; width:27%; min-width:370px; margin-top: 13px;">
+                            <h5>
+                                Ogólne warunki pracy:
+                                <span id="ocenaWord" class="textColor">FATALNE</span>
+                            </h5>
+                            <div style="margin-top: 0px">
+
+
+                                <div id="progressbar"></div>
+                                <div style="margin-top: -7px;">
+                                    <a href="#" style="outline:none">
+                                        <h6 class="textColor" style="outline:none" id="szczegolyComapny"> Zobacz szczegóły </h6>
+                                    </a>
+                                </div>
+                                <div>
+                                    <h6 style="color:whitesmoke; outline:none; padding-top:6px; "> Firmę oceniło <span id="liczbaOsob" class="textColor" style="font-weight:bold"></span> pracowników na <span id="procentOceny" class="textColor" style="font-weight: bold"> </span> w skali od 0 do 100%.</h6>
+
+                                </div>
+                                <div style="padding-top: 10px">
+                                    <input type="button" id="o" class="newBtn ocenaFirmy" value="Oceń firmę" style="height: 30px;  font-size: 12px; width: 360px; border-radius: 3px; outline:none; " />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="clear:both;"></div>
+
+                    </div>
+                    <div style="width:100%; min-height:3px; background-color:#e2ded5"></div>
+                        <br />
+                    
+                        <div style="width:100%; margin-top: -20px;" id="danePrzelozonego" >
+                            
+                            <div class="companyMain">
+                                <div>
+                                    <div style="float: left; height:33px; width:37%; background-color:#e2ded5; border-bottom-right-radius:100px; margin-top:0px;">
+                                        <div style="height:30px; width:99.3%; background-color:#5d5854; border-bottom-right-radius:100px; margin-top:0px;">
+
+                                        </div>
+                                    </div>
+
+                                    <div style="float:left; height:30px; width:20%; text-align:center;">
+                                        <h5 style="margin-top:5px;  font-family: Arial; " class="spanPogrubienie textColor"> <span id="przelDane" class="spanPogrubienie " style="margin-left:-2px; color: firebrick; font-size:19px"></span></h5>
+
+                                    </div>
+                                    <div style="float:left; height:33px; width:43%; background-color:#e2ded5; border-bottom-left-radius:100px; margin-top:0px;">
+                                        <div style="float:right; height:30px; width:99.3%; background-color:#5d5854; border-bottom-left-radius:100px; margin-top:0px;">
+
+                                        </div>
+                                    </div>
+                                    <div style="clear:both;"></div>
+                                </div>
+
+                                <div>
+                                    <div style="width:37%; float:left; margin-top:10px;">
+                                        <h5 style="margin-left:20px; color:white;  font-family: Arial; font-size:14px" class="spanPogrubienie">Dział: <span id="nazwaDzial" class="spanPogrubienie" style="margin-left:54px; color:black; font-weight:bold"></span></h5>
+                                        <h5 style="margin-left:20px; color:white;  font-family: Arial; font-size:14px" class="spanPogrubienie">Stanowisko: <span id="stanowiskoName" class="spanPogrubienie " style="margin-left:11px; color:black; font-weight:bold"></span></h5>
+
+                                    </div>
+                                    <div style="width:20%; float:left">
+                                        <div style="margin-left:8%">
+                                            <div style="padding-top: 5px;" id="prog"></div>
+                                            <div class="textColor" style="float:left; font-size: 12px;">Zobacz szczegóły</div>
+                                            <div style="float:left; margin-left: 15px; margin-top: -8px;">
+                                                <h6>Oceniło <span id="liczbaOsobMan" class="textColor"></span> osób.</h6>
+                                            </div>
+                                        </div>
+                                        <input type="button" id="ocen" class="newBtn casaOcen" value="" style="height: 35px; font-size:11.5px; width: 350px; border-radius: 3px; outline:none; margin-left:0px;  margin-top:5px;" />
+                                        <div style="clear:both"></div>
+
+                                    </div>
+                                    <div style="float: left; width:42%; padding-right:50px; margin-top:10px;">
+                                        <div style="float: right;">
+                                            <div>
+                                                <h5>
+                                                    Ogólna ocena:
+                                                    <span class="textColor" id="managerOcena"></span>
+                                                </h5>
+                                            </div>
+                                            <div>
+                                                <h5>
+                                                    Oceniono na:
+                                                    <span class="textColor" id="percentManagerRating"></span>
+                                                </h5>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div style="clear:both"></div>
+                                </div>
+                            </div>
+                            <div style="width:100%; min-height:3px; background-color:#e2ded5"></div>
+                            <div style="margin-bottom:-20px; margin-top:10px;" id="forumId">
+                                <div style="float:left; width:auto">
+                                    <h5 style="margin-left: 30px; margin-top: 25px; color:whitesmoke; font-style:italic; " class="spanPogrubienie">FORUM  </h5>
+                                </div>
+                                <div style="float:left; width:auto">
+                                    <h5 style="color:black; font-size:13px; font-style:italic; margin-top: 27px; margin-left:10px;">
+                                        ( na temat działu jak również osoby zarządzającej działem )
+                                    </h5>
+                                </div>
+                                <div style="clear:both"></div>
+                            </div>
+                            <div>
+                                <hr id="kreska" style="width: 96%; margin-left: 20px; margin-bottom: 10px;" />
+                            </div>
+                            <div>
+                                <button type="button" id="odpowiedzBtn" style="outline: none;  margin-left: 35px; margin-top:20px; " class="btnNew paper paper-curl-right " data-toggle="modal" data-target="#declineModal">
+                                    ODPOWIEDŹ
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                @*<div style="float:right; padding-right:5%;">
+                    <div style="min-height: 450px; float:left;  background-color:white;  border-color:black; border-radius:5px;  width: 290px; margin-top: -28px; ">
+                        <div>
+                            <h5 id="errorMessage" style="color:brown; font-weight:bold; width:280px; text-align:center;">@ViewBag.ErrorNoSelect</h5>
+                        </div>
+                        <section>
+                            <nav>
+                                <h5 class="listTitle">Z FIRMY</h5>
+                                <hr style="margin-top: 0px; margin-bottom:5px;" />
+                                <input id="btnMessage" name="btn" type="submit" class="animated infinite rubberBand  hRed" value="Aktualności" style="color:firebrick; margin-left:17px; margin-top:-30px;  font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                                <br />
+                                <input id="btnEditData" name="btn" type="submit" class="animated infinite rubberBand  hRed" value="Wiadomości" style="margin-left:17px; margin-top:-20px; padding-top:-10px; font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                                <br />
+                                <input id="btnEditData" name="btn" type="submit" class="animated infinite rubberBand  hRed" value="Promocje dla pracownika" style="margin-left:17px; margin-top:-20px; padding-top:-10px; font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                                <br />
+                                <input id="btnEditData" name="btn" type="submit" class="animated infinite rubberBand  hRed" value="Słowo od PREZESA" style="margin-left:17px; margin-top:-20px; padding-top:-10px; font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                                <hr style="margin-top: 5px; margin-bottom: 5px" />
+                                <input id="btnAddCompany" name="btn" type="submit" class="animated infinite rubberBand hRed" value="Dodaj firmę" style="color:firebrick; margin-left:17px; margin-top:-25px; padding-top:-10px; font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                                <br />
+                                <input id="btnAddWydzial" name="btn" type="submit" class="animated infinite rubberBand hRed" value="Dodaj dział" style="margin-left:17px; margin-top:-20px; padding-top:-10px; font-size:13px;  font-weight:bold; text-decoration:none;" input>
+                                <br />
+                                <input id="btnAddCompanyEmail" name="btn" type="submit" class="animated infinite rubberBand hRed" value="Dodaj firmowy adres e-mail" style="margin-left:17px; margin-top:0px; padding-top:-5px;font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                                <br />
+                                <input id="btnManageCompany" name="btn" type="submit" class="animated infinite rubberBand hRed" value="Zarządzaj firmami" style="margin-left:17px; margin-top:-20px; padding-top:-10px; font-size: 13px;  font-weight:bold; text-decoration:none;" input>
+                                <br />
+                            </nav>
+                        </section>
+                        <div style="margin-top: 18px;">
+                            <h5 class="listTitle">TWOJE FIRMY</h5>
+                            @using (@Html.BeginForm())
+                            {
+                                if (Model.Company.ElementAt(0).Text != "Nie dodałeś żadnej firmy")
+                                {
+                                    @Html.DropDownListFor(x => x.SelectedCompany, Model.Company, new { id = "copanyList", @class = " userList list-group-item-text uListMargins ", size = 14, style = "height: 130px;" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(x => x.SelectedCompany, Model.Company, new { id = "copanyList", @class = " userList list-group-item-text uListMargins", size = 14, @disabled = "disabled", style = "height: 50px;" })
+                                }
+                            }
+                            <h5 class="listTitle">DZIAŁ W FIRMIE</h5>
+                            @Html.DropDownList("wydzialList", Enumerable.Empty<SelectListItem>(), new { id = "wydzialList", @class = "list-group-item-text uListMarginsWydzial ", size = 29, @style = " margin-left: 5px; border-radius: 5px; height: 180px;" })
+                        </div>
+
+                    </div>
+                </div>*@
+                <div style="clear:both"></div>
+            </div>
+            <div style="margin-top: -220px; width:98.5%;    border-radius:5px; min-height:400px; margin-bottom: 5px; ">
+                <div id="newCont" style="width: 96%; margin-left:2.5%; margin-top:0px; margin-bottom:20px; padding-bottom:20px;"></div>
+            </div>
+        </div>
+        <div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y:hidden;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4  class="modal-title textColor" id="myModalLabel">Dodaj odpowiedź</h4>
+                    </div>
+                    <div class="modal-body">
+                        <textarea class="ckeditor" cols="20" id="aboutme" name="editor" rows="2"></textarea>
+                        <input type="checkbox" id="checkId" name="chk2" /> Odpowiedź podpisać imieniem i nazwiskiem? (Odznaczone: podpis loginem!)
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-danger" id="subButton">Zapisz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y:hidden;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h4 style="color: #000">Czy napewno chcesz usunąć tą wypowiedź???</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-danger" id="subBu">USUŃ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+                      
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y:hidden;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title textColor" id="myModalLabel" >Edytuj odpowiedź</h4>
+                </div>
+                <div class="modal-body">
+                    <textarea class="ckeditor" cols="20" id="editTxt" name="editor" rows="2"></textarea>
+                    <input type="checkbox" id="checkd" name="chk2" /> Odpowiedź podpisać imieniem i nazwiskiem? (Odznaczone: podpis loginem!)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                    <button type="button" class="zatwierdz btn btn-danger" id="subbed">Zapisz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="zgloszenieModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="height:auto;  width:auto;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4 style="color: #000">
+                        Czy napewno chcesz zgłosić naruszenie
+                        <span class="textColor">@Html.ActionLink("regulaminu", "Index")</span>???
+                    </h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                    <button type="button" class="btn btn-danger" id="subu">ZGŁOŚ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="zgloszeniePotw" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="text-align: center; overflow-y:hidden;">
+        <div class="modal-dialog" style="width:300px; text-align: center; margin-top: 250px;">
+            <div class="modal-content" style="width:300px; text-align: center;">
+                <div class="modal-body" style="background-color: #182026; width:300px; text-align: center;">
+                    <h4 class="textColor" style="text-align: center;">Zgłoszenie zostało wysłane.</h4>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+        <div class="pobraneW" id="@Model.powrotWczesniej"></div>
+        <div class="pobraneC" id="@Model.powrotcompany"></div>
+</div>
+
+
+ 
+
+   

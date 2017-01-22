@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="af383c55aecb4ef0a0f335a72ca5b4e9" Name="Diagram1">
+        <EntityTypeShape EntityType="masterModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Company" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.UsersCompany" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Wydzial" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Przelozony" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="masterModel.wypowiedzUser" Width="1.5" PointX="3.375" PointY="6.75" />
+        <EntityTypeShape EntityType="masterModel.zgloszenieNar" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="masterModel.ocenaPrzelozony" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="masterModel.ocenaCompany" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="masterModel.ratingCompany" Width="1.5" PointX="7.375" PointY="5.75" />
+        <EntityTypeShape EntityType="masterModel.MSreplication_options" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="masterModel.spt_fallback_db" Width="1.5" PointX="9.375" PointY="3.75" />
+        <EntityTypeShape EntityType="masterModel.spt_fallback_dev" Width="1.5" PointX="9.375" PointY="7.75" />
+        <EntityTypeShape EntityType="masterModel.spt_fallback_usg" Width="1.5" PointX="3.375" PointY="10.75" />
+        <EntityTypeShape EntityType="masterModel.spt_monitor" Width="1.5" PointX="5.375" PointY="10.75" />
+        <EntityTypeShape EntityType="masterModel.companyEmail" Width="1.5" PointX="3" PointY="4.5" />
+        <AssociationConnector Association="masterModel.CompanycompanyEmail" />
+        <EntityTypeShape EntityType="masterModel.Likes" Width="1.5" PointX="11.375" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

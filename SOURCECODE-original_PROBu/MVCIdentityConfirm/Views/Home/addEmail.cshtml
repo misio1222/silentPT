@@ -1,0 +1,178 @@
+﻿@model MVCIdentityConfirm.Models.addEmailCompany
+@{
+    ViewBag.Title = "Dodaj email do firmy";
+}
+<script src="~/Scripts/jquery.validate.js"></script>
+<div class="lightBlue">
+    <div id="menuSpace"></div>
+    <div class="insideDiv" style="width:92%; min-height:80%;">
+        <h5 class="spanPogrubienie"> Ponieżej możesz dodać adres email do firmy <span style="color:firebrick"> @Model.companyName</span> </h5>
+        <hr style="margin-top:-8px;"/>
+        <div style="margin-bottom: -18px;">
+            <div style="float:left; width:auto">
+                <h5>ADRES EMAIL </h5>
+            </div>
+            <div style="float:left; margin-left:145px">
+                <h5>STANOWISKO </h5>
+            </div>
+            <div style="clear:both"></div>
+
+        </div>
+        <br />
+        <div id="dataField">
+            <div id="forms0"> 
+                <div >
+                    <div>
+                        <div style="float:left; width:auto;">
+                            <input id="email0" type="email" class="form-control emailField " style="height:30px; width:auto; margin-left:20px;" placeholder="np: prezes@firma.pl" required />
+                        </div>
+                        <div id="stanowiskoField" style="float:left; margin-left:30px;">
+
+                            <select asp-for="tipo" id="stan0" class="form-control" style="height:30px; width:auto; margin-left:20px; ">
+                                <option value="PREZES">PREZES</option>
+                                <option value="ZASTĘPCA PREZESA">ZASTĘPCA PREZESA</option>
+                                <option value="DYREKTOR">DYREKTOR</option>
+                                <option value="ZASTĘPCA DYREKTORA">ZASTĘPCA DYREKTORA</option>
+                                <option value="KIEROWNIK">KIEROWNIK</option>
+                                <option value="MANAGER">MANAGER</option>
+                                <option value="MISTRZ">MISTRZ</option>
+                                <option value="LIDER">LIDER</option>
+                            </select>
+                        </div>
+                        <div style="float:left;margin-left:30px; ">
+                            <input id="0" type="button" value="DODAJ" class="newBtn addBtn " style="float:left;color: white;  font-size: 1.1em;   width:180px; border-radius:3px; height:30px; " />
+                        </div>
+
+                    </div>
+                </div>              
+                <div style="clear:both"></div><br />
+                </div>
+            
+         </div>
+        <div class="modal fade" id="wypelnijPole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="text-align: center; overflow-y:hidden">
+            <div class="modal-dialog" style="width:300px; text-align: center; margin-top: 250px;">
+                <div class="modal-content" style="width:300px; text-align: center;">
+                    <div class="modal-body" style="background-color: #182026; width:300px; text-align: center;">
+                        <h4 style="color: firebrick; text-align: center;">Nie podałeś\aś adresu email!</h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div style=" margin-top:75px; margin-left:20px">
+            <h5><span style="color:firebrick; text-align:justify">UWAGA! </span>Podane adresy email nie zostaną nigdzie ujawnione!</h5>
+            <h5 style="margin-top:-10px; text-align:justify">Na podane adresy email <span style="text-decoration:underline">po wcześniejszym ich zweryfikawaniu</span> przez serwis (akceptacja przez system oznaczeniem "OK" NIE oznacza całkowitej weryfikacji adresu email) zostaną rozesłane zaproszenia do zapoznania się z <span style="color:firebrick; text-decoration:underline">opiniami pracowników</span> na temat osób sprawujących jakąkolwiek władzę w firmie.  </h5>
+
+        </div>
+    </div>  
+    
+
+    <input type="button" value="OK" class="btnNew paper paper-curl-right" id="zatwierdz" style="margin-left: 60px; outline: none" />
+</div>
+
+<script>
+    var count = 0;
+
+    $(function(){
+        $("#zatwierdz").click(function(){
+            var adres = '@Url.Action("Index", "Home", new { cid = Model.companyId})';
+            window.location.replace(adres);
+        });
+    });
+
+
+    function hideWydzial() {
+        $(function () {
+
+            $(".wydzialHide").hide();
+
+        });
+        $(function () {
+            $("#copanyList").css({ height: "50vh" } );
+        });
+
+    };
+
+
+    hideWydzial();
+
+    function addEmail(count) {
+        var stHtm = 
+            '<div id="forms'+count+'">'+
+            '<div style="float:left;"  >' +
+                      '<div><div style="float:left; width:auto;">'+
+                                  
+                                 '<input id="email' + count + '" type="email" class="form-control" style="height:30px; width:auto; margin-left:20px;" placeholder="np: prezes@firma.pl" required />' +
+                              '</div>'+
+                              '<div id="stanowiskoField" style="float:left; margin-left:30px;">'+
+                                  
+                                  '<select asp-for="tipo" id="stan'+ count +'" class="form-control"  style="height:30px; width:auto; margin-left:20px; " >'+
+                                  '<option value="PREZES">PREZES</option>' +
+                                  '<option value="ZASTĘPCA PREZESA">ZASTĘPCA PREZESA</option>' +
+                                  '<option value="DYREKTOR">DYREKTOR</option>' +
+                                  '<option value="ZASTĘPCA DYREKTORA">ZASTĘPCA DYREKTORA</option>' +
+                                  '<option value="KIEROWNIK">KIEROWNIK</option>' +
+                                  '<option value="MANAGER">MANAGER</option>' +
+                                  '<option value="MISTRZ">MISTRZ</option>' +
+                                  '<option value="LIDER">LIDER</option>' +
+
+                                  '</select>'+
+                              '</div>'+
+                              '<div style="float:left;margin-left:30px; ">'+
+                                  '<input id="'+count+'" type="button" value="DODAJ" class="newBtn addBtn" style="float:left;color: white;  font-size: 1.1em;   width:180px; border-radius:3px; height:30px; margin-top:0px;" />'+
+                              '</div>'+
+                      '</div>'+
+                 '</div> <div style="clear:both"></div> <br/>' +
+                 '</div>'
+
+        $(stHtm).hide().appendTo($("#dataField")).show("slow");
+    };
+
+    $(document).ready(function () {
+       //addEmail(0);
+    });
+    
+    $(function () {
+        $("#dataField").on("click", ".addBtn", function () {
+            btnId = $(this).attr("id");
+            if ($('#email' + btnId).val().length != 0 && $('#stan' + btnId).val().length != 0) {
+                $(this).prop("disabled", true);
+                $(this).val("SPRAWDZAM");
+                $('#email' + btnId).prop("disabled", true);
+                $('#stan' + btnId).prop("disabled", true);
+                //alert($('#email' + btnId).val() + $('#stan' + btnId).val());
+                count++;
+                addEmail(count);
+                $.ajax({
+                    dataType:"json",
+                    type:"POST",
+                    url: '@Url.Action("checkEmail", "Home")',
+                    data: {"comp" : @Model.companyId, "email" : $('#email' + btnId).val(), "stanowisko": $('#stan' + btnId).val()},
+                    success: function(ret){
+                        if(ret == true){
+                            
+                                $("#"+btnId).val("OK");
+                            
+                        }else{
+                            $("#"+btnId).val("ZŁY");
+                            setTimeout(function () {
+                                $('#forms'+ btnId +'').hide("slow")
+                            }, 1500);
+                        }
+                    }
+                });
+            } else {
+                $("#wypelnijPole").modal("show")
+                setTimeout(function () {
+                $("#wypelnijPole").modal("hide")
+                }, 1500);
+            }
+        });
+    });
+
+    //$("#form1").validate();
+    
+    
+
+
+</script>

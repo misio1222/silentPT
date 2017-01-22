@@ -1,0 +1,170 @@
+﻿@model MVCIdentityConfirm.Models.managerInfo
+
+
+
+<link href="~/Content/slidery/slideControl.css" rel="stylesheet" />
+<link href="~/Content/slidery/jquery.ui-slider.css" rel="stylesheet" />
+<script src="~/Content/slidery/jquery.slideControl.js"></script>
+<script src="~/Content/slidery/jquery.ui-slider.js"></script>
+
+
+<link href="~/Content/slidery/jquery.range.css" rel="stylesheet" />
+<script src="~/Content/slidery/jquery.range.js"></script>
+
+
+
+
+<div class="lightBlue">
+    <div style="padding-top:30px; margin-left: 20px;" id="x" class="comp">
+        <h4 id="@Model.id" class="przelozonyClass" style="font-size: 16px;"> Oceń Pana \ Panią <span style="color:firebrick"> @Model.imie @Model.nazwisko </span> zajmującego stanowisko <span style="color: #808080">@Model.stanowisko </span>  w firmie <span style="color: #808080"> @Model.firma</span> w skali od 1 do 100.</h4>
+    </div>
+    <br/>
+
+
+    <div style="float:left;">
+        <div style="margin-left: 20px; "> <p id="value" style="color:#e5e5e5"> Kultura osobista: </p></div>
+        <div class="nameSliderSpace"> <p id="value" style="color:#e5e5e5"> Inteligencja: </p></div>
+        <div class="nameSliderSpace"> <p id="value" style="color:#e5e5e5"> Umiejętność słuchania: </p></div>
+        <div class="nameSliderSpace"> <p id="value" style="color:#e5e5e5"> Przyznanie do błędu: </p></div>
+        <div class="nameSliderSpace"> <p id="value" style="color:#e5e5e5"> Cwaniactwo: </p></div>
+        <div class="nameSliderSpace"> <p id="value" style="color:#e5e5e5"> Umiejętność udzielania pochwał: </p></div>
+        <div class="nameSliderSpace"> <p id="value" style="color:#e5e5e5"> Umiejętność efektywnego komunikowania: </p></div>
+        <div class="nameSliderSpace"> <p id="value" style="color:#e5e5e5"> Radzenie sobie z krytyką: </p></div>
+        <div class="nameSliderSpace"> <p id="value" style="color:#e5e5e5"> Rzetelna wiedza: </p></div>
+    </div>
+
+
+    <div style="float:left;">
+        <div style="padding-top:7px; margin-left: 50px;">
+            <input class="single-slider theme-blue" type="hidden" value="@Model.oceny.kulturaOs" id="kultura">
+        </div>
+        <div class="sliderSpace">
+            <input class="single-slider theme-blue" type="hidden" value="@Model.oceny.inteligencja" id="inteligencja">
+        </div>
+        <div class="sliderSpace">
+            <input class="single-slider theme-blue" type="hidden" value="@Model.oceny.umiSluchania" id="sluchanie">
+        </div>
+        <div class="sliderSpace">
+            <input class="single-slider theme-blue" type="hidden" value="@Model.oceny.przyznanieBlad" id="bledu">
+        </div>
+        <div class="sliderSpace">
+            <input class="single-slider theme-blue" type="hidden" value="@Model.oceny.cwaniastwo" id="cwaniactwo">
+        </div>
+        <div class="sliderSpace">
+            <input class="single-slider theme-blue" type="hidden" value="@Model.oceny.udzielaniePochwal" id="pochwaly">
+        </div>
+        <div class="sliderSpace">
+            <input class="single-slider theme-blue" type="hidden" value="@Model.oceny.umieKomunikowania" id="komunikowanie">
+        </div>
+        <div class="sliderSpace">
+            <input class="single-slider theme-blue" type="hidden" value="@Model.oceny.radzenieKrytyka" id="krytyka">
+        </div>
+        <div class="sliderSpace">
+            <input class="single-slider theme-blue" type="hidden" value="@Model.oceny.rzetenaWiedza" id="rzetelnaWiedza">
+        </div>
+    </div>
+
+    <div style="clear:both"></div>
+
+
+    <div>
+        <div style="padding-top:10px;">
+            <input type="button" value="ZAPISZ OCENĘ" class="btnNew paper paper-curl-right" id="zatwierdz" style="float:left; margin-left: 20px; outline: none" />
+
+        </div>
+        <div style="padding-top:10px;">
+            <a href="#" id="anuluj">
+                <h5   style="float:left; margin-left: 20px; outline: none">ANULUJ</h5>
+            </a>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="PotwZapis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="text-align: center; overflow-y:hidden;">
+    <div class="modal-dialog" style="width:300px; text-align: center; margin-top: 250px;">
+        <div class="modal-content" style="width:300px; text-align: center;">
+            <div class="modal-body" style="background-color: #182026; width:300px; text-align: center;">
+                <h4 style="color: firebrick; text-align: center;">Dane zostały zapisane.</h4>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+
+    $(function () {
+        
+        $("#zatwierdz").click(function () {
+            
+
+            var dane = new Array(8);
+            dane[0] = $("#kultura").val();
+            dane[1] = $("#inteligencja").val();
+            dane[2] = $("#sluchanie").val();
+            dane[3] = $("#bledu").val();
+            dane[4] = $("#cwaniactwo").val();
+            dane[5] = $("#pochwaly").val();
+            dane[6] = $("#komunikowanie").val();
+            dane[7] = $("#krytyka").val();
+            dane[8] = $("#rzetelnaWiedza").val();
+            $.ajax({
+                url: '@Url.Action("saveRating", "Rating")',
+                dataType: "json",
+                type: "POST",
+                traditional: true,
+                data: { "idPrzelozony": $(".przelozonyClass").attr("id"), "dane": dane },
+                success: function (dta) {
+                    $("#PotwZapis").modal("show");
+                    setTimeout(function () {
+                        $("#PotwZapis").modal("hide");
+                        var adres = '@Url.Action("Index", "Home", new { powrot = "-555" })';
+                        adres = adres.replace("-555", $(".przelozonyClass").attr("id"));
+                        window.location = adres;
+                    }, 2000);
+                    
+                }
+            });
+        });
+    });
+    $(function () {
+
+        $("#anuluj").click(function () {
+            var adres = '@Url.Action("Index", "Home", new { powrot = "-555" })';
+            adres = adres.replace("-555", $(".przelozonyClass").attr("id"));
+            window.location = adres;
+        });
+    });
+
+        $('.single-slider').jRange({
+            from: 0,
+            to: 100,
+            scale: [],
+            theme: 'theme-blue',
+
+        });
+
+        $('.single-slider').jRange().val();
+
+
+        //    var position = 50;
+
+        //$('#ui-nowy')
+        //    .UISlider({
+        //        min: 1,
+        //        max: 100,
+        //        value: position,
+        //        smooth: false
+
+        //    })
+        //    .on('drag', function (event, value) {
+
+        //        $('#value').text(value);
+
+        //    });
+
+        //    $('#value').text(position);
+
+
+</script>
+
+
