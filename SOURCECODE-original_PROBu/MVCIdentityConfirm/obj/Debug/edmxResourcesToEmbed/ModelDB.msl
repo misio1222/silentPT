@@ -228,11 +228,12 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Likes">
-      <EntityTypeMapping TypeName="masterModel.Likes">
+      <EntityTypeMapping TypeName="IsTypeOf(masterModel.Likes)">
         <MappingFragment StoreEntitySet="Likes">
-          <ScalarProperty Name="wypowiedzID" ColumnName="wypowiedzID" />
-          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="likeOrNot" ColumnName="likeOrNot" />
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="wypowiedzID" ColumnName="wypowiedzID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

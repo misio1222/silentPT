@@ -228,6 +228,7 @@
     <Compile Include="Models\addedLikes.cs" />
     <Compile Include="Models\addEmailCompany.cs" />
     <Compile Include="Models\CaptchaResponse.cs" />
+    <Compile Include="Models\changLike.cs" />
     <Compile Include="Models\CImage.cs" />
     <Compile Include="Models\ComLyoutModel.cs" />
     <Compile Include="Models\comModel.cs" />

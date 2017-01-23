@@ -1203,6 +1203,10 @@ border-radius:100px;
     margin-right:10px;
 }
 
+.fa .fa-thumbs-o-up :hover{
+    color:#e2ded5;
+}
+
 .menu-itemLike{
     cursor:pointer;
     color:#474340;

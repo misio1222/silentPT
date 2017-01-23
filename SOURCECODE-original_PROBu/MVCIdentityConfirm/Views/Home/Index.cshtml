@@ -1293,7 +1293,8 @@
         $("#newCont").on("click", ".fa-thumbs-o-down", function () {
 
             var id = $(this).attr("id");
-            var spnId = $("#notLSpan" + id).attr("id");
+            var spnIdN = $("#notLSpan" + id).attr("id");
+            var spnId = $("#lSpan" + id).attr("id");
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("getNoLike", "Home")',
@@ -1301,18 +1302,30 @@
                 data: { "wypoId": id },
                 success: function (data_notLikes) {
                     if (!data_notLikes.alreadyAdd) {
-                        $("#" + spnId).text(data_notLikes.likesInt);
-                    } else {
-                        $("#likeAdded").modal("show");
-                        setTimeout(function () {
-                            $("#likeAdded").modal("hide");
-                        }, 1800);
+                        $("#" + spnIdN).text(" " + data_notLikes.likesInt);
 
+                    }else{
+                        if (!data_notLikes.likeOrNot)
+                        {
+                            $.ajax({
+                                type: "GET",
+                                url: '@Url.Action("changeLike", "Home")',
+                                dataType: "json",
+                                data: { "wypoId": id, "like": false },
+                                success: function (data_change) {
+                                    $("#" + spnId).text(" " + data_change.likesInt);
+                                    $("#" + spnIdN).text(" " + data_change.notLike);
+                                }
+                            });
                     }
 
-
+                    //} else {
+                    //    $("#likeAdded").modal("show");
+                    //    setTimeout(function () {
+                    //        $("#likeAdded").modal("hide");
+                    //    }, 1800);
+                    }
                 }
-
             });
         });
     });
@@ -1416,7 +1429,7 @@
                 <h5 class="col-md-9" style="color:black; font-size:13px; font-style:italic; padding-top:22px;">
                     ( na temat działu jak również osoby zarządzającej działem )
                 </h5>
-                <button type="button" id="odpowiedzBtn" style="outline: none;  margin-top:20px; " class="col-md-2 btnNew paper paper-curl-right " data-toggle="modal" data-target="#declineModal">
+                <button type="button" id="odpowiedzBtn" style="outline: none;  margin-top:20px; width:auto; " class="col-md-2 btnNew paper paper-curl-right " data-toggle="modal" data-target="#declineModal">
                     ODPOWIEDZ
                 </button>
             </div>

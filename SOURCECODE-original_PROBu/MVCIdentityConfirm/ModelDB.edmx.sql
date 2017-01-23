@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 01/20/2017 12:42:17
--- Generated from EDMX file: C:\GitHub\silencePT\SOURCECODE-original_PROBu\MVCIdentityConfirm\ModelDB.edmx
+-- Date Created: 01/23/2017 07:01:06
+-- Generated from EDMX file: C:\GitHub\silentPT\SOURCECODE-original_PROBu\MVCIdentityConfirm\ModelDB.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -33,6 +33,9 @@ IF OBJECT_ID(N'[dbo].[Company]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[companyEmailSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[companyEmailSet];
+GO
+IF OBJECT_ID(N'[dbo].[Likes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Likes];
 GO
 IF OBJECT_ID(N'[dbo].[MSreplication_options]', 'U') IS NOT NULL
     DROP TABLE [dbo].[MSreplication_options];
@@ -288,6 +291,14 @@ CREATE TABLE [dbo].[companyEmailSet] (
 );
 GO
 
+-- Creating table 'Likes'
+CREATE TABLE [dbo].[Likes] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [userId] nvarchar(max)  NOT NULL,
+    [wypowiedzID] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -385,6 +396,12 @@ GO
 -- Creating primary key on [Id] in table 'companyEmailSet'
 ALTER TABLE [dbo].[companyEmailSet]
 ADD CONSTRAINT [PK_companyEmailSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Likes'
+ALTER TABLE [dbo].[Likes]
+ADD CONSTRAINT [PK_Likes]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

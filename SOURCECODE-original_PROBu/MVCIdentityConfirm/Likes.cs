@@ -17,5 +17,6 @@ namespace MVCIdentityConfirm
         public int Id { get; set; }
         public string userId { get; set; }
         public int wypowiedzID { get; set; }
+        public bool likeOrNot { get; set; }
     }
 }

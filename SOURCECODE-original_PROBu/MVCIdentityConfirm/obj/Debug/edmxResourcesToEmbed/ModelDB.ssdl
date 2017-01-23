@@ -41,6 +41,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="userId" Type="nvarchar(max)" Nullable="false" />
     <Property Name="wypowiedzID" Type="int" Nullable="false" />
+    <Property Name="likeOrNot" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="MSreplication_options">
     <Key>

@@ -292,5 +292,6 @@
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="userId" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="wypowiedzID" Type="Int32" Nullable="false" />
+    <Property Name="likeOrNot" Type="Boolean" Nullable="false" />
   </EntityType>
 </Schema>

@@ -654,7 +654,8 @@ namespace MVCIdentityConfirm.Controllers
                 likeNumber += 1;
                 Likes lk = new Likes {
                     userId = user,
-                    wypowiedzID = wypoId
+                    wypowiedzID = wypoId,
+                    likeOrNot=true
                 };
 
                 dt.Likes.Add(lk);
@@ -684,7 +685,8 @@ namespace MVCIdentityConfirm.Controllers
                 Likes lk = new Likes
                 {
                     userId = user,
-                    wypowiedzID = wypoId
+                    wypowiedzID = wypoId,
+                    likeOrNot = false
                 };
 
                 dt.Likes.Add(lk);
@@ -699,6 +701,44 @@ namespace MVCIdentityConfirm.Controllers
 
             return Json(aLNot, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult changeLike(int wypoId, bool like)
+        {
+
+            dataDB dt = new dataDB();
+            string user = User.Identity.GetUserId();
+            int notLikeNumber = dt.wypowiedzUser.Where(t => t.Id == wypoId).Select(t => t.notLike).FirstOrDefault();
+            int likeNumber = dt.wypowiedzUser.Where(p => p.Id == wypoId).Select(w => w.like).FirstOrDefault();
+            var check = dt.Likes.Where(x => x.wypowiedzID == wypoId && x.userId == user && x.likeOrNot != like).Select(z => z).Any();
+            if (check)
+            {
+                var data = dt.wypowiedzUser.Where(y => y.Id == wypoId).Select(f => f).FirstOrDefault();
+                data.like -= 1;
+                likeNumber -= 1;
+                notLikeNumber += 1;
+                data.notLike += 1;
+                
+                Likes lk = new Likes
+                {
+                    userId = user,
+                    wypowiedzID = wypoId,
+                    likeOrNot = false
+                };
+
+                dt.Likes.Add(lk);
+                dt.SaveChanges();
+            }
+            dt.Dispose();
+
+            changLike chL = new changLike {
+                likeInt = likeNumber,
+                notLike = notLikeNumber
+            };
+
+
+            return Json(chL, JsonRequestBehavior.AllowGet);
+        }
+
 
 
         [ValidateInput(false)]

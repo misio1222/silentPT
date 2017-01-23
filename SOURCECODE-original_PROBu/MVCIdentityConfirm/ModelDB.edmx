@@ -46,6 +46,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userId" Type="nvarchar(max)" Nullable="false" />
           <Property Name="wypowiedzID" Type="int" Nullable="false" />
+          <Property Name="likeOrNot" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="MSreplication_options">
           <Key>
@@ -590,6 +591,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="userId" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="wypowiedzID" Type="Int32" Nullable="false" />
+          <Property Name="likeOrNot" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -823,15 +825,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-          <EntitySetMapping Name="Likes">
-            <EntityTypeMapping TypeName="masterModel.Likes">
-              <MappingFragment StoreEntitySet="Likes">
-                <ScalarProperty Name="wypowiedzID" ColumnName="wypowiedzID" />
-                <ScalarProperty Name="userId" ColumnName="userId" />
+    <EntitySetMapping Name="Likes">
+      <EntityTypeMapping TypeName="IsTypeOf(masterModel.Likes)">
+        <MappingFragment StoreEntitySet="Likes">
+          <ScalarProperty Name="likeOrNot" ColumnName="likeOrNot" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="wypowiedzID" ColumnName="wypowiedzID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
