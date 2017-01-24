@@ -9,5 +9,6 @@ namespace MVCIdentityConfirm.Models
     {
         public bool alreadyAdd { get; set; }
         public int likesInt { get; set; } 
+        public int notLikesInt { get; set; }
     }
 }

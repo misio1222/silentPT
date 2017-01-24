@@ -1264,6 +1264,7 @@
         $("#newCont").on("click", ".fa-thumbs-o-up", function () {
 
             var id = $(this).attr("id");
+            var spnIdN = $("#notLSpan" + id).attr("id");
             var spnId = $("#lSpan" + id).attr("id");
                 $.ajax({
                     type: "GET",
@@ -1271,17 +1272,8 @@
                     dataType: "json",
                     data:{"wypoId":id},
                     success: function (data_Likes) {
-                        if (!data_Likes.alreadyAdd) {
-                            $("#" + spnId).text(data_Likes.likesInt);
-                        } else {
-                            $("#likeAdded").modal("show");
-                            setTimeout(function () {
-                                $("#likeAdded").modal("hide");
-                            }, 1800);
-
-                        }
-                        
-                        
+                        $("#" + spnIdN).text(" " + data_Likes.notLikesInt);
+                        $("#" + spnId).text(" " + data_Likes.likesInt)
                     }
 
                 });
@@ -1301,30 +1293,9 @@
                 dataType: "json",
                 data: { "wypoId": id },
                 success: function (data_notLikes) {
-                    if (!data_notLikes.alreadyAdd) {
-                        $("#" + spnIdN).text(" " + data_notLikes.likesInt);
-
-                    }else{
-                        if (!data_notLikes.likeOrNot)
-                        {
-                            $.ajax({
-                                type: "GET",
-                                url: '@Url.Action("changeLike", "Home")',
-                                dataType: "json",
-                                data: { "wypoId": id, "like": false },
-                                success: function (data_change) {
-                                    $("#" + spnId).text(" " + data_change.likesInt);
-                                    $("#" + spnIdN).text(" " + data_change.notLike);
-                                }
-                            });
-                    }
-
-                    //} else {
-                    //    $("#likeAdded").modal("show");
-                    //    setTimeout(function () {
-                    //        $("#likeAdded").modal("hide");
-                    //    }, 1800);
-                    }
+                        $("#" + spnIdN).text(" " + data_notLikes.notLikesInt);
+                        $("#" + spnId).text(" " + data_notLikes.likesInt)
+                   
                 }
             });
         });
