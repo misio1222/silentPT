@@ -230,10 +230,10 @@
     <EntitySetMapping Name="Likes">
       <EntityTypeMapping TypeName="IsTypeOf(masterModel.Likes)">
         <MappingFragment StoreEntitySet="Likes">
-          <ScalarProperty Name="likeOrNot" ColumnName="likeOrNot" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="userId" ColumnName="userId" />
           <ScalarProperty Name="wypowiedzID" ColumnName="wypowiedzID" />
+          <ScalarProperty Name="likeOrNot" ColumnName="likeOrNot" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -10,6 +10,8 @@ using System.Drawing;
 using System.Web;
 using MVCIdentityConfirm.Necessary;
 using System.Text.RegularExpressions;
+using LumenWorks.Framework.IO;
+using LumenWorks.Framework.IO.Csv;
 
 namespace MVCIdentityConfirm.Controllers
 {
@@ -642,7 +644,7 @@ namespace MVCIdentityConfirm.Controllers
 
         public JsonResult getLike (int wypoId)
         {
-
+            
             dataDB dt = new dataDB();
             string user = User.Identity.GetUserId();
             int notLikeNumber = dt.wypowiedzUser.Where(y => y.Id == wypoId).Select(f => f.notLike).FirstOrDefault();
@@ -694,41 +696,42 @@ namespace MVCIdentityConfirm.Controllers
 
         public JsonResult getNoLike(int wypoId)
         {
-
             dataDB dt = new dataDB();
             string user = User.Identity.GetUserId();
             int notLikeNumber = dt.wypowiedzUser.Where(y => y.Id == wypoId).Select(f => f.notLike).FirstOrDefault();
-            int LikeNumber = dt.wypowiedzUser.Where(y => y.Id == wypoId).Select(f => f.like).FirstOrDefault();
+            int likeNumber = dt.wypowiedzUser.Where(y => y.Id == wypoId).Select(f => f.like).FirstOrDefault();
             var check = dt.Likes.Where(x => x.wypowiedzID == wypoId && x.userId == user).Select(z => z).Any();
             if (!check)
             {
                 var data = dt.wypowiedzUser.Where(y => y.Id == wypoId).Select(f => f).FirstOrDefault();
                 data.notLike += 1;
                 notLikeNumber += 1;
+
                 Likes lk = new Likes
                 {
                     userId = user,
                     wypowiedzID = wypoId,
                     likeOrNot = false
                 };
+
+                dt.Likes.Add(lk);
                 dt.SaveChanges();
             }
             if (check)
             {
                 var choice = dt.Likes.Where(x => x.wypowiedzID == wypoId && x.userId == user && x.likeOrNot == true).Select(z => z).Any();
-                if(choice)
+                if (choice)
                 {
                     var data = dt.wypowiedzUser.Where(y => y.Id == wypoId).Select(f => f).FirstOrDefault();
                     data.notLike += 1;
                     notLikeNumber += 1;
                     data.like -= 1;
-                    LikeNumber -= 1;
+                    likeNumber -= 1;
 
-                    var lkj = dt.Likes.Where(x => x.wypowiedzID == wypoId && x.userId == user && x.likeOrNot == true).Select(z => z).FirstOrDefault();
-
-                    lkj.userId = user;
-                    lkj.wypowiedzID = wypoId;
-                    lkj.likeOrNot = false;
+                    var lk = dt.Likes.Where(x => x.wypowiedzID == wypoId && x.userId == user && x.likeOrNot == true).Select(z => z).FirstOrDefault();
+                    lk.userId = user;
+                    lk.wypowiedzID = wypoId;
+                    lk.likeOrNot = false;
                     dt.SaveChanges();
                 }
             }
@@ -736,10 +739,9 @@ namespace MVCIdentityConfirm.Controllers
             addedLikes aLNot = new addedLikes
             {
                 alreadyAdd = check,
-                likesInt = LikeNumber ,
+                likesInt = likeNumber,
                 notLikesInt = notLikeNumber,
             };
-
             return Json(aLNot, JsonRequestBehavior.AllowGet);
         }
 
@@ -1164,6 +1166,14 @@ namespace MVCIdentityConfirm.Controllers
 
         public ActionResult test_2(int? page)
         {
+
+            using (CsvReader cRead = new CsvReader(new StreamReader("data.csv"), true)
+                {
+                    
+
+                }
+            ) ;
+            
             dataDB data = new dataDB();
             string mojeId = User.Identity.GetUserId().ToString();
              

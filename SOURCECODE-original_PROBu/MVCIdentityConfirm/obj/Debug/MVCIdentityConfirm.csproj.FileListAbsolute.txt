@@ -858,3 +858,4 @@ C:\GitHub\silentPT\SOURCECODE-original_PROBu\MVCIdentityConfirm\bin\Microsoft.Ow
 C:\GitHub\silentPT\SOURCECODE-original_PROBu\MVCIdentityConfirm\obj\Debug\MVCIdentityConfirm.csprojResolveAssemblyReference.cache
 C:\GitHub\silentPT\SOURCECODE-original_PROBu\MVCIdentityConfirm\obj\Debug\MVCIdentityConfirm.dll
 C:\GitHub\silentPT\SOURCECODE-original_PROBu\MVCIdentityConfirm\obj\Debug\MVCIdentityConfirm.pdb
+C:\GitHub\silentPT\SOURCECODE-original_PROBu\MVCIdentityConfirm\bin\LumenWorks.Framework.IO.dll

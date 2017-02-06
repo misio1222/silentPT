@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 01/23/2017 07:01:06
+-- Date Created: 02/03/2017 08:16:28
 -- Generated from EDMX file: C:\GitHub\silentPT\SOURCECODE-original_PROBu\MVCIdentityConfirm\ModelDB.edmx
 -- --------------------------------------------------
 
@@ -295,7 +295,8 @@ GO
 CREATE TABLE [dbo].[Likes] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [userId] nvarchar(max)  NOT NULL,
-    [wypowiedzID] int  NOT NULL
+    [wypowiedzID] int  NOT NULL,
+    [likeOrNot] bit  NOT NULL
 );
 GO
 
