@@ -785,14 +785,14 @@ namespace MVCIdentityConfirm.Controllers
 
 
         [ValidateInput(false)]
-        public JsonResult saveAnsware (string userAns, int idWydz, int idCom, bool checkedLog)
+        public JsonResult saveAnsware (string userAns, int[] compAndWydzial, bool checkedLog)
         {
             dataDB data = new dataDB();
             userDB usr = new userDB();
             string userId = User.Identity.GetUserId();
             var user = usr.AspNetUsers.Where(x => x.Id == userId).Select(y => y).First();
-
-
+            int idCom = compAndWydzial[0];
+            int idWydz = compAndWydzial[1];
             wypowiedzUser wypowiedz = new wypowiedzUser
             {
                 companyId = idCom,

@@ -76,7 +76,7 @@
             success: function (dta) {
                 $("#liczbaOsob").text(dta[1]);
                 percent = dta[0] / 700;
-                
+
                 ocenaProcent = (percent * 100).toFixed(3);
                 $("#procentOceny").text(ocenaProcent + " %");
                 if (percent == 0) {
@@ -176,7 +176,7 @@
 
     $(function () {
         $("#copanyList").change(function () {
-            
+
             var idSel = $("#copanyList").val();
             var vale = $("#copanyList").val();
             var noChange = $('#copanyList option:first-child').val();
@@ -243,7 +243,7 @@
                         });
                         var idWydzial = $('#wydzialList option:first-child').val();
 
-                        if (idWydzial != null && idWydzial != 0) {                            
+                        if (idWydzial != null && idWydzial != 0) {
 
                             $.ajax({
                                 type: "POST",
@@ -449,8 +449,110 @@
     });
 
 
-
     $(function () {
+        $("#subButton").click(function () {
+            var value = CKEDITOR.instances['aboutme'].getData();
+
+            if (value != "") {
+                $("#subButton").attr("disabled", true);
+                CKEDITOR.instances['aboutme'].setData('');
+                value = value.replace('<p>', '<p style=" text-align:justify;"> ');
+                var compAndWydzial = new Array(2);
+
+                compAndWydzial[1] = $("#wydzialList").val();
+                if ($(".pobraneW").attr("id") != 0) {
+                    compAndWydzial[1] == $(".pobraneW").attr("id");
+                }
+                if (compAndWydzial[1] == null && $(".pobraneW").attr("id") == 0) {
+                    compAndWydzial[1] = $('#wydzialList option:first-child').val();
+                }
+
+                if (compAndWydzial[0] == null) {
+                    compAndWydzial[0] = $('#copanyList option:first-child').val();
+                }
+                var va = $('#checkId').is(':checked');
+
+               
+                var fileData = new FormData();
+                var file = document.getElementById("zalacznikFile").files;
+                var valueOfInput = $.trim($("#zalacznikFile").val());
+                if (valueOfInput != "") {
+                    fileData.append(file.name, file);
+                } else {
+
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("saveAnsware", "Home")',
+                    dataType: "json",
+                    traditional: true,
+                    data: { "userAns": value, "compAndWydzial": compAndWydzial, "checkedLog": va},
+
+                    success: function (dta) {
+                        $("#declineModal .close").click();
+                        var idSelected = $("#wydzialList").val();
+                        $("#newCont").empty();
+                        $("#tbl").empty();
+                        $('#newCont').append('<table id="tbl" class="table table-striped"></table>');
+                        for (a = 0; a < dta.length; a++) {
+                            if (dta[a].mojeId == dta[a].userId) {
+                                var link = '    ' + ' <input  type="button" id="-123" class="editWyp formBtn" value="Edytuj"> </input>' + '    ';
+                                link = link.replace('-123', dta[a].id);
+                                var link_2 = ' <input   type="button" id="-998" class="deleteWyp formBtn" value="Usuń"> </input>' + '    ';
+                                link_2 = link_2.replace('-998', dta[a].id);
+                                var link_3 = ' <input   type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                link_3 = link_3.replace('-666', dta[a].id);
+                                var nLike = '<i id="nLike87654" class="menu-item fa fa-thumbs-o-down " style="font-size:19px; color:#000" title="Nie lubię" ><span id="notLikeSpan" style="color: #e2ded5; font-size: 16px"> liczbaNLike</span></i>';
+                                nLike = nLike.replace('nLike87654', dta[a].id);
+                                nLike = nLike.replace('notLikeSpan', "notLSpan" + dta[a].id);
+                                nLike = nLike.replace('liczbaNLike', dta[a].notLike)
+                                var Like = '<i id="Like23234" class="menu-item fa fa-thumbs-o-up" style="font-size:19px; color:#000" title="Lubię"><span id="likeSpan"  style="color:#e2ded5; font-size: 16px; margin-top: -3px;"> liczbaLike</span></i> '
+                                Like = Like.replace('Like23234', dta[a].id);
+                                Like = Like.replace('likeSpan', "lSpan" + dta[a].id);
+                                Like = Like.replace('liczbaLike', dta[a].like);
+                            } else {
+                                var nLike = '<i id="nLike87654" class="menu-item fa fa-thumbs-o-down " style="font-size:19px; color:#000" title="Nie lubię" ><span id="notLikeSpan" style="color: #e2ded5; font-size: 16px"> liczbaNLike</span></i>';
+                                nLike = nLike.replace('nLike87654', dta[a].id);
+                                nLike = nLike.replace('notLikeSpan', "notLSpan" + dta[a].id);
+                                nLike = nLike.replace('liczbaNLike', dta[a].notLike)
+                                var Like = '<i id="Like23234" class="menu-item fa fa-thumbs-o-up" style="font-size:19px; color:#000" title="Lubię"><span id="likeSpan"  style="color:#e2ded5; font-size: 16px; margin-top: -3px;"> liczbaLike</span></i> '
+                                Like = Like.replace('Like23234', dta[a].id);
+                                Like = Like.replace('likeSpan', "lSpan" + dta[a].id);
+                                Like = Like.replace('liczbaLike', dta[a].like);
+                                var link = "";
+                                var link_2 = "";
+                                var link_3 = ' <input   type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                                link_3 = link_3.replace('-666', dta[a].id);
+                            }
+
+                            $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dta[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dta[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  ><div style="width:100%">' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dta[a].content + '</span> </div><div style="width:100%; height:30px; text-size:20px; color:#fff;" > ' + nLike + ' ' + Like + '   </div></td></tr>');
+                        }
+                        $('#tbl').easyPaginate({
+                            paginateElement: 'tr',
+                            elementsPerPage: 30,
+                            effect: 'default'
+                        });
+                        $("#subButton").attr("disabled", false);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.responseText);
+                        $("#subButton").attr("disabled", false);
+                    }
+                });
+            } else {
+                alert("Kolego / Koleżanko NAPISZ COŚ ;)")
+            }
+        });
+    });
+
+
+
+
+
+
+
+    @*$(function () {                                                                       <<< wypowiedz >>>>>>>>
         $("#subButton").click(function () {
             var value = CKEDITOR.instances['aboutme'].getData();
 
@@ -532,25 +634,25 @@
                 alert("Kolego / Koleżanko NAPISZ COŚ ;)")
             }
         });
-    });
+    });*@
 
 
     $(document).bind('function_a_complete', loadPage);
-   
+
 
 
     // $(document).ready(
 
 
             function loadPage() {
-            
+
             var exist = $('#copanyList option:first-child').val();
             var backW = $(".pobraneW").attr("id");
             var backC = $(".pobraneC").attr("id");
             if (exist != 0) {
 
                 if (backC != 0) {
-                    
+
                     $.ajax({
                         type: "POST",
                         url: '@Url.Action("getCompanyInfo", "Home")',
@@ -692,7 +794,7 @@
                     });
 
                 } else {
-                    
+
                     $.ajax({
                         type: "POST",
                         url: '@Url.Action("getCompanyInfo", "Home")',
@@ -776,13 +878,13 @@
                                                 }
                                                 $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dta[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dta[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  ><div style="width:100%">' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dta[a].content + '</span> </div><div style="width:100%; height:30px; text-size:20px; color:#fff;" > ' + nLike + ' ' + Like + '   </div></td></tr>');
                                             }
-                                            
-                                            
+
+
                                             //$('#tbl').paginate({
                                             //    'elemsPerPage': 30,
                                             //    'maxButtons': 8
                                             //})
-                                            
+
 
                                             //$("#tbl").simplePagination({
                                             //    perPage: 30,
@@ -792,8 +894,8 @@
                                             //});
 
 
-                                            
-                                            
+
+
 
 
 
@@ -927,14 +1029,14 @@
                     $("#delModal").modal('hide');
                     $("#subBu").attr("disabled", false);
                     del = null;
-                    
+
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(xhr.responseText);
                     $("#subBu").attr("disabled", false);
                 }
             });
-            
+
         });
     });
 
@@ -956,7 +1058,7 @@
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(xhr.responseText);
-                    
+
                 }
 
             });
@@ -1141,7 +1243,7 @@
     });
 
 
-  
+
 
     //$(function () {
     //    $("#btnAddCompanyEmail").click(function () {
@@ -1168,7 +1270,7 @@
             $('html, body').animate({
                 scrollTop: $("#forumId").offset().top
             }, 500);
-            
+
         });
     });
 
@@ -1256,7 +1358,7 @@
             $('html').css("margin-right", "0px");
         });
     });
-    
+
 
 
 
@@ -1295,12 +1397,12 @@
                 success: function (data_notLikes) {
                         $("#" + spnIdN).text(" " + data_notLikes.notLikesInt);
                         $("#" + spnId).text(" " + data_notLikes.likesInt)
-                   
+
                 }
             });
         });
     });
- 
+
 
 
 
@@ -1423,8 +1525,11 @@
                     </div>
                     <div class="modal-body">
                         <textarea class="ckeditor" cols="20" id="aboutme" name="editor" rows="2"></textarea>
-                        <input type="checkbox" id="checkId" name="chk2" /> Odpowiedź podpisać imieniem i nazwiskiem? (Odznaczone: podpis loginem!)
+                        <h5 style="margin-top:6px; color:black; width:100%">Załącz zdjęcie (<span class="textColor">rozmiar max:</span> 2 MB,  <span class="textColor">format:</span> jpg, jpeg, png, bmp)</h5> 
+                        <input type="file" id="zalacznikFile" style="width:100%; margin-top:5px;"/>
+                        <input type="checkbox" id="checkId" name="chk2" style="margin-top:10px;"/> Odpowiedź podpisać imieniem i nazwiskiem? (Odznaczone: podpis loginem!)
                     </div>
+              
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
                         <button type="button" class="btn btn-danger" id="subButton">Zapisz</button>
