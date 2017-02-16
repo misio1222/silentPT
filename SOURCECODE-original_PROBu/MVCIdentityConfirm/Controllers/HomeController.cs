@@ -810,11 +810,13 @@ namespace MVCIdentityConfirm.Controllers
 
             data.wypowiedzUser.Add(wypowiedz);
             data.SaveChanges();
-                    
+
+            
+
             var wypow = data.wypowiedzUser.Where(b => b.wydzialId== idWydz).OrderByDescending(r => r.Id).Select(v => v);
+            ZmodyfikowanaWypowiedzId listWypZm = new ZmodyfikowanaWypowiedzId();
             List<wypoModel> listWypo = new List<wypoModel>();
             
-             
             if (wypow != null)
             {
                 foreach (var c in wypow)
@@ -852,9 +854,29 @@ namespace MVCIdentityConfirm.Controllers
                 }
             }
 
+            var idWypowiedz = wypowiedz.Id;
+            listWypZm.idWypowiedzi = idWypowiedz;
+            listWypZm.listaWypowiedzi = listWypo;
 
-            return Json(listWypo, JsonRequestBehavior.AllowGet);
+            return Json(listWypZm, JsonRequestBehavior.AllowGet);
         }
+
+
+        [HttpPost]
+        public void UploadPhoto()
+        {
+
+                var file = Request.Files[0];
+                var id = Request.Files.Keys[0];
+                var fileName = Path.GetFileName(file.FileName);
+
+                var path = Path.Combine(Server.MapPath("~/App_Data/"), file.FileName);
+                file.SaveAs(path);
+            
+
+        }
+
+
 
         public JsonResult delAnsware (int idAnswer, int idWydz)
         {

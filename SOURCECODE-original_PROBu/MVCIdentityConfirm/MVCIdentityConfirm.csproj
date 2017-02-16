@@ -251,6 +251,7 @@
     <Compile Include="Models\wydzialModel.cs" />
     <Compile Include="Models\wydzialModClass.cs" />
     <Compile Include="Models\wypoModel.cs" />
+    <Compile Include="Models\ZmodyfikowanaWypowiedzId.cs" />
     <Compile Include="MSreplication_options.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
