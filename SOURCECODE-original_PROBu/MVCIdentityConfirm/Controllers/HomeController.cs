@@ -245,12 +245,7 @@ namespace MVCIdentityConfirm.Controllers
                     {
                         dataDB dbBase = new dataDB();
                         string UId = User.Identity.GetUserId();
-                        int test = 0;
-
                         var selComp = dbBase.UsersCompany.Where(y => y.UserID == UId).Select(z => z);
-
-
-
                         foreach (string x in selectedCompany)
                         {
                             int exi = selComp.Where(c => c.CompanyID.ToString() == x).Select(m => m).Count();
@@ -324,6 +319,33 @@ namespace MVCIdentityConfirm.Controllers
                             data.Company.Add(comp);
                             data.SaveChanges();
 
+                            int compId = comp.Id;                                                                                               /////////////////     dodanie ogolnego forum
+
+
+                            Przelozony przel = new Przelozony
+                            {
+
+                                Imie = "FORUM",
+                                Nazwisko = " Forum ogólne ",
+                                Stanowisko = "BRAK",
+                                Dodalid = "Admin"
+                            };
+                            data.Przelozony.Add(przel);
+                            data.SaveChanges();
+                            int przelozonyId = przel.Id;
+                            
+                            
+
+                            Wydzial wd = new Wydzial
+                            {
+                                CompanyID = compId,
+                                Wydzial1 = "OGÓLNO FIRMOWE",
+                                PrzelozonyId = przelozonyId,
+                                DodalId = "ADMIN"
+                            };
+
+                            data.Wydzial.Add(wd);
+                            data.SaveChanges();
                             data.Dispose();
                             ViewBag.Exist = "Firma została dodana do listy. ";
 
@@ -1019,7 +1041,7 @@ namespace MVCIdentityConfirm.Controllers
 
             foreach (var ds in wdz)
             {
-                var zarzadza = dt.Przelozony.Where(m => m.Id == ds.PrzelozonyId).Select(bv => bv.Nazwisko).First();
+                var zarzadza = dt.Przelozony.Where(m => m.Id == ds.PrzelozonyId).Select(bv => bv.Nazwisko).FirstOrDefault();
                 SelectListItem sItem = new SelectListItem()
                 {
                     Text = ds.Wydzial1 + " ( " + zarzadza + " )",
