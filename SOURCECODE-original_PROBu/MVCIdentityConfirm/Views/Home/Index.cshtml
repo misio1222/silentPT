@@ -182,7 +182,7 @@
             var noChange = $('#copanyList option:first-child').val();
             if (idSel != noChange) {
                 boolCompanyChanged = true;
-            }
+            } 
             if( $(".pobraneC").attr("id") != 0){
                 if ($(".pobraneC").attr("id") != idSel) {
                     boolCompanyChanged = true;
@@ -197,13 +197,12 @@
                     dataType: "json",
                     data: { 'idSelect': idSel },
                     success: function (data) {
-                        $("#stanowiskoName").hide();
-                        $(".casaOcen").hide();
-                        $("#przelDane").hide();
-                        $("#nazwaDzial").hide();
-                        $("#kreska").hide();
-                        $("#odpowiedzBtn").hide();
-                        $("#danePrzelozonego").hide();
+                        $("#ocenaPrzelozonegoInfo").hide();
+                        $("#ocenaPrzelozonegoProgress").hide();
+                        $("#ocenaPrzelozonegoSzcz").hide();
+                        $("#ocenaPrzelozonyDetails").hide();
+                        $("#prog").hide();
+
                         $("#newCont").empty();
                         $("#tbl").empty();
                         $("#CompLogo").show();
@@ -251,13 +250,7 @@
                                 dataType: "json",
                                 data: { 'idWydzial': idWydzial },
                                 success: function (data) {
-                                    $("#odpowiedzBtn").show();
-                                    $("#stanowiskoName").show();
                                     $("#danePrzelozonego").show();
-                                    $("#nazwaDzial").show();
-                                    $("#kreska").show();
-                                    $("#przelDane").show();
-                                    $(".casaOcen").show();
                                     $(".casaOcen").attr("value", "OCENA")
                                     $("#stanowiskoName").text(data.stanowisko)
                                     $("#nazwaDzial").text(data.wydzialName);
@@ -352,19 +345,45 @@
                     data: { 'idWydzial': idSelected },
                     success: function (data) {
                         notchange = idSelected;
-                        $("#odpowiedzBtn").show();
-                        $("#stanowiskoName").show();
-                        $("#nazwaDzial").show();
-                        $("#danePrzelozonego").show();
-                        $("#kreska").show();
-                        $("#przelDane").show();
-                        $(".casaOcen").show();
-                        $(".casaOcen").attr("value", "OCENA")
-                        $("#stanowiskoName").text(data.stanowisko)
-                        $("#nazwaDzial").text(data.wydzialName);
-                        $(".casaOcen").attr("id", data.przelozonyID);
-                        $("#przelDane").text(data.przelozony);
-                        rateManager();
+                        if (idSelected == notChange) {
+                            $("#ocenaPrzelozonegoInfo").fadeOut("slow");
+                            $("#centerDivPrzelName").fadeOut("slow");
+                            $("#ocenaPrzelozonegoProgress").fadeOut("slow");
+                            $("#ocenaPrzelozonegoSzcz").fadeOut("slow");
+                            $("#ocenaPrzelozonyDetails").fadeOut("slow");
+                            $("#prog").fadeOut("slow");
+                            $("#danePrzelozonego").show();
+                            $("#odpowiedzBtn").show();
+                            $("#przelDane").show();
+                            $(".casaOcen").show();
+                            $(".casaOcen").attr("value", "OCENA")
+                            $(".casaOcen").attr("id", data.przelozonyID);
+                            $("#przelDane").text(data.przelozony);
+                            $("#centerDivPrzelName").fadeIn("slow");
+                            $("#centerDivPrzelName").removeClass("col-md-4");
+                            $("#centerDivPrzelName").addClass("col-md-12 textCenter");
+                        } else {
+                            $("#centerDivPrzelName").removeClass("col-md-12");
+                            $("#centerDivPrzelName").addClass("col-md-4");
+                            $("#ocenaPrzelozonegoInfo").fadeIn("slow");
+                            $("#ocenaPrzelozonegoProgress").fadeIn("slow");
+                            $("#ocenaPrzelozonegoSzcz").fadeIn("fast");
+                            $("#ocenaPrzelozonyDetails").fadeIn("slow");
+                            $("#prog").fadeIn("slow");
+                            $("#odpowiedzBtn").show();
+                            $("#stanowiskoName").show();
+                            $("#nazwaDzial").show();
+                            $("#danePrzelozonego").show();
+                            $("#kreska").show();
+                            $("#przelDane").show();
+                            $(".casaOcen").show();
+                            $(".casaOcen").attr("value", "OCENA")
+                            $("#stanowiskoName").text(data.stanowisko)
+                            $("#nazwaDzial").text(data.wydzialName);
+                            $(".casaOcen").attr("id", data.przelozonyID);
+                            $("#przelDane").text(data.przelozony);
+                            rateManager();
+                        }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         alert(xhr.responseText);
@@ -775,20 +794,24 @@
                                                 dataType: "json",
                                                 data: { 'idWydzial': existWydzial },
                                                 success: function (data) {
+                                                    $("#ocenaPrzelozonegoInfo").hide();
+                                                    $("#ocenaPrzelozonegoProgress").hide();
+                                                    $("#ocenaPrzelozonegoSzcz").hide();
+                                                    $("#ocenaPrzelozonyDetails").hide();
+                                                    $("#prog").hide();
+                                                    $("#centerDivPrzelName").removeClass("col-md-4");
+                                                    $("#centerDivPrzelName").addClass("col-md-12 textCenter");
+
                                                     $("#danePrzelozonego").show();
                                                     $("#odpowiedzBtn").show();
                                                     $("#stanowiskoName").show();
-                                                    $("#nazwaDzial").show();
                                                     $("#przelDane").show();
                                                     $(".casaOcen").show();
                                                     $(".casaOcen").attr("value",  "OCENA")
-                                                    $("#kreska").show();
-                                                    $("#stanowiskoName").text(data.stanowisko)
-                                                    $("#nazwaDzial").text(data.wydzialName);
                                                     $(".casaOcen").attr("id", data.przelozonyID);
                                                     $("#przelDane").text(data.przelozony);
 
-                                                    rateManager();
+                                                    
                                                 },
                                                 error: function (xhr, ajaxOptions, thrownError) {
                                                     alert(xhr.responseText);
@@ -929,19 +952,22 @@
                                                 dataType: "json",
                                                 data: { 'idWydzial': existWydzial },
                                                 success: function (data) {
+                                                    $("#ocenaPrzelozonegoInfo").hide();
+                                                    $("#ocenaPrzelozonegoProgress").hide();
+                                                    $("#ocenaPrzelozonegoSzcz").hide();
+                                                    $("#ocenaPrzelozonyDetails").hide();
+                                                    $("#prog").hide();
+                                                    $("#centerDivPrzelName").removeClass("col-md-4");
+                                                    $("#centerDivPrzelName").addClass("col-md-12 textCenter");
+
+
                                                     $("#danePrzelozonego").show();
                                                     $("#odpowiedzBtn").show();
-                                                    $("#stanowiskoName").show();
-                                                    $("#nazwaDzial").show();
                                                     $("#przelDane").show();
                                                     $(".casaOcen").show();
                                                     $(".casaOcen").attr("value", "OCENA")
-                                                    $("#kreska").show();
-                                                    $("#stanowiskoName").text(data.stanowisko)
-                                                    $("#nazwaDzial").text(data.wydzialName);
                                                     $(".casaOcen").attr("id", data.przelozonyID);
                                                     $("#przelDane").text(data.przelozony);
-                                                    rateManager();
                                                 },
                                                 error: function (xhr, ajaxOptions, thrownError) {
                                                     alert(xhr.responseText);
@@ -1484,22 +1510,22 @@
         </div>
         <div class="row separatorBlack" style="height:5px;"></div>
         <div class="row companyMain" id="danePrzelozonego" style="padding-top:10px;">
-            <div class="col-md-4">
+            <div class="col-md-4" id="ocenaPrzelozonegoInfo">
                 <h5 class="col-md-5">Dział:</h5> <h5 class="col-md-7 spanPogrubienie" id="nazwaDzial"></h5>
                 <h5 class="col-md-5">Stanowisko:</h5><h5 class="col-md-7 spanPogrubienie" id="stanowiskoName"></h5>
                 <h5 class="col-md-5 textColor" style="font-weight:bold;"> ZAROBKI W TYM DZIALE:</h5><h5 class="col-md-7 spanPogrubienie textColor" style="font-size: 22px; font-weight:bold;" id="">2100 zł </h5>
             </div>
-            <div class="col-md-4 text-center">
-                <h5 class="col-md-12 spanPogrubienie textColor" id="przelDane" style="color:firebrick; font-size:20px"></h5>
+            <div class="col-md-4 text-center" id="centerDivPrzelName">
+                <h5 class="col-md-12 spanPogrubienie textColor" id="przelDane" style="color:firebrick; font-size:20px; margin-bottom:10px; padding-bottom:10px;"></h5>
                 <div class="col-md-12" id="prog"></div>
-                <h6 class="col-md-12">
+                <h6 class="col-md-12" id="ocenaPrzelozonegoProgress">
                     Oceniło
                     <span id="liczbaOsobMan" class="textColor">
                     </span> osób.
                 </h6>
-                <h6 class="col-md-12 textColor" style="font-size: 12px;">Zobacz szczegóły</h6>
+                <h6 class="col-md-12 textColor" id="ocenaPrzelozonyDetails" style="font-size: 12px;">Zobacz szczegóły</h6>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" id="ocenaPrzelozonegoSzcz">
                 <h5 class="col-md-12">
                     Ogólna ocena:
                     <span class="textColor" id="managerOcena">

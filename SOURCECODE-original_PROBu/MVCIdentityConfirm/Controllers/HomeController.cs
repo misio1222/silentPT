@@ -339,7 +339,7 @@ namespace MVCIdentityConfirm.Controllers
                             Wydzial wd = new Wydzial
                             {
                                 CompanyID = compId,
-                                Wydzial1 = "OGÓLNO FIRMOWE",
+                                Wydzial1 = "OGÓLNY",
                                 PrzelozonyId = przelozonyId,
                                 DodalId = "ADMIN"
                             };
@@ -1057,7 +1057,7 @@ namespace MVCIdentityConfirm.Controllers
                 string path = Path.Combine(Server.MapPath("~/images/dlogo.png"));
                 Image img = Image.FromFile(path);
                 neededClass nClass = new neededClass();
-                var nImg = nClass.resizeImage(220, 200, img);
+                var nImg = nClass.resizeImage(180, 180, img);
                 ImageConverter converter = new ImageConverter();
                 byte[] imgArray = (byte[])converter.ConvertTo(nImg, typeof(byte[]));
                 imageBase64Data = Convert.ToBase64String(imgArray);
