@@ -182,7 +182,7 @@
             var noChange = $('#copanyList option:first-child').val();
             if (idSel != noChange) {
                 boolCompanyChanged = true;
-            } 
+            }
             if( $(".pobraneC").attr("id") != 0){
                 if ($(".pobraneC").attr("id") != idSel) {
                     boolCompanyChanged = true;
@@ -501,11 +501,12 @@
 
                         var file = document.getElementById("zalacznikFile").files;
                         var valueOfInput = $.trim($("#zalacznikFile").val());
-                        if (valueOfInput != "") {
-                            alert(dta.idWypowiedzi)
-                            addPhoto(file[0],dta.idWypowiedzi);
-                        }
-                        $("#zalacznikFile").val('');
+                        if (valueOfInput != "")
+                        {
+                            addPhoto(file[0], dta.idWypowiedzi);
+
+                        } else {
+                            $("#zalacznikFile").val('');
                             $("#declineModal .close").click();
                             var idSelected = $("#wydzialList").val();
                             $("#newCont").empty();
@@ -542,18 +543,20 @@
                                     var link_3 = ' <input   type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
                                     link_3 = link_3.replace('-666', dta.listaWypowiedzi[a].id);
                                 }
-                       
 
-                        
 
-                            $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dta.listaWypowiedzi[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dta.listaWypowiedzi[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  ><div style="width:100%">' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dta.listaWypowiedzi[a].content + '</span> </div><div style="width:100%; height:30px; text-size:20px; color:#fff;" > ' + nLike + ' ' + Like + '   </div></td></tr>');
+
+
+                                $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + dta.listaWypowiedzi[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + dta.listaWypowiedzi[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  ><div style="width:100%">' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + dta.listaWypowiedzi[a].content + '</span> </div><div style="width:100%; height:30px; text-size:20px; color:#fff;" > ' + nLike + ' ' + Like + '   </div></td></tr>');
+                            }
+                            $('#tbl').easyPaginate({
+                                paginateElement: 'tr',
+                                elementsPerPage: 30,
+                                effect: 'default'
+                            });
+                            $("#subButton").attr("disabled", false);
                         }
-                        $('#tbl').easyPaginate({
-                            paginateElement: 'tr',
-                            elementsPerPage: 30,
-                            effect: 'default'
-                        });
-                        $("#subButton").attr("disabled", false);
+
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         alert(xhr.responseText);
@@ -578,11 +581,67 @@
             url: '@Url.Action("UploadPhoto", "Home")',
             type: 'POST',
             data:fileData,
-            async: true,
             cache: false,
             contentType: false,
             processData: false,
+            success: function (newData) {
+                alert("jest dobrze");
+                $("#zalacznikFile").val('');
+                $("#declineModal .close").click();
+                var idSelected = $("#wydzialList").val();
+                $("#newCont").empty();
+                $("#tbl").empty();
+                $('#newCont').append('<table id="tbl" class="table table-striped"></table>');
+                for (a = 0; a < newData.length; a++) {
+                    if (newData[a].mojeId == newData[a].userId) {
+                        var link = '    ' + ' <input  type="button" id="-123" class="editWyp formBtn" value="Edytuj"> </input>' + '    ';
+                        link = link.replace('-123', newData[a].id);
+                        var link_2 = ' <input   type="button" id="-998" class="deleteWyp formBtn" value="Usuń"> </input>' + '    ';
+                        link_2 = link_2.replace('-998', newData[a].id);
+                        var link_3 = ' <input   type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                        link_3 = link_3.replace('-666', newData[a].id);
+                        var nLike = '<i id="nLike87654" class="menu-item fa fa-thumbs-o-down " style="font-size:19px; color:#000" title="Nie lubię" ><span id="notLikeSpan" style="color: #e2ded5; font-size: 16px"> liczbaNLike</span></i>';
+                        nLike = nLike.replace('nLike87654', newData[a].id);
+                        nLike = nLike.replace('notLikeSpan', "notLSpan" + newData[a].id);
+                        nLike = nLike.replace('liczbaNLike', newData[a].notLike)
+                        var Like = '<i id="Like23234" class="menu-item fa fa-thumbs-o-up" style="font-size:19px; color:#000" title="Lubię"><span id="likeSpan"  style="color:#e2ded5; font-size: 16px; margin-top: -3px;"> liczbaLike</span></i> '
+                        Like = Like.replace('Like23234', newData[a].id);
+                        Like = Like.replace('likeSpan', "lSpan" + newData[a].id);
+                        Like = Like.replace('liczbaLike', newData[a].like);
 
+                    } else {
+                        var nLike = '<i id="nLike87654" class="menu-item fa fa-thumbs-o-down " style="font-size:19px; color:#000" title="Nie lubię" ><span id="notLikeSpan" style="color: #e2ded5; font-size: 16px"> liczbaNLike</span></i>';
+                        nLike = nLike.replace('nLike87654', newData[a].id);
+                        nLike = nLike.replace('notLikeSpan', "notLSpan" + newData[a].id);
+                        nLike = nLike.replace('liczbaNLike', newData[a].notLike)
+                        var Like = '<i id="Like23234" class="menu-item fa fa-thumbs-o-up" style="font-size:19px; color:#000" title="Lubię"><span id="likeSpan"  style="color:#e2ded5; font-size: 16px; margin-top: -3px;"> liczbaLike</span></i> '
+                        Like = Like.replace('Like23234', newData[a].id);
+                        Like = Like.replace('likeSpan', "lSpan" + newData[a].id);
+                        Like = Like.replace('liczbaLike', newData[a].like);
+                        var link = "";
+                        var link_2 = "";
+                        var link_3 = ' <input   type="button" id="-666" class="zglosWyp formBtn" style="color: #a90101" value="Zgłoś naruszenie"> </input>';
+                        link_3 = link_3.replace('-666', newData[a].id);
+                    }
+
+                    var imagesLink = "" ;
+                    if (newData[a].Image.lenght != 0)
+                    {
+                    for (var b = 0; b < newData[a].Image.length; b++)
+                        {
+                            imagesLink= imagesLink + '<img id="image' + newData[a].id + '_' + newData[a].Image[b] + '" class="col-md-2" src=' + newData[a].Image[b] + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" />'
+                           
+                        }
+                    }
+                    $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + newData[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + newData[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  ><div style="width:100%" class="col-md-12">' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + newData[a].content + '</span> ' + ' </div> <div class="col-md-12">'+imagesLink+'</div><div class="col-md-12" style=" height:30px; text-size:20px; color:#fff;" > ' + nLike + ' ' + Like + '   </div></td></tr>');
+                }
+                $('#tbl').easyPaginate({
+                    paginateElement: 'tr',
+                    elementsPerPage: 30,
+                    effect: 'default'
+                });
+                $("#subButton").attr("disabled", false);
+            }
 
         });
     }
@@ -811,7 +870,7 @@
                                                     $(".casaOcen").attr("id", data.przelozonyID);
                                                     $("#przelDane").text(data.przelozony);
 
-                                                    
+
                                                 },
                                                 error: function (xhr, ajaxOptions, thrownError) {
                                                     alert(xhr.responseText);

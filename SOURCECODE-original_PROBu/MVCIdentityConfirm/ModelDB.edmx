@@ -23,6 +23,7 @@
     <EntitySet Name="spt_monitor" EntityType="masterModel.Store.spt_monitor" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="companyEmailSet" EntityType="masterModel.Store.companyEmailSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Likes" EntityType="masterModel.Store.Likes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UsersImageWypowiedzSet" EntityType="masterModel.Store.UsersImageWypowiedzSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="CompanycompanyEmail" Association="masterModel.Store.CompanycompanyEmail">
       <End Role="Company" EntitySet="Company" />
       <End Role="companyEmail" EntitySet="companyEmailSet" />
@@ -283,6 +284,16 @@
     <Property Name="wypowiedzID" Type="int" Nullable="false" />
     <Property Name="likeOrNot" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="UsersImageWypowiedzSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Image" Type="varbinary(max)" Nullable="false" />
+    <Property Name="WypowiedzId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="miniImage" Type="varbinary(max)" Nullable="false" />
+  </EntityType>
   <Association Name="CompanycompanyEmail">
     <End Role="Company" Type="masterModel.Store.Company" Multiplicity="1" />
     <End Role="companyEmail" Type="masterModel.Store.companyEmailSet" Multiplicity="*" />
@@ -367,6 +378,7 @@
             <End Role="companyEmail" EntitySet="companyEmailSet" />
           </AssociationSet>
           <EntitySet Name="Likes" EntityType="masterModel.Likes" />
+          <EntitySet Name="UsersImageWypowiedzSet" EntityType="masterModel.UsersImageWypowiedz" />
         </EntityContainer>
         <EntityType Name="Przelozony">
           <Key>
@@ -592,6 +604,16 @@
           <Property Name="userId" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="wypowiedzID" Type="Int32" Nullable="false" />
           <Property Name="likeOrNot" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UsersImageWypowiedz">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Image" Type="Binary" Nullable="false" />
+          <Property Name="WypowiedzId" Nullable="false" Type="Int32" />
+          <Property Name="UserId" Type="String" Nullable="false" />
+          <Property Name="miniImage" Type="Binary" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -832,6 +854,17 @@
           <ScalarProperty Name="userId" ColumnName="userId" />
           <ScalarProperty Name="wypowiedzID" ColumnName="wypowiedzID" />
           <ScalarProperty Name="likeOrNot" ColumnName="likeOrNot" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsersImageWypowiedzSet">
+      <EntityTypeMapping TypeName="IsTypeOf(masterModel.UsersImageWypowiedz)">
+        <MappingFragment StoreEntitySet="UsersImageWypowiedzSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="WypowiedzId" ColumnName="WypowiedzId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="miniImage" ColumnName="miniImage" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

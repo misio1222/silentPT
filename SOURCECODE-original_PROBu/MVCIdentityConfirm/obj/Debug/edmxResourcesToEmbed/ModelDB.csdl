@@ -68,6 +68,7 @@
       <End Role="companyEmail" EntitySet="companyEmailSet" />
     </AssociationSet>
     <EntitySet Name="Likes" EntityType="masterModel.Likes" />
+    <EntitySet Name="UsersImageWypowiedzSet" EntityType="masterModel.UsersImageWypowiedz" />
   </EntityContainer>
   <EntityType Name="Przelozony">
     <Key>
@@ -293,5 +294,15 @@
     <Property Name="userId" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="wypowiedzID" Type="Int32" Nullable="false" />
     <Property Name="likeOrNot" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersImageWypowiedz">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Image" Type="Binary" Nullable="false" />
+    <Property Name="WypowiedzId" Nullable="false" Type="Int32" />
+    <Property Name="UserId" Type="String" Nullable="false" />
+    <Property Name="miniImage" Type="Binary" Nullable="false" />
   </EntityType>
 </Schema>

@@ -18,6 +18,7 @@
     <EntitySet Name="spt_monitor" EntityType="masterModel.Store.spt_monitor" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="companyEmailSet" EntityType="masterModel.Store.companyEmailSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Likes" EntityType="masterModel.Store.Likes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UsersImageWypowiedzSet" EntityType="masterModel.Store.UsersImageWypowiedzSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="CompanycompanyEmail" Association="masterModel.Store.CompanycompanyEmail">
       <End Role="Company" EntitySet="Company" />
       <End Role="companyEmail" EntitySet="companyEmailSet" />
@@ -277,6 +278,16 @@
     <Property Name="userId" Type="nvarchar(max)" Nullable="false" />
     <Property Name="wypowiedzID" Type="int" Nullable="false" />
     <Property Name="likeOrNot" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersImageWypowiedzSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Image" Type="varbinary(max)" Nullable="false" />
+    <Property Name="WypowiedzId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="miniImage" Type="varbinary(max)" Nullable="false" />
   </EntityType>
   <Association Name="CompanycompanyEmail">
     <End Role="Company" Type="masterModel.Store.Company" Multiplicity="1" />
