@@ -18,11 +18,12 @@
         <EntityTypeShape EntityType="masterModel.MSreplication_options" Width="1.5" PointX="9.375" PointY="0.75" />
         <EntityTypeShape EntityType="masterModel.spt_fallback_db" Width="1.5" PointX="9.375" PointY="3.75" />
         <EntityTypeShape EntityType="masterModel.spt_fallback_dev" Width="1.5" PointX="9.375" PointY="7.75" />
-        <EntityTypeShape EntityType="masterModel.spt_fallback_usg" Width="1.5" PointX="3.375" PointY="10.75" />
-        <EntityTypeShape EntityType="masterModel.spt_monitor" Width="1.5" PointX="5.375" PointY="10.75" />
+        <EntityTypeShape EntityType="masterModel.spt_fallback_usg" Width="1.5" PointX="7.375" PointY="10.625" />
+        <EntityTypeShape EntityType="masterModel.spt_monitor" Width="1.5" PointX="8.25" PointY="11" />
         <EntityTypeShape EntityType="masterModel.companyEmail" Width="1.5" PointX="3" PointY="4.5" />
         <AssociationConnector Association="masterModel.CompanycompanyEmail" />
         <EntityTypeShape EntityType="masterModel.Likes" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="masterModel.UsersImageWypowiedz" Width="1.5" PointX="5.25" PointY="9.375" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

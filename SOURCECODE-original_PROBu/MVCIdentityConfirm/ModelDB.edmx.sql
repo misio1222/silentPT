@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 02/03/2017 08:16:28
+-- Date Created: 02/20/2017 11:54:39
 -- Generated from EDMX file: C:\GitHub\silentPT\SOURCECODE-original_PROBu\MVCIdentityConfirm\ModelDB.edmx
 -- --------------------------------------------------
 
@@ -20,6 +20,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_CompanycompanyEmail]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[companyEmailSet] DROP CONSTRAINT [FK_CompanycompanyEmail];
 GO
+IF OBJECT_ID(N'[dbo].[FK_wypowiedzUserUsersImageWypowiedz]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UsersImageWypowiedzSet] DROP CONSTRAINT [FK_wypowiedzUserUsersImageWypowiedz];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -31,26 +34,32 @@ GO
 IF OBJECT_ID(N'[dbo].[Company]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Company];
 GO
-IF OBJECT_ID(N'[dbo].[companyEmailSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[companyEmailSet];
+IF OBJECT_ID(N'[dbo].[UsersCompany]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UsersCompany];
 GO
-IF OBJECT_ID(N'[dbo].[Likes]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Likes];
-GO
-IF OBJECT_ID(N'[dbo].[MSreplication_options]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[MSreplication_options];
-GO
-IF OBJECT_ID(N'[dbo].[ocenaCompany]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ocenaCompany];
-GO
-IF OBJECT_ID(N'[dbo].[ocenaPrzelozony]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ocenaPrzelozony];
+IF OBJECT_ID(N'[dbo].[Wydzial]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Wydzial];
 GO
 IF OBJECT_ID(N'[dbo].[Przelozony]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Przelozony];
 GO
+IF OBJECT_ID(N'[dbo].[wypowiedzUser]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[wypowiedzUser];
+GO
+IF OBJECT_ID(N'[dbo].[zgloszenieNar]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[zgloszenieNar];
+GO
+IF OBJECT_ID(N'[dbo].[ocenaPrzelozony]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ocenaPrzelozony];
+GO
+IF OBJECT_ID(N'[dbo].[ocenaCompany]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ocenaCompany];
+GO
 IF OBJECT_ID(N'[dbo].[ratingCompany]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ratingCompany];
+GO
+IF OBJECT_ID(N'[dbo].[MSreplication_options]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[MSreplication_options];
 GO
 IF OBJECT_ID(N'[dbo].[spt_fallback_db]', 'U') IS NOT NULL
     DROP TABLE [dbo].[spt_fallback_db];
@@ -64,17 +73,14 @@ GO
 IF OBJECT_ID(N'[dbo].[spt_monitor]', 'U') IS NOT NULL
     DROP TABLE [dbo].[spt_monitor];
 GO
-IF OBJECT_ID(N'[dbo].[UsersCompany]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UsersCompany];
+IF OBJECT_ID(N'[dbo].[companyEmailSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[companyEmailSet];
 GO
-IF OBJECT_ID(N'[dbo].[Wydzial]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Wydzial];
+IF OBJECT_ID(N'[dbo].[Likes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Likes];
 GO
-IF OBJECT_ID(N'[dbo].[wypowiedzUser]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[wypowiedzUser];
-GO
-IF OBJECT_ID(N'[dbo].[zgloszenieNar]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[zgloszenieNar];
+IF OBJECT_ID(N'[dbo].[UsersImageWypowiedzSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UsersImageWypowiedzSet];
 GO
 
 -- --------------------------------------------------
@@ -300,6 +306,16 @@ CREATE TABLE [dbo].[Likes] (
 );
 GO
 
+-- Creating table 'UsersImageWypowiedzSet'
+CREATE TABLE [dbo].[UsersImageWypowiedzSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Image] varbinary(max)  NOT NULL,
+    [WypowiedzId] int  NOT NULL,
+    [UserId] nvarchar(max)  NOT NULL,
+    [miniImage] varbinary(max)  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -403,6 +419,12 @@ GO
 -- Creating primary key on [Id] in table 'Likes'
 ALTER TABLE [dbo].[Likes]
 ADD CONSTRAINT [PK_Likes]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'UsersImageWypowiedzSet'
+ALTER TABLE [dbo].[UsersImageWypowiedzSet]
+ADD CONSTRAINT [PK_UsersImageWypowiedzSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

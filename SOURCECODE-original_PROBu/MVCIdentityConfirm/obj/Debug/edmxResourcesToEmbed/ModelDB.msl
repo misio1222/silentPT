@@ -237,5 +237,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="UsersImageWypowiedzSet">
+      <EntityTypeMapping TypeName="IsTypeOf(masterModel.UsersImageWypowiedz)">
+        <MappingFragment StoreEntitySet="UsersImageWypowiedzSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="WypowiedzId" ColumnName="WypowiedzId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="miniImage" ColumnName="miniImage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -44,6 +44,7 @@ namespace MVCIdentityConfirm
         public virtual DbSet<spt_monitor> spt_monitor { get; set; }
         public virtual DbSet<companyEmail> companyEmailSet { get; set; }
         public virtual DbSet<Likes> Likes { get; set; }
+        public virtual DbSet<UsersImageWypowiedz> UsersImageWypowiedzSet { get; set; }
     
         public virtual int sp_MScleanupmergepublisher()
         {
