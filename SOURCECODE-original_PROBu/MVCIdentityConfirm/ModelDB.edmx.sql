@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 02/20/2017 11:54:39
+-- Date Created: 02/20/2017 16:50:39
 -- Generated from EDMX file: C:\GitHub\silentPT\SOURCECODE-original_PROBu\MVCIdentityConfirm\ModelDB.edmx
 -- --------------------------------------------------
 
@@ -19,9 +19,6 @@ GO
 
 IF OBJECT_ID(N'[dbo].[FK_CompanycompanyEmail]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[companyEmailSet] DROP CONSTRAINT [FK_CompanycompanyEmail];
-GO
-IF OBJECT_ID(N'[dbo].[FK_wypowiedzUserUsersImageWypowiedz]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UsersImageWypowiedzSet] DROP CONSTRAINT [FK_wypowiedzUserUsersImageWypowiedz];
 GO
 
 -- --------------------------------------------------

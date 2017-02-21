@@ -637,25 +637,59 @@ namespace MVCIdentityConfirm.Controllers
 
                     checkWulgar cWulgar = new checkWulgar();
 
-                    
-
-                    wypoModel komentarz = new wypoModel
+                    var checkIamge = data.UsersImageWypowiedzSet.Where(vfd => vfd.WypowiedzId == c.Id).Select(gt => gt);
+                    if (checkIamge != null)
                     {
-                        companyId = c.companyId,
-                        content = cWulgar.sprawdzam(c.content),
-                        id = c.Id,
-                        logOrName = c.NameOrLogin,
-                        userId = c.userId,
-                        userName = uName,
-                        wydzialId = c.wydzialId,
-                        mojeId = mId,
-                        DateTi = c.dateTime.ToString(),
-                        like = c.like,
-                        notLike = c.notLike
+                        List<string> imagesList = new List<string>();
+                        foreach (var img in checkIamge)
+                        {
+                            string imageBase64Data;
+                            string imageDataURL;
+                            imageBase64Data = Convert.ToBase64String(img.miniImage);
+                            imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                            imagesList.Add(imageDataURL);
 
-                    };
+                        }
 
-                    listWypo.Add(komentarz);
+                        wypoModel komentarz = new wypoModel
+                        {
+                            companyId = c.companyId,
+                            content = cWulgar.sprawdzam(c.content),
+                            id = c.Id,
+                            logOrName = c.NameOrLogin,
+                            userId = c.userId,
+                            userName = uName,
+                            wydzialId = c.wydzialId,
+                            mojeId = mId,
+                            DateTi = c.dateTime.ToString(),
+                            like = c.like,
+                            notLike = c.notLike,
+                            Image = imagesList
+                        };
+
+                        listWypo.Add(komentarz);
+                    }
+                    else
+                    {
+
+                        wypoModel komentarz = new wypoModel
+                        {
+                            companyId = c.companyId,
+                            content = cWulgar.sprawdzam(c.content),
+                            id = c.Id,
+                            logOrName = c.NameOrLogin,
+                            userId = c.userId,
+                            userName = uName,
+                            wydzialId = c.wydzialId,
+                            mojeId = mId,
+                            DateTi = c.dateTime.ToString(),
+                            like = c.like,
+                            notLike = c.notLike,
+                            Image = null
+                        };
+
+                        listWypo.Add(komentarz);
+                    }
                 }
             }
             return Json(listWypo, JsonRequestBehavior.AllowGet);
@@ -856,23 +890,59 @@ namespace MVCIdentityConfirm.Controllers
                     string mId = User.Identity.GetUserId();
 
                     checkWulgar cWulgar = new checkWulgar();
-
-                    wypoModel komentarz = new wypoModel
+                    var checkIamge = data.UsersImageWypowiedzSet.Where(vfd => vfd.WypowiedzId == c.Id).Select(gt => gt);
+                    if (checkIamge != null)
                     {
-                        companyId = c.companyId,
-                        content = cWulgar.sprawdzam(c.content),
-                        id = c.Id,
-                        logOrName = c.NameOrLogin,
-                        userId = c.userId,
-                        userName = uName,
-                        wydzialId = c.wydzialId,
-                        mojeId = mId,
-                        DateTi = c.dateTime.ToString(),
-                        like = c.like,
-                        notLike = c.notLike
-                    };
+                        List<string> imagesList = new List<string>();
+                        foreach (var img in checkIamge)
+                        {
+                            string imageBase64Data;
+                            string imageDataURL;
+                            imageBase64Data = Convert.ToBase64String(img.miniImage);
+                            imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                            imagesList.Add(imageDataURL);
 
-                    listWypo.Add(komentarz);
+                        }
+
+                        wypoModel komentarz = new wypoModel
+                        {
+                            companyId = c.companyId,
+                            content = cWulgar.sprawdzam(c.content),
+                            id = c.Id,
+                            logOrName = c.NameOrLogin,
+                            userId = c.userId,
+                            userName = uName,
+                            wydzialId = c.wydzialId,
+                            mojeId = mId,
+                            DateTi = c.dateTime.ToString(),
+                            like = c.like,
+                            notLike = c.notLike,
+                            Image = imagesList
+                        };
+
+                        listWypo.Add(komentarz);
+                    }
+                    else
+                    {
+
+                        wypoModel komentarz = new wypoModel
+                        {
+                            companyId = c.companyId,
+                            content = cWulgar.sprawdzam(c.content),
+                            id = c.Id,
+                            logOrName = c.NameOrLogin,
+                            userId = c.userId,
+                            userName = uName,
+                            wydzialId = c.wydzialId,
+                            mojeId = mId,
+                            DateTi = c.dateTime.ToString(),
+                            like = c.like,
+                            notLike = c.notLike,
+                            Image = null
+                        };
+
+                        listWypo.Add(komentarz);
+                    }
                 }
             }
 
