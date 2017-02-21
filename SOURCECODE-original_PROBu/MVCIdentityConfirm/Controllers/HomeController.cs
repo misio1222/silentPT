@@ -973,13 +973,21 @@ namespace MVCIdentityConfirm.Controllers
             var nImg = nClass.resizeImage(120, 80, miniImg);
             ImageConverter converter = new ImageConverter();
             byte[] imgArray = (byte[])converter.ConvertTo(nImg, typeof(byte[]));
+
+            
+
+            var nImgOriginal = nClass.resizeImage(500,700, miniImg);                                                      // poprawic cos z rozmiarem
+            ImageConverter converterOriginal = new ImageConverter();
+            byte[] imgArrayOriginal = (byte[])converter.ConvertTo(nImgOriginal, typeof(byte[]));
+
+
             var userId = User.Identity.GetUserId();
 
 
             var data = new dataDB();
             var imgWypo = new UsersImageWypowiedz {
                 WypowiedzId = Int32.Parse(id),
-                Image = byteImage,
+                Image = imgArrayOriginal,
                 miniImage = imgArray,
                 UserId = userId             
             };

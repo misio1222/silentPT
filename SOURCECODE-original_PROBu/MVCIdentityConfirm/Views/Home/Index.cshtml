@@ -26,18 +26,14 @@
 @*<link href="~/Content/txtBox/contents.css" rel="stylesheet" />*@
 
 <script src="~/Scripts/bootstrap.min.js"></script>
-
-
 <script src="~/Content/new_paginate/jquery.simplePagination.js"></script>
-
-
 <script src="~/Content/new_paginate/jquery.paginate.js"></script>
 <link href="~/Content/new_paginate/jquery.paginate.css" rel="stylesheet" />
-
-
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 
+<script src="~/Content/gallery/jquery.lighter.js"></script>
+<link href="~/Content/gallery/jquery.lighter.css" rel="stylesheet" />
 
 
 
@@ -538,7 +534,7 @@
                             $("#tbl").empty();
                             $('#newCont').append('<table id="tbl" class="table table-striped"></table>');
                             for (a = 0; a < newData.listaWypowiedzi.length; a++) {
-                                if (newData[a].mojeId == newData.listaWypowiedzi[a].userId) {
+                                if (newData.listaWypowiedzi[a].mojeId == newData.listaWypowiedzi[a].userId) {
                                     var link = '    ' + ' <input  type="button" id="-123" class="editWyp formBtn" value="Edytuj"> </input>' + '    ';
                                     link = link.replace('-123', newData.listaWypowiedzi[a].id);
                                     var link_2 = ' <input   type="button" id="-998" class="deleteWyp formBtn" value="Usuń"> </input>' + '    ';
@@ -547,11 +543,11 @@
                                     link_3 = link_3.replace('-666', newData.listaWypowiedzi[a].id);
                                     var nLike = '<i id="nLike87654" class="menu-item fa fa-thumbs-o-down " style="font-size:19px; color:#000" title="Nie lubię" ><span id="notLikeSpan" style="color: #e2ded5; font-size: 16px"> liczbaNLike</span></i>';
                                     nLike = nLike.replace('nLike87654', newData.listaWypowiedzi[a].id);
-                                    nLike = nLike.replace('notLikeSpan', "notLSpan" + newData[a].id);
+                                    nLike = nLike.replace('notLikeSpan', "notLSpan" + newData.listaWypowiedzi[a].id);
                                     nLike = nLike.replace('liczbaNLike', newData.listaWypowiedzi[a].notLike)
                                     var Like = '<i id="Like23234" class="menu-item fa fa-thumbs-o-up" style="font-size:19px; color:#000" title="Lubię"><span id="likeSpan"  style="color:#e2ded5; font-size: 16px; margin-top: -3px;"> liczbaLike</span></i> '
                                     Like = Like.replace('Like23234', newData.listaWypowiedzi[a].id);
-                                    Like = Like.replace('likeSpan', "lSpan" + newData[a].id);
+                                    Like = Like.replace('likeSpan', "lSpan" + newData.listaWypowiedzi[a].id);
                                     Like = Like.replace('liczbaLike', newData.listaWypowiedzi[a].like);
 
                                 } else {
@@ -656,7 +652,7 @@
                     {
                     for (var b = 0; b < newData[a].Image.length; b++)
                         {
-                            imagesLink= imagesLink + '<img id="image' + newData[a].id + '_' + newData[a].Image[b] + '" class="col-md-2" src=' + newData[a].Image[b] + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" />'
+                        imagesLink = imagesLink + '<a href=' + newData[a].Image[b] + '> <img id="image' + newData[a].id + '_' + newData[a].Image[b] + '" class="col-md-2 image-gallery-click" src=' + newData[a].Image[b] + ' style="margin-top: 15px; height:90px; width:160px;  background-color: rgba(0,0,0,0)"/></a>'
                            
                         }
                     }
@@ -672,6 +668,27 @@
 
         });
     }
+
+
+
+    $(function () {
+        $('image-gallery-click').on("click", function () {
+            var photoId = $(this).attr("id");
+            alert(photoId);
+            $.ajax({
+                url: '@Url.Action("UploadPhoto", "Home")',
+                type: 'POST',
+                data:fileData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (newData) {
+
+                }
+            });
+        })
+    });
+
 
 
 
