@@ -202,6 +202,8 @@
                         $("#ocenaPrzelozonegoSzcz").hide();
                         $("#ocenaPrzelozonyDetails").hide();
                         $("#prog").hide();
+                        $("#centerDivPrzelName").removeClass("col-md-4");
+                        $("#centerDivPrzelName").addClass("col-md-12 textCenter");
 
                         $("#newCont").empty();
                         $("#tbl").empty();
@@ -255,7 +257,7 @@
                                     $("#stanowiskoName").text(data.stanowisko)
                                     $("#nazwaDzial").text(data.wydzialName);
                                     $(".casaOcen").attr("id", data.przelozonyID);
-                                    $("#przelDane").text(data.przelozony);
+                                    $("#przelDane").text("OGÓLNE FORUM FIRMOWE");
                                     rateManager();
                                 },
                                 error: function (xhr, ajaxOptions, thrownError) {
@@ -346,28 +348,34 @@
                     success: function (data) {
                         notchange = idSelected;
                         if (idSelected == notChange) {
+                            
                             $("#ocenaPrzelozonegoInfo").fadeOut("slow");
                             $("#centerDivPrzelName").fadeOut("slow");
                             $("#ocenaPrzelozonegoProgress").fadeOut("slow");
                             $("#ocenaPrzelozonegoSzcz").fadeOut("slow");
                             $("#ocenaPrzelozonyDetails").fadeOut("slow");
-                            $("#prog").fadeOut("slow");
+                            $("#prog").fadeOut('slow', function () {
+                                $("#centerDivPrzelName").removeClass("col-md-4");
+                                $("#centerDivPrzelName").addClass("col-md-12 textCenter");
+                                $("#przelDane").text("OGÓLNE FORUM FIRMOWE");
+                            });
                             $("#danePrzelozonego").show();
                             $("#odpowiedzBtn").show();
-                            $("#przelDane").show();
+                            
                             $(".casaOcen").show();
                             $(".casaOcen").attr("value", "OCENA")
                             $(".casaOcen").attr("id", data.przelozonyID);
-                            $("#przelDane").text(data.przelozony);
+                            
                             $("#centerDivPrzelName").fadeIn("slow");
-                            $("#centerDivPrzelName").removeClass("col-md-4");
-                            $("#centerDivPrzelName").addClass("col-md-12 textCenter");
+
+                            
+                            $("#przelDane").show();
                         } else {
                             $("#centerDivPrzelName").removeClass("col-md-12");
                             $("#centerDivPrzelName").addClass("col-md-4");
                             $("#ocenaPrzelozonegoInfo").fadeIn("slow");
                             $("#ocenaPrzelozonegoProgress").fadeIn("slow");
-                            $("#ocenaPrzelozonegoSzcz").fadeIn("fast");
+                            $("#ocenaPrzelozonegoSzcz").fadeIn("slow");
                             $("#ocenaPrzelozonyDetails").fadeIn("slow");
                             $("#prog").fadeIn("slow");
                             $("#odpowiedzBtn").show();
@@ -853,13 +861,7 @@
                                                 dataType: "json",
                                                 data: { 'idWydzial': existWydzial },
                                                 success: function (data) {
-                                                    $("#ocenaPrzelozonegoInfo").hide();
-                                                    $("#ocenaPrzelozonegoProgress").hide();
-                                                    $("#ocenaPrzelozonegoSzcz").hide();
-                                                    $("#ocenaPrzelozonyDetails").hide();
-                                                    $("#prog").hide();
-                                                    $("#centerDivPrzelName").removeClass("col-md-4");
-                                                    $("#centerDivPrzelName").addClass("col-md-12 textCenter");
+
 
                                                     $("#danePrzelozonego").show();
                                                     $("#odpowiedzBtn").show();
@@ -1026,7 +1028,7 @@
                                                     $(".casaOcen").show();
                                                     $(".casaOcen").attr("value", "OCENA")
                                                     $(".casaOcen").attr("id", data.przelozonyID);
-                                                    $("#przelDane").text(data.przelozony);
+                                                    $("#przelDane").text("OGÓLNE FORUM FIRMOWE");
                                                 },
                                                 error: function (xhr, ajaxOptions, thrownError) {
                                                     alert(xhr.responseText);

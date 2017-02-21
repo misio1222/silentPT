@@ -1108,21 +1108,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2ded5', end
     background-color:#e2ded5;
     padding-top:80px;
     min-height:100%;
+
+
 }
 
 
-.lightBlue{
-   
-    background-color:#5d5854; 
-    min-height:100%;
-    border-top-left-radius:5px;
+.lightBlue {
+    background-color: #5d5854;
+    min-height: 100%;
+    border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    margin-right:0px;
+    margin-right: 0px;
+    position: static;
 }
 
 html{
-background-color:#fff
-
+background-color:#fff;
+    overflow:visible;
 
 }
 
