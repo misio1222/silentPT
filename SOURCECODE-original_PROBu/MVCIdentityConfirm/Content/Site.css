@@ -1204,7 +1204,9 @@ border-radius:100px;
 .fa-thumbs-o-up {
     margin-right:10px;
 }
-
+.image-gallery-click{
+    cursor:pointer;
+}
 .fa .fa-thumbs-o-up :hover{
     color:#e2ded5;
 }

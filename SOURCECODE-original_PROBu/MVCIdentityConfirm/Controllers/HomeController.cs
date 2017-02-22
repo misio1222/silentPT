@@ -974,9 +974,11 @@ namespace MVCIdentityConfirm.Controllers
             ImageConverter converter = new ImageConverter();
             byte[] imgArray = (byte[])converter.ConvertTo(nImg, typeof(byte[]));
 
-            
 
-            var nImgOriginal = nClass.resizeImage(500,700, miniImg);                                                      // poprawic cos z rozmiarem
+            var mmstreamOriginal = new MemoryStream(byteImage);
+            Image miniImgOriginal = Image.FromStream(mmstreamOriginal);
+            neededClass nClassOriginal = new neededClass();
+            var nImgOriginal = nClassOriginal.resizeImage(500,700, miniImgOriginal);                                                      // poprawic cos z rozmiarem
             ImageConverter converterOriginal = new ImageConverter();
             byte[] imgArrayOriginal = (byte[])converter.ConvertTo(nImgOriginal, typeof(byte[]));
 

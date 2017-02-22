@@ -19,6 +19,6 @@ namespace MVCIdentityConfirm.Models
         public int like { get; set; }
         public int notLike { get; set; }
         public List<string> Image { get; set; }
-
-    }
+        public int imageId { get; set; }
+     }
 }

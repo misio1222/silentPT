@@ -652,7 +652,7 @@
                     {
                     for (var b = 0; b < newData[a].Image.length; b++)
                         {
-                        imagesLink = imagesLink + '<a href=' + newData[a].Image[b] + '> <img id="image' + newData[a].id + '_' + newData[a].Image[b] + '" class="col-md-2 image-gallery-click" src=' + newData[a].Image[b] + ' style="margin-top: 15px; height:90px; width:160px;  background-color: rgba(0,0,0,0)"/></a>'
+                        imagesLink = imagesLink + '<img id="image' + newData[a].id + '_' + newData[a].Image[b] + '"class="col-md-2 image-gallery-click" src=' + newData[a].Image[b] + ' style="margin-top: 15px; height:90px; width:160px;  background-color: rgba(0,0,0,0)"/>'
                            
                         }
                     }
@@ -672,11 +672,11 @@
 
 
     $(function () {
-        $('image-gallery-click').on("click", function () {
+        $("#newCont").on("click", ".image-gallery-click", function () {
             var photoId = $(this).attr("id");
-            alert(photoId);
-            $.ajax({
-                url: '@Url.Action("UploadPhoto", "Home")',
+            alert(photoId + " hello");
+            @*$.ajax({
+                url: '@Url.Action("", "Home")',
                 type: 'POST',
                 data:fileData,
                 cache: false,
@@ -685,7 +685,7 @@
                 success: function (newData) {
 
                 }
-            });
+            });*@
         })
     });
 
