@@ -18,7 +18,6 @@ namespace MVCIdentityConfirm.Models
         public string DateTi { get; set; }
         public int like { get; set; }
         public int notLike { get; set; }
-        public List<string> Image { get; set; }
-        public int imageId { get; set; }
+        public List<forumImages> Image { get; set; }
      }
 }

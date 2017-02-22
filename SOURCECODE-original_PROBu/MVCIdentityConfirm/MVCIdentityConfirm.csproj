@@ -240,6 +240,7 @@
     <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\CompInformation.cs" />
     <Compile Include="Models\CreateCompanyModel.cs" />
+    <Compile Include="Models\forumImages.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\indexViewModel.cs" />
     <Compile Include="Models\IndxComp.cs" />

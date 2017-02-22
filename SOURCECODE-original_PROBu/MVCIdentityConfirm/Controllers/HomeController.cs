@@ -636,18 +636,22 @@ namespace MVCIdentityConfirm.Controllers
                     string mId = User.Identity.GetUserId();
 
                     checkWulgar cWulgar = new checkWulgar();
-
                     var checkIamge = data.UsersImageWypowiedzSet.Where(vfd => vfd.WypowiedzId == c.Id).Select(gt => gt);
                     if (checkIamge != null)
                     {
-                        List<string> imagesList = new List<string>();
+                        List<forumImages> imagesList = new List<forumImages>();
                         foreach (var img in checkIamge)
                         {
                             string imageBase64Data;
                             string imageDataURL;
                             imageBase64Data = Convert.ToBase64String(img.miniImage);
                             imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-                            imagesList.Add(imageDataURL);
+                            forumImages fImages = new forumImages
+                            {
+                                imagesContent = imageDataURL,
+                                imageId = img.Id
+                            };
+                            imagesList.Add(fImages);
 
                         }
 
@@ -665,6 +669,7 @@ namespace MVCIdentityConfirm.Controllers
                             like = c.like,
                             notLike = c.notLike,
                             Image = imagesList
+
                         };
 
                         listWypo.Add(komentarz);
@@ -893,14 +898,19 @@ namespace MVCIdentityConfirm.Controllers
                     var checkIamge = data.UsersImageWypowiedzSet.Where(vfd => vfd.WypowiedzId == c.Id).Select(gt => gt);
                     if (checkIamge != null)
                     {
-                        List<string> imagesList = new List<string>();
+                        List<forumImages> imagesList = new List<forumImages>();
                         foreach (var img in checkIamge)
                         {
                             string imageBase64Data;
                             string imageDataURL;
                             imageBase64Data = Convert.ToBase64String(img.miniImage);
                             imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-                            imagesList.Add(imageDataURL);
+                            forumImages fImages = new forumImages
+                            {
+                                imagesContent = imageDataURL,
+                                imageId = img.Id
+                            };
+                            imagesList.Add(fImages);
 
                         }
 
@@ -918,6 +928,7 @@ namespace MVCIdentityConfirm.Controllers
                             like = c.like,
                             notLike = c.notLike,
                             Image = imagesList
+
                         };
 
                         listWypo.Add(komentarz);
@@ -1019,14 +1030,18 @@ namespace MVCIdentityConfirm.Controllers
                     var checkIamge = data.UsersImageWypowiedzSet.Where(vfd => vfd.WypowiedzId == c.Id).Select(gt => gt);
                     if (checkIamge != null)
                     {
-                        List<string> imagesList = new List<string>();
+                        List<forumImages> imagesList = new List<forumImages>();
                         foreach (var img in checkIamge)
                         {
                             string imageBase64Data;
                             string imageDataURL;
                             imageBase64Data = Convert.ToBase64String(img.miniImage);
                             imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-                            imagesList.Add(imageDataURL);
+                            forumImages fImages = new forumImages {
+                                imagesContent = imageDataURL,
+                                imageId = img.Id
+                            };
+                            imagesList.Add(fImages);
 
                         }
 
@@ -1044,6 +1059,7 @@ namespace MVCIdentityConfirm.Controllers
                             like = c.like,
                             notLike = c.notLike,
                             Image = imagesList
+                            
                         };
 
                         listWypo.Add(komentarz);
@@ -1110,18 +1126,22 @@ namespace MVCIdentityConfirm.Controllers
                         string mId = User.Identity.GetUserId();
 
                         checkWulgar cWulgar = new checkWulgar();
-
                         var checkIamge = td.UsersImageWypowiedzSet.Where(vfd => vfd.WypowiedzId == c.Id).Select(gt => gt);
                         if (checkIamge != null)
                         {
-                            List<string> imagesList = new List<string>();
+                            List<forumImages> imagesList = new List<forumImages>();
                             foreach (var img in checkIamge)
                             {
                                 string imageBase64Data;
                                 string imageDataURL;
                                 imageBase64Data = Convert.ToBase64String(img.miniImage);
                                 imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-                                imagesList.Add(imageDataURL);
+                                forumImages fImages = new forumImages
+                                {
+                                    imagesContent = imageDataURL,
+                                    imageId = img.Id
+                                };
+                                imagesList.Add(fImages);
 
                             }
 
@@ -1139,6 +1159,7 @@ namespace MVCIdentityConfirm.Controllers
                                 like = c.like,
                                 notLike = c.notLike,
                                 Image = imagesList
+
                             };
 
                             listWypo.Add(komentarz);
@@ -1220,18 +1241,22 @@ namespace MVCIdentityConfirm.Controllers
 
                         string mId = User.Identity.GetUserId();
                         checkWulgar cWulgar = new checkWulgar();
-
                         var checkIamge = tdi.UsersImageWypowiedzSet.Where(vfd => vfd.WypowiedzId == c.Id).Select(gt => gt);
                         if (checkIamge != null)
                         {
-                            List<string> imagesList = new List<string>();
+                            List<forumImages> imagesList = new List<forumImages>();
                             foreach (var img in checkIamge)
                             {
                                 string imageBase64Data;
                                 string imageDataURL;
                                 imageBase64Data = Convert.ToBase64String(img.miniImage);
                                 imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-                                imagesList.Add(imageDataURL);
+                                forumImages fImages = new forumImages
+                                {
+                                    imagesContent = imageDataURL,
+                                    imageId = img.Id
+                                };
+                                imagesList.Add(fImages);
 
                             }
 
@@ -1249,6 +1274,7 @@ namespace MVCIdentityConfirm.Controllers
                                 like = c.like,
                                 notLike = c.notLike,
                                 Image = imagesList
+
                             };
 
                             listWypo.Add(komentarz);

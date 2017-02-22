@@ -302,9 +302,9 @@
                                         }
 
                                         var imagesLink = "";
-                                        if (newData[a].Image.lenght != 0) {
+                                        if (newData[a].Image.length != 0) {
                                             for (var b = 0; b < newData[a].Image.length; b++) {
-                                                imagesLink = imagesLink + '<img id="image' + newData[a].id + '_' + newData[a].Image[b] + '" class="col-md-2" src=' + newData[a].Image[b] + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" />'
+                                                imagesLink = imagesLink + '<img id="' + newData[a].Image[b].imageId + '" class="col-md-2 image-gallery-click" src=' + newData[a].Image[b].imagesContent + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" width: 140px; height:90px" />'
 
                                             }
                                         }
@@ -467,9 +467,9 @@
                             }
 
                             var imagesLink = "";
-                            if (newData[a].Image.lenght != 0) {
+                            if (newData[a].Image.length != 0) {
                                 for (var b = 0; b < newData[a].Image.length; b++) {
-                                    imagesLink = imagesLink + '<img id="image' + newData[a].id + '_' + newData[a].Image[b] + '" class="col-md-2" src=' + newData[a].Image[b] + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" />'
+                                    imagesLink = imagesLink + '<img id="' + newData[a].Image[b].imageId + '" class="col-md-2 image-gallery-click" src=' + newData[a].Image[b].imagesContent + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" width: 140px; height:90px" />'
 
                                 }
                             }
@@ -566,9 +566,9 @@
                                 }
 
                                 var imagesLink = "";
-                                if (newData.listaWypowiedzi[a].Image.lenght != 0) {
+                                if (newData.listaWypowiedzi[a].Image.length != 0) {
                                     for (var b = 0; b < newData.listaWypowiedzi[a].Image.length; b++) {
-                                        imagesLink = imagesLink + '<img id="image' + newData.listaWypowiedzi[a].id + '_' + newData.listaWypowiedzi[a].Image[b] + '" class="col-md-2" src=' + newData.listaWypowiedzi[a].Image[b] + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" />'
+                                        imagesLink = imagesLink + '<img id="' + newData.listaWypowiedzi[a].Image[b].imageId + '" class="col-md-2 image-gallery-click" src=' + newData.listaWypowiedzi[a].Image[b].imagesContent + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0); width: 140px; height:90px" />'
 
                                     }
                                 }
@@ -647,13 +647,12 @@
                         link_3 = link_3.replace('-666', newData[a].id);
                     }
 
-                    var imagesLink = "" ;
-                    if (newData[a].Image.lenght != 0)
-                    {
-                    for (var b = 0; b < newData[a].Image.length; b++)
-                        {
-                        imagesLink = imagesLink + '<img id="image' + newData[a].id + '_' + newData[a].Image[b] + '"class="col-md-2 image-gallery-click" src=' + newData[a].Image[b] + ' style="margin-top: 15px; height:90px; width:160px;  background-color: rgba(0,0,0,0)"/>'
-                           
+                    var imagesLink = "";
+                    alert[newData[a].Image.lenght];
+                    if (newData[a].Image.length != 0) {
+                        for (var b = 0; b < newData[a].Image.length; b++) {
+                            imagesLink = imagesLink + '<img id="' + newData[a].Image[b].imageId + '" class="col-md-2 image-gallery-click" src=' + newData[a].Image[b].imagesContent + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" width: 140px; height:90px" />'
+
                         }
                     }
                     $("#tbl").append('<tr><td><div><div style=" float:left; width:20%;"><span style="color:#000; font-size:12px; padding-bottom:-20px;">   ' + newData[a].DateTi + '</span></div><div style=" float:left; width:50%; text-align:center; color: #a20202;font-weight: bold;>  <span style="  margin-top: 5px;  ">' + newData[a].userName + '</span></div> <div  style=" float:right; width:30%; font-size: 11px; text-align:right;>  <span style="color: #000;">' + link_3 + " " + link + link_2 + '</span>' + " </div> <div style='clear:both;'></div></div> </td>" + '</tr><tr><td  ><div style="width:100%" class="col-md-12">' + '<span style="color: #000; font-size: 12px; font-family: /"Times New Roman"/;" id="contentEdit ">' + newData[a].content + '</span> ' + ' </div> <div class="col-md-12">'+imagesLink+'</div><div class="col-md-12" style=" height:30px; text-size:20px; color:#fff;" > ' + nLike + ' ' + Like + '   </div></td></tr>');
@@ -884,9 +883,9 @@
                                                 }
 
                                                 var imagesLink = "";
-                                                if (newData[a].Image.lenght != 0) {
+                                                if (newData[a].Image.length != 0) {
                                                     for (var b = 0; b < newData[a].Image.length; b++) {
-                                                        imagesLink = imagesLink + '<img id="image' + newData[a].id + '_' + newData[a].Image[b] + '" class="col-md-2" src=' + newData[a].Image[b] + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" />'
+                                                        imagesLink = imagesLink + '<img id="' + newData[a].Image[b].imageId + '" class="col-md-2 image-gallery-click" src=' + newData[a].Image[b].imagesContent + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" width: 140px; height:90px" />'
 
                                                     }
                                                 }
@@ -1024,9 +1023,10 @@
                                                 }
 
                                                 var imagesLink = "";
-                                                if (newData[a].Image.lenght != 0) {
+
+                                                if (newData[a].Image.length != 0) {
                                                     for (var b = 0; b < newData[a].Image.length; b++) {
-                                                        imagesLink = imagesLink + '<img id="image' + newData[a].id + '_' + newData[a].Image[b] + '" class="col-md-2" src=' + newData[a].Image[b] + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" />'
+                                                        imagesLink = imagesLink + '<img id="' + newData[a].Image[b].imageId + '" class="col-md-2 image-gallery-click" src=' + newData[a].Image[b].imagesContent + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" width: 140px; height:90px" />'
 
                                                     }
                                                 }
@@ -1155,9 +1155,9 @@
                         }
 
                         var imagesLink = "";
-                        if (newData[a].Image.lenght != 0) {
+                        if (newData[a].Image.length != 0) {
                             for (var b = 0; b < newData[a].Image.length; b++) {
-                                imagesLink = imagesLink + '<img id="image' + newData[a].id + '_' + newData[a].Image[b] + '" class="col-md-2" src=' + newData[a].Image[b] + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" />'
+                                imagesLink = imagesLink + '<img id="' + newData[a].Image[b].imageId + '" class="col-md-2 image-gallery-click" src=' + newData[a].Image[b].imagesContent + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" width: 140px; height:90px" />'
 
                             }
                         }
@@ -1309,9 +1309,9 @@
                         }
 
                         var imagesLink = "";
-                        if (newData[a].Image.lenght != 0) {
+                        if (newData[a].Image.length != 0) {
                             for (var b = 0; b < newData[a].Image.length; b++) {
-                                imagesLink = imagesLink + '<img id="image' + newData[a].id + '_' + newData[a].Image[b] + '" class="col-md-2" src=' + newData[a].Image[b] + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" />'
+                                imagesLink = imagesLink + '<img id="' + newData[a].Image[b].imageId + '" class="col-md-2 image-gallery-click" src=' + newData[a].Image[b].imagesContent + ' style="margin-top: 15px;  background-color: rgba(0,0,0,0)" width: 140px; height:90px" />'
 
                             }
                         }
