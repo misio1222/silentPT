@@ -673,18 +673,26 @@
     $(function () {
         $("#newCont").on("click", ".image-gallery-click", function () {
             var photoId = $(this).attr("id");
-            alert(photoId + " hello");
-            @*$.ajax({
-                url: '@Url.Action("", "Home")',
+            $.ajax({
+                url: '@Url.Action("dispalyBPhoto", "Home")',
                 type: 'POST',
-                data:fileData,
+                data: {'imageId': photoId},
                 cache: false,
-                contentType: false,
-                processData: false,
-                success: function (newData) {
-
+                success: function (photoData) {
+                    var modal = document.getElementById('myModal');
+                    var modalImg = document.getElementById("img01");
+                    //var captionText = document.getElementById("caption");
+                    $(function () {
+                        modal.style.display = "block";
+                        modalImg.src = photoData;
+                        //captionText.innerHTML = photoData.name;
+                    });
+                    var span = document.getElementsByClassName("close")[0];
+                    span.onclick = function () {
+                        modal.style.display = "none";
+                    }
                 }
-            });*@
+            });
         })
     });
 
@@ -1754,6 +1762,27 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal1" style="text-align: center;">
+    @*<img id="myImg" src="img_fjords.jpg" width="300" height="200">*@
+    <!-- The Close Button -->
+    <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+
+    <!-- Modal Content (The Image) -->
+    <img class="modal1-content" id="img01" width="50%" height="90%" style="text-align: center;">
+
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption1"></div>
+</div>
+
+
+
+
 
         <div class="pobraneW" id="@Model.powrotWczesniej"></div>
         <div class="pobraneC" id="@Model.powrotcompany"></div>

@@ -986,12 +986,12 @@ namespace MVCIdentityConfirm.Controllers
             byte[] imgArray = (byte[])converter.ConvertTo(nImg, typeof(byte[]));
 
 
-            var mmstreamOriginal = new MemoryStream(byteImage);
-            Image miniImgOriginal = Image.FromStream(mmstreamOriginal);
-            neededClass nClassOriginal = new neededClass();
-            var nImgOriginal = nClassOriginal.resizeImage(500,700, miniImgOriginal);                                                      // poprawic cos z rozmiarem
-            ImageConverter converterOriginal = new ImageConverter();
-            byte[] imgArrayOriginal = (byte[])converter.ConvertTo(nImgOriginal, typeof(byte[]));
+            //var mmstreamOriginal = new MemoryStream(byteImage);
+            //Image miniImgOriginal = Image.FromStream(mmstreamOriginal);
+            //neededClass nClassOriginal = new neededClass();
+            //var nImgOriginal = nClassOriginal.resizeImage(500,700, miniImgOriginal);                                                      // poprawic cos z rozmiarem
+            //ImageConverter converterOriginal = new ImageConverter();
+            //byte[] imgArrayOriginal = (byte[])converter.ConvertTo(nImgOriginal, typeof(byte[]));
 
 
             var userId = User.Identity.GetUserId();
@@ -1000,7 +1000,7 @@ namespace MVCIdentityConfirm.Controllers
             var data = new dataDB();
             var imgWypo = new UsersImageWypowiedz {
                 WypowiedzId = Int32.Parse(id),
-                Image = imgArrayOriginal,
+                Image = byteImage,
                 miniImage = imgArray,
                 UserId = userId             
             };
@@ -1636,7 +1636,30 @@ namespace MVCIdentityConfirm.Controllers
 
 
         }
-        
+
+
+        public JsonResult dispalyBPhoto (int imageId)                                          // Zdjecie pełnowymiarowe
+        {
+            var dbData = new dataDB();
+            if (dbData.UsersImageWypowiedzSet.Where(x => x.Id == imageId).Select(z => z).Any())
+            {
+                var image = dbData.UsersImageWypowiedzSet.Where(x => x.Id == imageId).Select(z => z).FirstOrDefault();
+
+                string imageBase64Data;
+                string imageDataURL;
+                imageBase64Data = Convert.ToBase64String(image.Image);
+                imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+
+                return Json(imageDataURL, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
         public JsonResult AWCompanyName(int? company)
         {
             var companyName = "";
