@@ -1390,9 +1390,8 @@ html, body {
 
 .modal1 {
     display: none; /* Hidden by default */
-
-
-    padding-top: 100px; /* Location of the box */
+    padding-top: 20px; /* Location of the box */
+    position:fixed;
     left: 0;
     top: 0;
     width: 100vw; /* Full width */
@@ -1402,11 +1401,13 @@ html, body {
     background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
 }
 
+
 /* Modal Content (Image) */
 .modal1-content {
     margin: auto;
-    width: 80%;
-    max-width: 700px;
+    height:auto;
+    width: 40%;
+    cursor:grabbing;
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
@@ -1418,7 +1419,7 @@ html, body {
     text-align: center;
     color: #ccc;
     padding: 10px 0;
-    height: 150px;
+
 }
 
 /* Add Animation - Zoom in the Modal */
@@ -1441,11 +1442,11 @@ html, body {
 
 /* The Close Button */
 .close {
-    position: absolute;
+    position:fixed;
     top: 15px;
     right: 35px;
     color: #fff;
-    font-size: 40px;
+    font-size: 45px;
     font-weight: bold;
     transition: 0.3s;
 }
